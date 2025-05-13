@@ -86,6 +86,8 @@ helm uninstall $(helm list -aq -n oai) -n oai
 export PODNAME=$(kubectl get pods -l app.kubernetes.io/name=oai-upf -o jsonpath="{.items[*].metadata.name}" -n oai)
 kubectl debug -it $PODNAME --image=nicolaka/netshoot --target=upf -- bash
 
+# check helm charts render
+helm template ueransim ./dir/to/charts -f values.yaml > rendered.yaml
 ```
 
 ## Roadmap

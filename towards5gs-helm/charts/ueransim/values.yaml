@@ -17,19 +17,21 @@
 global:
   #Global network parametes
   n2network:
+    enabled: true
     name: n2network
     type: macvlan
     masterIf: enp2s0
     subnetIP: 10.1.2.16
-    cidr: 29
+    cidr: "29"
     gatewayIP: 10.1.2.17
     excludeIP: 10.1.2.17
   n3network:
+    enabled: true
     name: n3network
     type: macvlan
     masterIf: enp2s0
     subnetIP: 10.1.3.16
-    cidr: 29
+    cidr: "29"
     gatewayIP: 10.1.3.19
     excludeIP: 10.1.3.19
 
@@ -93,7 +95,7 @@ gnb:
     # List of supported S-NSSAIs by this gNB
     slices:
       - sst: 1
-        #sd: 16777215
+        sd: 16777215
     # Indicates whether or not SCTP stream number errors should be ignored.
     ignoreStreamIds: true
 ue:

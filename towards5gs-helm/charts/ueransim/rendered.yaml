@@ -1,0 +1,525 @@
+---
+# Source: ueransim/templates/gnb/gnb-configmap.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gnb-configmap
+  labels:
+    app: ueransim
+    component: gnb
+data:
+  gnb-config.yaml: |
+    mcc: '001' # Mobile Country Code value
+    mnc: '01'  # Mobile Network Code value (2 or 3 digits)
+    nci: '0x000000010'  # NR Cell Identity (36-bit)
+    idLength: 32        # NR gNB ID length in bits [22...32]
+    tac: 0x0001         # Tracking Area Code
+    # List of supported S-NSSAIs by this gNB
+    slices:
+      - sst: 1
+        #sd: 16777215
+    # Indicates whether or not SCTP stream number errors should be ignored.
+    ignoreStreamIds: true
+    
+    linkIp: 0.0.0.0   # gNB's local IP address for Radio Link Simulation (Usually same with local IP)
+    # gNB's local IP address for N2 Interface (Usually same with local IP)
+    ngapIp: 10.1.2.18
+    gtpIp: 10.1.3.17    # gNB's local IP address for N3 Interface (Usually same with local IP)
+    
+    # List of AMF address information
+    amfConfigs:
+      - address: 10.1.2.16
+        port: 38412
+---
+# Source: ueransim/templates/ue/ue-configmap.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ue-configmap
+  labels:
+    app: ueransim
+    component: ue
+data:
+  ue-config.yaml: |
+    supi: "imsi-001010000000101"  # IMSI number
+    mcc: '001' # Mobile Country Code value
+    mnc: '01' # Mobile Network Code value (2 or 3 digits)
+    key: "8baf473f2f8fd09487cccbd7097c6862" # Operator code (OP or OPC) of the UE
+    op: "8e27b6af0e692e750f32667a3b14605d" # This value specifies the OP type and it can be either 'OP' or 'OPC'
+    opType: "OPC" # This value specifies the OP type and it can be either 'OP' or 'OPC'
+    amf: '8000' # Authentication Management Field (AMF) value
+    imei: '356938035643803' # IMEI number of the device
+    imeiSv: '4370816125816151'
+    # UAC Access Identities Configuration
+    uacAic:
+      mps: false
+      mcs: false
+    # UAC Access Control Class
+    uacAcc:
+      normalClass: 0
+      class11: false
+      class12: false
+      class13: false
+      class14: false
+      class15: false
+    sessions:
+      - type: "IPv4"
+        apn: "internet"
+        slice:
+          sst: 1
+          sd: 16777215
+    # Configured NSSAI for this UE by HPLMN
+    configured-nssai:
+      - sst: 1
+        sd: 16777215
+    # Default Configured NSSAI for this UE
+    default-nssai:
+      - sst: 1
+        sd: 1
+    # Supported encryption and integrity algorithms by this UE
+    integrity:
+      IA1: true
+      IA2: true
+      IA3: true
+    ciphering:
+      EA1: true
+      EA2: true
+      EA3: true
+    # Integrity protection maximum data rate for user plane
+    integrityMaxRate:
+      uplink: 'full'
+      downlink: 'full'
+    gnbSearchList:
+      - 10.244.0.1
+    
+    # List of gNB IP addresses for Radio Link Simulation
+    gnbSearchList:
+      - gnb-service
+
+  wrapper.sh: |
+    #!/bin/bash
+
+    mkdir /dev/net
+    mknod /dev/net/tun c 10 200
+
+    ./nr-ue -c ../config/ue-config.yaml
+---
+# Source: ueransim/templates/gnb/gnb-service.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnb-service
+  labels:
+    app: ueransim
+    component: gnb
+spec:
+  type: ClusterIP
+  ports:
+    - name: gnb-ue
+      port: 4997
+      protocol: UDP
+  selector:
+    app: ueransim
+    component: gnb
+---
+# Source: ueransim/templates/gnb/gnb-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ueransim-gnb
+  labels:
+    helm.sh/chart: ueransim-2.0.17
+    app.kubernetes.io/name: ueransim
+    app.kubernetes.io/instance: ueransim
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: Helm
+    app: ueransim
+    component: gnb
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ueransim
+      app.kubernetes.io/instance: ueransim
+      app: ueransim
+      component: gnb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ueransim
+        app.kubernetes.io/instance: ueransim
+        app: ueransim
+        component: gnb
+      annotations:
+        k8s.v1.cni.cncf.io/networks: >-
+          [
+            {
+              "name": "n2network-ueransim",
+              "interface": "n2",
+              "ips": [ "10.1.2.18/29" ],
+              "gateway": [ "10.1.2.17" ]
+            },
+            {
+              "name": "n3network-ueransim",
+              "interface": "n3",
+              "ips": [ "10.1.3.17/29" ],
+              "gateway": [ "10.1.3.19" ]
+            }
+          ]
+    spec:
+      imagePullSecrets:
+        []
+      securityContext:
+        {}
+      initContainers:
+      - name: wait-amf
+        image: towards5gs/sctp_test:latest
+        command: ["sh", "-c", "until sctp_test -s -H 0.0.0.0 -P 25000 -h 10.1.2.16 -p 38412; do echo waiting for the AMF; sleep 2; done;"]
+      containers:
+      - image: towards5gs/ueransim-gnb:latest
+        name: gnb
+        ports:
+        - name: gnb-ue
+          containerPort: 4997
+          protocol: UDP
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+        command: ["./nr-gnb"]
+        args: ["-c", "/ueransim/config/gnb-config.yaml"]
+        volumeMounts:
+        - mountPath: /ueransim/config
+          name: gnb-volume
+        resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+
+      volumes:
+      - name: gnb-volume
+        configMap:
+          name: gnb-configmap
+---
+# Source: ueransim/templates/ue/ue-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ueransim-ue
+  labels:
+    helm.sh/chart: ueransim-2.0.17
+    app.kubernetes.io/name: ueransim
+    app.kubernetes.io/instance: ueransim
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: Helm
+    app: ueransim
+    component: ue
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ueransim
+      app.kubernetes.io/instance: ueransim
+      app: ueransim
+      component: ue
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        
+      labels:
+        app.kubernetes.io/name: ueransim
+        app.kubernetes.io/instance: ueransim
+        app: ueransim
+        component: ue
+    spec:
+      imagePullSecrets:
+        []
+      securityContext:
+        {}
+      containers:
+      - image: towards5gs/ueransim-ue:latest
+        name: ue
+        securityContext:
+            capabilities:
+              add:
+              - NET_ADMIN
+        command: ["/ueransim/config/wrapper.sh"]
+        volumeMounts:
+        - mountPath: /ueransim/config
+          name: ue-volume
+        resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+
+      volumes:
+      - name: ue-volume
+        configMap:
+          name: ue-configmap
+          items:
+          - key: ue-config.yaml
+            path: ue-config.yaml
+          - key: wrapper.sh
+            path: wrapper.sh
+            mode: 0755
+---
+# Source: ueransim/templates/gnb/gnb-n2-nad.yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: n2network-ueransim
+spec:
+  config: '{
+    "cniVersion": "0.3.1",
+    "plugins": [
+      {
+        "type": "macvlan",
+        "capabilities": { "ips": true },
+        "master": "enp2s0",
+        "mode": "bridge",
+        "ipam": {
+          "type": "static",
+          "addresses": [
+            {
+              "address": "10.1.2.18/29"
+            }
+          ],
+          "routes": [
+            {
+              "dst": "0.0.0.0/0",
+              "gw": "10.1.2.17"
+            }
+          ]
+        }
+      },
+      {
+        "capabilities": { "mac": true },
+        "type": "tuning"
+      }
+    ]
+  }'
+---
+# Source: ueransim/templates/gnb/gnb-n3-nad.yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: n3network-ueransim
+spec:
+  config: '{
+    "cniVersion": "0.3.1",
+    "plugins": [
+      {
+        "type": "macvlan",
+        "capabilities": { "ips": true },
+        "master": "enp2s0",
+        "mode": "bridge",
+        "ipam": {
+          "type": "static",
+          "addresses": [
+            {
+              "address": "10.1.3.17/"29""
+            }
+          ],
+          "routes": [
+            {
+              "dst": "0.0.0.0/0",
+              "gw": "10.1.3.19"
+            }
+          ]
+        }
+      },
+      {
+        "capabilities": { "mac": true },
+        "type": "tuning"
+      }
+    ]
+  }'
+---
+# Source: ueransim/templates/tests/connectivity-test.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI, Michal CHABIERA
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ueransim-test-connection
+  annotations:
+    "helm.sh/hook": test
+---
+# Source: ueransim/templates/tests/connectivity-test.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: connectivity-test-configmap
+  annotations:
+    "helm.sh/hook": test
+data:
+  script-connectivity-test.sh: |
+    #!/bin/bash
+    echo "Get ue pod name"
+    export pod_name=$(kubectl get pods --namespace oai -l "component=ue" -o jsonpath="{.items[0].metadata.name}")
+    echo "${pod_name}"
+    echo "***********************************************************************"
+    echo ""
+
+    echo "Get ip address table for ${pod_name}"
+    ip_address="$(kubectl -n oai exec -i ${pod_name} -- bash -c 'ip address')"
+    echo "${ip_address}"
+    tun_interface="$(echo "$ip_address" | awk '$1 ~ /^[0-9].*/ && $2 ~/^uesimtun0/ {print}')"
+    if [ -z "$tun_interface" ] ; then
+      echo ""
+      echo "uesimtun0 interface not found"
+      exit 1
+    fi
+    echo "***********************************************************************"
+    echo ""
+
+    echo "Test connectivity"
+    kubectl -n oai exec -i ${pod_name} -- curl --interface uesimtun0 www.google.com
+---
+# Source: ueransim/templates/tests/connectivity-test.yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ueransim-test-connection
+  annotations:
+    "helm.sh/hook": test
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["get", "create"]
+---
+# Source: ueransim/templates/tests/connectivity-test.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ueransim-test-connection
+  annotations:
+    "helm.sh/hook": test
+subjects:
+- kind: ServiceAccount
+  name: ueransim-test-connection
+  namespace: oai
+roleRef:
+  kind: ClusterRole
+  name: ueransim-test-connection
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ueransim/templates/tests/connectivity-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "ueransim-test-connection"
+  labels:
+    helm.sh/chart: ueransim-2.0.17
+    app.kubernetes.io/name: ueransim
+    app.kubernetes.io/instance: ueransim
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+      serviceAccountName: ueransim-test-connection
+      containers:
+      - name: ue-test-conncection
+        image: bitnami/kubectl:1.22.0
+        imagePullPolicy: IfNotPresent
+        command: ["bin/sh"]
+        args: ["/scripts/script-connectivity-test.sh"]
+        volumeMounts:
+        - name: connectivity-test-volume
+          mountPath: /scripts
+          readOnly: true
+      volumes:
+      - name: connectivity-test-volume
+        configMap:
+          defaultMode: 0755
+          name: connectivity-test-configmap
+      restartPolicy: Never
