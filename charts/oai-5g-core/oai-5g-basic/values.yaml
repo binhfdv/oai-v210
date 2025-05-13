@@ -185,7 +185,7 @@ oai-upf:
       routes: ""
       hostInterface: "enp2s0"
     n6Interface:
-      create: true #false
+      create: false
       ipAdd: "192.168.22.2"
       name: "n6"
       netmask: "24"

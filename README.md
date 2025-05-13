@@ -4,6 +4,9 @@
 
 ## Deploy OAI-5G Core
 ```
+# Should use kubens to change namespace
+kubens oai
+
 cd ~/oai-v210/charts/oai-5g-core/oai-5g-basic
 helm dependency update
 
@@ -23,16 +26,27 @@ export UEPOD=$(kubectl get pods -l app.kubernetes.io/name=oai-nr-ue -o jsonpath=
 kubectl exec -it $UEPOD -- bash
 
 #ping towards spgwu/upf
-ping -I oaitun_ue1 12.1.1.1
+ping -c 3 -I oaitun_ue1 12.1.1.1
 
 #ping towards google dns
-ping -I oaitun_ue1 8.8.8.8
+ping -c 3 -I oaitun_ue1 8.8.8.8
 ```
 
 # ----------------------------------
 # To use UERANSIM instead
+## Cloud
+```
+helm repo add towards5gs 'https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/'
+helm repo update
+helm search repo
 
-## Build UERANSIM
+cd ~/oai-v210/towards5gs-helm/charts/ueransim
+helm dependency update
+helm install ueransim .
+```
+
+## Baremetal
+### Build UERANSIM
 ```
 cd UERANSIM/
 
@@ -42,7 +56,7 @@ sudo apt install make gcc g++ libsctp-dev lksctp-tools iproute2 -y
 sudo snap install cmake --classic
 ```
 
-## Run RAN
+### Run RAN
 ```
 sudo apt install net-tools -y
 python3 config_UERAN.py
@@ -53,6 +67,8 @@ sudo ./build/nr-ue -c ./build/OAI-ue.yaml -i imsi-001010000000102
 
 ping -c 3 -I uesimtun0 google.com
 ping -c 3 -I uesimtun1 google.com
+
+curl -I --interface uesimtun0 google.com
 ```
 # ----------------------------------
 
@@ -62,6 +78,15 @@ Ctrl + C in terminals running UERANSIM to stop processes
 helm uninstall $(helm list -aq -n oai) -n oai
 ```
 
+## Debugging
+```
+# sample to run tcpdump, curl, etc. in upf (same for others) pod when tcpdump, curl, etc. is not available in the pod
+# --target is name of container in pod
+
+export PODNAME=$(kubectl get pods -l app.kubernetes.io/name=oai-upf -o jsonpath="{.items[*].metadata.name}" -n oai)
+kubectl debug -it $PODNAME --image=nicolaka/netshoot --target=upf -- bash
+
+```
 
 ## Roadmap
 ### 1. AF implementation
