@@ -32,6 +32,15 @@ ping -c 3 -I oaitun_ue1 12.1.1.1
 ping -c 3 -I oaitun_ue1 8.8.8.8
 ```
 
+## Or use scripts to deploy OAI
+```
+kubens oai
+cd ~/oai-v210
+
+chmod +x deploy_oai.sh
+bash deploy_oai.sh .
+```
+
 # ----------------------------------
 # To use UERANSIM instead
 ## Cloud
@@ -88,6 +97,9 @@ kubectl debug -it $PODNAME --image=nicolaka/netshoot --target=upf -- bash
 
 # check helm charts render
 helm template ueransim ./dir/to/charts -f values.yaml > rendered.yaml
+
+# check multus network attachments
+kubectl get network-attachment-definition
 ```
 
 ## Roadmap

@@ -155,6 +155,9 @@ oai-upf:
   start:
     upf: true #If false the network function container will run in sleep mode for manually testing
     tcpdump: false
+  securityContext:
+    capabilities:
+      add: ["NET_ADMIN"]
   imagePullSecrets:
     - name: "regcred"
   # create an extra interface for N3 incase the gNB is outside the cluster network or there is a need to have dedicated interface for N3
@@ -176,7 +179,7 @@ oai-upf:
     ## For n4 it is better to re-use eth0 interface inside the pod (primary CNI of Kubernetes)
     n4Interface:
       create: true #false
-      ipAdd: "192.168.24.2"
+      ipAdd: 10.3.2.17 #"192.168.24.2"
       netmask: "24"
       name: "n4"
       ## If you do not have a gateway leave the field empty
@@ -185,14 +188,14 @@ oai-upf:
       routes: ""
       hostInterface: "enp2s0"
     n6Interface:
-      create: false
-      ipAdd: "192.168.22.2"
+      create: true #false
+      ipAdd: 192.168.209.50 #"192.168.22.2"
       name: "n6"
       netmask: "24"
       ## If you do not have a gateway leave the field empty
       gateway: ""
       ## If you do not want to add any routes in your pod then leave this field empty
-      routes: ""
+      routes: "" #[{'dst': '0.0.0.0/0', 'gw': '192.168.210.1'}]
       hostInterface: "enp2s0"
   #NOTE: If the interface you selected for n6If is wrong then traffic will not be routed towards internet
   nodeSelector: {}
@@ -243,7 +246,7 @@ oai-smf:
     defaultGateway: ""
     n4Interface:
       create: true #false
-      ipAdd: "192.168.24.3"
+      ipAdd: 10.3.2.16 #"192.168.24.3"
       netmask: "24"
       name: "n4"
       ## If you do not have a gateway leave the field empty
