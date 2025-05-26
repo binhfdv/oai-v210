@@ -48,6 +48,15 @@ multus:
     ## The value must be [0, master's MTU]. If commented it will masters MTU
     #mtu: 9000
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+  e2cInterface:
+    create: true #false
+    ipAdd: "10.4.1.18" #"172.21.16.92"
+    netmask: "22"
+    name: "e2"
+    # if gatway is empty then it will be removed
+    #gateway: ""
+    #routes: 
+    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
 
 ## If you want to change more configuration parameters then you should mount the config file  
 # in templates/configmap.yaml
@@ -65,7 +74,7 @@ config:
   cuHost: "10.2.5.16" ## Ip-address or hostname
   f1cuPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
   f1duPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
-
+  e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
 ## Debugging section
 podSecurityContext:
   runAsUser: 0

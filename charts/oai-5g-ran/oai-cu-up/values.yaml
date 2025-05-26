@@ -57,6 +57,15 @@ multus:
     #gateway: ""
     #routes: []
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+  e2Interface:
+    create: true #false
+    ipAdd: "10.4.1.17" #"172.21.16.92"
+    netmask: "22"
+    name: "e2"
+    # if gatway is empty then it will be removed
+    #gateway: ""
+    #routes: 
+    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
 
 ## configuration file is in template/config.yaml 
 ## It is taken from https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/ci-scripts/conf_files/gnb-cuup.sa.f1.conf
@@ -74,7 +83,7 @@ config:
   e1IfName: "e1"   #if multus.e1Interface.create is true then use e1 or you can only use 1 interface n3 or eth0 
   f1cuPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
   f1duPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
-
+  e2IfName: "e2"   #if multus.e2Interface.create is true then use e2 or you can only use 1 interface n3 or eth0
 ## Debugging section
 podSecurityContext:
   runAsUser: 0
