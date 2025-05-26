@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   labels:
-    {{- include "oai-nearrt-ric.labels" . | nindent 4 }}
+    {{- include "oai-emu-gnb-mono.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "oai-nearrt-ric.selectorLabels" . | nindent 6 }}
+      {{- include "oai-emu-gnb-mono.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        {{- include "oai-nearrt-ric.selectorLabels" . | nindent 8 }}
-        app: oai-nearrt-ric
+        {{- include "oai-emu-gnb-mono.selectorLabels" . | nindent 8 }}
+        app: oai-emu-gnb-mono
     {{- if .Values.multus.e2Interface.create }}
       annotations:
         k8s.v1.cni.cncf.io/networks: >-
@@ -38,7 +38,7 @@ spec:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
     {{- end }}
       containers:
-      - name: nearrt-ric
+      - name: emu-gnb-mono
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
         volumeMounts:
           - mountPath: /usr/local/etc/flexric/flexric.conf
@@ -58,7 +58,7 @@ spec:
           name: e2
           protocol: SCTP
         {{- if .Values.start.oainearric}}
-        command: [ "stdbuf", "-o0", "nearRT-RIC" ]
+        command: [ "stdbuf", "-o0", "/usr/local/flexric/emulator/agent/emu_agent_gnb" ]
         {{- else}}
         command:
           - /bin/sleep

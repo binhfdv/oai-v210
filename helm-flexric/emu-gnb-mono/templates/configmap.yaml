@@ -5,7 +5,7 @@ metadata:
 data:
   flexric.conf: |
     [NEAR-RIC]
-    NEAR_RIC_IP = 192.168.72.154
+    NEAR_RIC_IP = {{ .Values.config.nearRtHost }}
     
     [XAPP]
     DB_DIR = /tmp/

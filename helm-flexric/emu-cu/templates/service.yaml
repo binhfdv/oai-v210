@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-emu-cu
+  labels:
+    {{- include "oai-emu-cu.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: e2
+      port: 36421
+      targetPort: 36421
+      protocol: SCTP
+  selector:
+    {{- include "oai-emu-cu.selectorLabels" . | nindent 4 }}

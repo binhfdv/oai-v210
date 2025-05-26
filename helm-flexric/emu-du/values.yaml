@@ -16,12 +16,12 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-nearrt-ric-sa"
+  name: "oai-emu-du-sa"
 
 multus:
   e2Interface:
     create: true #false
-    ipAdd: "192.168.72.154"
+    ipAdd: "192.168.72.152"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed
@@ -31,9 +31,7 @@ multus:
 
 config:
   timeZone: "Europe/Paris"
-  cuCpHost: "192.168.72.150"
-  cuUpHost: "192.168.72.151"
-  duHost:   "192.168.72.152"
+  nearRtHost: "192.168.72.154"
   e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
 
 ## Debugging section
