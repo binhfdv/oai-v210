@@ -4,11 +4,6 @@ nfimage:   # image name either locally present or in a public/private repository
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
-config:
-  configMapName: flexric-config
-  configPath: /usr/local/etc/flexric/flexric.conf
-  configFileName: flexric.conf
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -43,7 +38,7 @@ securityContext:
   privileged: false
 
 start:
-  oainearric: true #If false the network function container will run in sleep mode for manually testing
+  oaidu: true #If false the network function container will run in sleep mode for manually testing
   tcpdump: false
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging

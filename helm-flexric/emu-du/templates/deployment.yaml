@@ -54,10 +54,10 @@ spec:
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
         {{- end}}
         ports:
-        - containerPort: 36421
+        - containerPort: 36422
           name: e2
           protocol: SCTP
-        {{- if .Values.start.oainearric}}
+        {{- if .Values.start.oaidu}}
         command: [ "stdbuf", "-o0", "/usr/local/flexric/emulator/agent/emu_agent_gnb_du" ]
         {{- else}}
         command:

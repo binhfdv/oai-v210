@@ -54,7 +54,7 @@ spec:
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
         {{- end}}
         ports:
-        - containerPort: 36421
+        - containerPort: 36422
           name: e2
           protocol: SCTP
         {{- if .Values.start.oainearric}}

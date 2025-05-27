@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   labels:
-    {{- include "oai-emu-cu.labels" . | nindent 4 }}
+    {{- include "oai-xapp-kpm-moni.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "oai-emu-cu.selectorLabels" . | nindent 6 }}
+      {{- include "oai-xapp-kpm-moni.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        {{- include "oai-emu-cu.selectorLabels" . | nindent 8 }}
-        app: oai-emu-cu
+        {{- include "oai-xapp-kpm-moni.selectorLabels" . | nindent 8 }}
+        app: oai-xapp-kpm-moni
     {{- if .Values.multus.e2Interface.create }}
       annotations:
         k8s.v1.cni.cncf.io/networks: >-
@@ -38,7 +38,7 @@ spec:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
     {{- end }}
       containers:
-      - name: emu-cu
+      - name: xapp-kpm-moni
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
         volumeMounts:
           - mountPath: /usr/local/etc/flexric/flexric.conf
@@ -57,8 +57,8 @@ spec:
         - containerPort: 36422
           name: e2
           protocol: SCTP
-        {{- if .Values.start.oaicu}}
-        command: [ "stdbuf", "-o0", "/usr/local/flexric/emulator/agent/emu_agent_gnb_cu" ]
+        {{- if .Values.start.oaixappkpmmoni}}
+        command: [ "stdbuf", "-o0", "/usr/local/flexric/xApp/c/monitor/xapp_kpm_moni" ]
         {{- else}}
         command:
           - /bin/sleep
@@ -67,6 +67,8 @@ spec:
         env:
           - name: TZ
             value: {{ .Values.config.timeZone }}
+          - name: XAPP_DURATION
+            value: {{ .Values.config.duration | quote}}
       {{- if .Values.includeTcpDumpContainer }}
       - name: tcpdump
         image: "{{ .Values.tcpdumpimage.repository }}:{{ .Values.tcpdumpimage.version }}"

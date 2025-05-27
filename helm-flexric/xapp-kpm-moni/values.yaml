@@ -11,12 +11,12 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-emu-cu-sa"
+  name: "oai-xapp-kpm-moni-sa"
 
 multus:
   e2Interface:
     create: true #false
-    ipAdd: "192.168.72.151"
+    ipAdd: "192.168.72.155"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed
@@ -28,6 +28,7 @@ config:
   timeZone: "Europe/Paris"
   nearRtHost: "192.168.72.154"
   e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
+  duration: "20" #Duration in seconds for which the xApp will run. If it is set to 0 then it will run indefinitely
 
 ## Debugging section
 podSecurityContext:
@@ -38,7 +39,7 @@ securityContext:
   privileged: false
 
 start:
-  oaicu: true #If false the network function container will run in sleep mode for manually testing
+  oaixappkpmmoni: true #If false the network function container will run in sleep mode for manually testing
   tcpdump: false
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging

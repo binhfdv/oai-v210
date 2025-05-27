@@ -4,11 +4,6 @@ nfimage:   # image name either locally present or in a public/private repository
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
-config:
-  configMapName: flexric-config
-  configPath: /usr/local/etc/flexric/flexric.conf
-  configFileName: flexric.conf
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
