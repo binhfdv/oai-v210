@@ -4,7 +4,7 @@ kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution 
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   repository: docker.io/oaisoftwarealliance/oai-gnb           ## dockerhub oaisoftwarealliance/oai-gnb  
-  version: 2024.w32 # image tag or develop
+  version: 2024.w51 # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
@@ -57,9 +57,9 @@ multus:
     #gateway: ""
     #routes: 
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
-  e2cInterface:
+  e2Interface:
     create: true #false
-    ipAdd: "10.4.1.16" #"172.21.16.92"
+    ipAdd: "192.168.72.150"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed
@@ -83,7 +83,8 @@ config:
   e1IfName: "e1"   #if multus.f1Interface.create is true then use e1
   f1cuPort: "2152"   #2153 if using same interface for f1 and n2 else standard port 2152 should be use if f1 and n3 interface are different
   f1duPort: "2152"   #2153 if using same interface for f1 and n2 else standard port 2152 should be use if f1 and n3 interface are different
-  e1IfName: "e2"   #if multus.e1Interface.create is true then use e2
+  e2IfName: "e2"   #if multus.e1Interface.create is true then use e2
+  nearRicHost: "192.168.72.154"
 # Debugging section
 podSecurityContext:
   runAsUser: 0

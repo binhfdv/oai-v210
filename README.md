@@ -38,7 +38,7 @@ kubens oai
 cd ~/oai-v210
 
 chmod +x deploy_oai.sh
-bash deploy_oai.sh .
+bash deploy_oai.sh . core cu ue
 ```
 
 # ----------------------------------
@@ -102,16 +102,19 @@ helm template ueransim ./dir/to/charts -f values.yaml > rendered.yaml
 kubectl get network-attachment-definition
 ```
 
-## Roadmap
-### 1. AF implementation
+# Roadmap
+# 1. AF implementation
 * AF influence traffic for dynamic traffic steering
-### 2. OAI-RIC integration
+# 2. OAI-RIC integration
 * rApp & xApp for Traffic steering use case
 
 ## FlexRIC
 ### Using Helm
-
-### Baremetal
+```
+cd helm-flexric/
+bash deploy_flexric.sh
+```
+### Baremetal (read more on https://gitlab.eurecom.fr/mosaic5g/flexric/-/tree/dev?ref_type=heads)
 ```
 sudo apt update -y
 sudo apt upgrade -y
@@ -131,4 +134,12 @@ cd swig
 make -j8
 sudo make install
 
+# ...follow instructions on mosaic5g/Flexric repo
+
+```
+
+## Flexric + OAI O-RAN
+```
+chmod +x deploy_oai.sh
+bash deploy_oai.sh . core ric gnb ue
 ```

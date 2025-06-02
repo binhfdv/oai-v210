@@ -47,6 +47,15 @@ spec:
                 {{- end }}
           }
           {{- end }}
+          {{- if .Values.multus.e2Interface.create }}
+          ,{
+                 "name": "{{ .Chart.Name }}-{{ .Values.multus.e2Interface.name }}",
+                 "interface": "{{ .Values.multus.e2Interface.name }}"
+                {{- if .Values.multus.e2Interface.gateway }}
+                ,"gateway": "{{ .Values.multus.e2Interface.gateway }}"
+                {{- end }}
+          }
+          {{- end }}
           ]
     {{- end }}
     spec:
@@ -102,6 +111,9 @@ spec:
         - containerPort: {{ .Values.config.f1cuPort}}
           name: f1c
           protocol: UDP
+        - containerPort: 36422
+          name: e2
+          protocol: SCTP
         {{- if .Values.start.oaicucp}}
         command: [ "/bin/bash", "-c" ]
         args:
@@ -136,6 +148,8 @@ spec:
             value: {{ .Values.config.e1IfName }}
           - name: F1_IF_NAME
             value: {{ .Values.config.f1IfName }}
+          - name: E2_IF_NAME
+            value: {{ .Values.config.e2IfName }}
       {{- if .Values.includeTcpDumpContainer }}
       - name: tcpdump
         image: "{{ .Values.tcpdumpimage.repository }}:{{ .Values.tcpdumpimage.version }}"

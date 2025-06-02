@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-gnb-mono
+  labels:
+    {{- include "oai-gnb-mono.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: n2
+      port: 36412
+      targetPort: 36412
+      protocol: SCTP
+    - name: e2
+      port: 36422
+      targetPort: 36422
+      protocol: SCTP
+  selector:
+    {{- include "oai-gnb-mono.selectorLabels" . | nindent 4 }}

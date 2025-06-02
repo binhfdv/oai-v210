@@ -4,7 +4,7 @@ kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution 
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   repository: docker.io/oaisoftwarealliance/oai-nr-cuup           ## dockerhub oaisoftwarealliance/oai-gnb  
-  version: 2024.w32 # image tag or develop
+  version: 2024.w51 # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
@@ -59,7 +59,7 @@ multus:
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
   e2Interface:
     create: true #false
-    ipAdd: "10.4.1.17" #"172.21.16.92"
+    ipAdd: "192.168.72.151"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed

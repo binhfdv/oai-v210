@@ -1,33 +1,5 @@
 ---
-{{- if .Values.multus.e1Interface.create }}
-apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
-metadata:
-  name: {{ .Chart.Name }}-e1
-spec:
-  config: '{ 
-      "cniVersion": "0.3.1",
-      "type": "macvlan",
-      "master": {{- cat .Values.multus.e1Interface.hostInterface | nospace | quote }},
-      "mode": "bridge",
-      "ipam": {
-        "type": "static",
-        "addresses": [
-                {
-                        "address": {{- cat .Values.multus.e1Interface.ipAdd "/" .Values.multus.e1Interface.netmask | nospace | quote }}
-                        {{- if .Values.multus.e1Interface.gateway }}
-                        ,"gateway": {{- cat .Values.multus.e1Interface.gateway | nospace | quote }}
-                        {{- end }}
-                }
-        ]
-        {{- if .Values.multus.e1Interface.routes }}
-        ,"routes":  {{- .Values.multus.e1Interface.routes | toJson }}
-        {{- end }}
-      }
-    }'
-{{- end }}
 {{- if .Values.multus.n2Interface.create }}
----
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition 
 metadata:
@@ -54,38 +26,66 @@ spec:
       }
     }'
 {{- end }}
-{{- if .Values.multus.f1cInterface.create }}
+{{- if .Values.multus.n3Interface.create }}
 ---
 apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
+kind: NetworkAttachmentDefinition
 metadata:
-  name: {{ .Chart.Name }}-f1c
+  name: {{ .Chart.Name }}-n3
 spec:
   config: '{ 
       "cniVersion": "0.3.1",
       "type": "macvlan",
-      "master": {{- cat .Values.multus.f1cInterface.hostInterface | nospace | quote }},
+      "master": {{- cat .Values.multus.n3Interface.hostInterface | nospace | quote }},
       "mode": "bridge",
       "ipam": {
         "type": "static",
         "addresses": [
                 {
-                        "address": {{- cat .Values.multus.f1cInterface.ipAdd "/" .Values.multus.f1cInterface.netmask | nospace | quote }}
-                        {{- if .Values.multus.f1cInterface.gateway }}
-                        ,"gateway": {{- cat .Values.multus.f1cInterface.gateway | nospace | quote }}
+                        "address": {{- cat .Values.multus.n3Interface.ipAdd "/" .Values.multus.n3Interface.netmask | nospace | quote }}
+                        {{- if .Values.multus.n3Interface.gateway }}
+                        ,"gateway": {{- cat .Values.multus.n3Interface.gateway | nospace | quote }}
                         {{- end }}
                 }
         ]
-        {{- if .Values.multus.f1cInterface.routes }}
-        ,"routes":  {{- .Values.multus.f1cInterface.routes | toJson }}
+        {{- if .Values.multus.n3Interface.routes }}
+        ,"routes":  {{- .Values.multus.n3Interface.routes | toJson }}
         {{- end }}
+      }
+    }'
+{{- end }}
+{{- if .Values.multus.ruInterface.create }}
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition 
+metadata:
+  name: {{ .Chart.Name }}-ru
+spec:
+  config: '{ 
+      "cniVersion": "0.3.1",
+      "type": "macvlan",
+      "master": {{- cat .Values.multus.ruInterface.hostInterface | nospace | quote }},
+      {{- if .Values.multus.ruInterface.mtu }}
+      "mtu": {{ .Values.multus.ruInterface.mtu }},
+      {{- end }}
+      "mode": "bridge",
+      "ipam": {
+        "type": "static",
+        "addresses": [
+                {
+                        "address": {{- cat .Values.multus.ruInterface.ipAdd "/" .Values.multus.ruInterface.netmask | nospace | quote }}
+                        {{- if .Values.multus.ruInterface.gateway }}
+                        ,"gateway": {{- cat .Values.multus.ruInterface.gateway | nospace | quote }}
+                        {{- end }}
+                }
+        ]
       }
     }'
 {{- end }}
 {{- if .Values.multus.e2Interface.create }}
 ---
 apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
+kind: NetworkAttachmentDefinition
 metadata:
   name: {{ .Chart.Name }}-e2
 spec:
@@ -110,3 +110,4 @@ spec:
       }
     }'
 {{- end }}
+---

@@ -1,16 +1,8 @@
-kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
-
-## In case of using these charts on Openshift then please use UBI images
-## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
-  repository: docker.io/oaisoftwarealliance/oai-gnb           ## dockerhub oaisoftwarealliance/oai-gnb
-  version: 2024.w51 # image tag or develop
+  repository: oai-gnb-mono 
+  version: dev # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
-
-## good to use when pulling images from docker-hub mention
-imagePullSecrets:
-  - name: "regcred"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -19,38 +11,42 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-du-sa"
-
-
-# oai-du helm-charts can be used in RFSimulated mode which does not require multiple interaces. 
-# In case you use the charts with a RU/USRP you need a dedicated interface with the RU. 
-## Change these ip-addresses according to your environment
+  name: "oai-gnb-mono-sa"
 
 multus:
-  # if default gateway is left blank then it will be removed
+  # if default gatway is empty then it will be removed
   defaultGateway: ""
-  f1Interface:  # use this interface if using one interface for all 3GPP interfaces
-    create: true #false
-    ipAdd: "10.2.5.18" #"172.21.16.100"
+  n2Interface:
+    create: true
+    name: "n2"
+    ipAdd: "10.1.2.18"
     netmask: "22"
-    name: "f1"
     # if gatway is empty then it will be removed
     #gateway: "172.21.7.254"
     #routes: [{'dst': '10.8.0.0/24','gw': '172.21.7.254'}, {'dst': '10.9.0.0/24','gw': '172.21.7.254'}]
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+  n3Interface:
+    create: true
+    ipAdd: "10.1.3.17"
+    name: "n3"
+    netmask: "22"
+    # if gatway is empty then it will be removed
+    #gateway: "172.21.11.254"
+    #routes:
+    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
-    create: true #false
-    ipAdd: "10.2.6.16" #"192.168.80.90"
-    netmask: "24"
+    create: true
+    ipAdd: "10.2.6.16"
     name: "ru"
-    # if gatway is commented then it will be remove
-    #gateway: "192.168.80.1"  #In case you don't have a gateway remove it from here
+    netmask: "24"
+    # if gatway is commented then it will be removed
+    # gateway: "192.168.80.1"  #In case you don't have a gateway remove it from here
     ## The value must be [0, master's MTU]. If commented it will masters MTU
-    #mtu: 9000
+    #mtu: 1500
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
   e2Interface:
-    create: true #false
-    ipAdd: "192.168.72.152"
+    create: true
+    ipAdd: "192.168.72.150"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed
@@ -58,33 +54,33 @@ multus:
     #routes: 
     hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
 
-## If you want to change more configuration parameters then you should mount the config file  
-# in templates/configmap.yaml
-# Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF 
+config:
 config:
   timeZone: "Europe/Paris"
-  useAdditionalOptions: "--sa --rfsim --log_config.global_log_options level,nocolor,time"
-  duName: "oai-du-rfsim"
+  useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
+  gnbName: "oai-gnb-mono"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
-  tac: "0x0001"     # check the information with AMF
+  tac: "0x0001" # check the information with AMF
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
-  usrp: rfsim   #allowed values rfsim, b2xx, n3xx or x3xx
-  f1IfName: "f1"   #if multus.f1Interface.create is true then use f1
-  cuHost: "10.2.5.16" ## Ip-address or hostname
-  f1cuPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
-  f1duPort: "2152"   #2153 if using same interface for f1 and n3 else standard port 2152 should be use if f1 and n3 interface are different
-  e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
+  # usrp: rfsim
+  # sd: "16777215"
+  amfhost: "10.1.2.16" #"oai-amf"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
+  n2IfName: "n2"   # if multus.n2Interface.create is true then use n2
+  n3IfName: "n3"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n3 or eth0
+  e2IfName: "e2"   #if multus.e1Interface.create is true then use e2
+  nearRtHost: "192.168.72.154"
+
 ## Debugging section
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
 
 securityContext:
-  privileged: false
+  privileged: true
 
 start:
-  gnbdu: true #If false the network function container will run in sleep mode for manually testing
+  oaignbmono: true #If false the network function container will run in sleep mode for manually testing
   tcpdump: false
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
@@ -103,16 +99,16 @@ resources:
   define: false
   limits:
     nf:
-      cpu: 2000m
-      memory: 2Gi
+      cpu: 100m
+      memory: 128Mi
     #If tcpdump container is disabled this value will not be used
     tcpdump:
-      cpu: 200m
+      cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 2000m
-      memory: 2Gi
+      cpu: 100m
+      memory: 128Mi
     #If tcpdump container is disabled this value will not be used
     tcpdump:
       cpu: 100m
