@@ -1,5 +1,5 @@
 nfimage:   # image name either locally present or in a public/private repository
-  repository: oai-gnb-mono 
+  repository: oai-gnb-mono
   version: dev # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent

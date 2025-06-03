@@ -112,6 +112,14 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       sleep 7
       ;;
 
+    ue-gnb)
+      echo "Deploying oai-nr-ue-gnb..."
+      cd -
+      cd "$REPODIR/charts/oai-5g-ran/oai-cu-cp" || exit 1
+      helm install oai-nr-ue-gnb ../oai-nr-ue-gnb
+      sleep 7
+      ;;
+
     ric)
       echo "Deploying near-RT-RIC..."
       cd -
