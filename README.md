@@ -37,6 +37,8 @@ ping -c 3 -I oaitun_ue1 8.8.8.8
 kubens oai
 cd ~/oai-v210
 
+# before running the below command, this scenario does not include RIC,
+# so change images from CUCP/CUUP/DU values.yaml to not use ddocker122/oai-e2gnb-mono:dev
 chmod +x deploy_oai.sh
 bash deploy_oai.sh . core cu ue
 ```
@@ -141,6 +143,10 @@ sudo make install
 ## Flexric + OAI O-RAN
 ```
 chmod +x deploy_oai.sh
-# the below command is to run 5g Core, nearRT-RIC, gNB, NR-UE which only works with gNB, xApp kpm
+# the below command is to run 5g Core, nearRT-RIC, gNB, NR-UE, xApp kpm
 bash deploy_oai.sh . core ric gnb ue-gnb kpm
+
+# the below command is to run 5g Core, nearRT-RIC, CU/DU, NR-UE, xApp kpm
+# make sure to use image ddocker122/oai-e2gnb-mono:dev for CUCP/CUUP/DU
+bash deploy_oai.sh . core ric cu ue-gnb kpm
 ```

@@ -110,7 +110,7 @@ spec:
             /opt/oai-gnb/bin/uhd_images_downloader.py -t x3xx;
           {{- end }}
             ./nr-softmodem -O /tmp/du.conf --rfsim -E;
-            # exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
+            # exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS; # this for non-RIC
         {{- else}}
         command:
           - /bin/sleep

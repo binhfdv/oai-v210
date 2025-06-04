@@ -128,7 +128,7 @@ spec:
                 -e s/@AMF_IP_ADDRESS@/$AMF_IP_ADDRESS/g
                 /opt/oai-gnb/etc/cucp.conf | tee /tmp/cucp.conf;
             ./nr-softmodem -O /tmp/cucp.conf;
-            # /opt/oai-gnb/bin/nr-softmodem -O /tmp/cucp.conf $USE_ADDITIONAL_OPTIONS;
+            # /opt/oai-gnb/bin/nr-softmodem -O /tmp/cucp.conf $USE_ADDITIONAL_OPTIONS; # this for non-RIC
         {{- else}}
         command:
           - /bin/sleep

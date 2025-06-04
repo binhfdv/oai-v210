@@ -126,7 +126,7 @@ spec:
                 -e s/@CU_UP_IP_ADDRESS@/$CU_UP_IP_ADDRESS/g
                 /opt/oai-gnb/etc/cuup.conf | tee /tmp/cuup.conf;
             ./nr-cuup -O /tmp/cuup.conf;
-            # exec /opt/oai-gnb/bin/nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS;
+            # exec /opt/oai-gnb/bin/nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS; # this for non-RIC
         {{- else}}
         command:
           - /bin/sleep
