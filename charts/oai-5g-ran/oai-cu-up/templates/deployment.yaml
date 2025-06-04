@@ -125,7 +125,8 @@ spec:
                 -e s/@CU_CP_IP_ADDRESS@/$CU_CP_IP_ADDRESS/g
                 -e s/@CU_UP_IP_ADDRESS@/$CU_UP_IP_ADDRESS/g
                 /opt/oai-gnb/etc/cuup.conf | tee /tmp/cuup.conf;
-            exec /opt/oai-gnb/bin/nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS;
+            ./nr-cuup -O /tmp/cuup.conf;
+            # exec /opt/oai-gnb/bin/nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS;
         {{- else}}
         command:
           - /bin/sleep

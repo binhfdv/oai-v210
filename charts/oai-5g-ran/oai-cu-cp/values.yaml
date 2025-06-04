@@ -3,14 +3,14 @@ kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution 
 ## In case of using these charts on Openshift then please use UBI images
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
-  repository: docker.io/oaisoftwarealliance/oai-gnb           ## dockerhub oaisoftwarealliance/oai-gnb  
-  version: 2024.w51 # image tag or develop
+  repository: ddocker122/oai-e2gnb-mono #docker.io/oaisoftwarealliance/oai-gnb           ## dockerhub oaisoftwarealliance/oai-gnb  
+  version: dev #2024.w51 # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
-imagePullSecrets: 
-  - name: "regcred"
+# imagePullSecrets: 
+#   - name: "regcred"
 
 serviceAccount:
   # Specifies whether a service account should be created

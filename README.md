@@ -1,6 +1,6 @@
-# A repo to store OAI 5G v2.1.0 and UERANSIM v3.2.6
+# A testbed for O-RAN Research and Implementation
 
-## This README contains instructions to run OAI-5G Core, OAI-O-RAN and UERANSIM
+## This README contains instructions to run OAI-5G Core, OAI-O-RAN, UERANSIM. OAI-FlexRIC
 
 ## Deploy OAI-5G Core
 ```
@@ -141,5 +141,6 @@ sudo make install
 ## Flexric + OAI O-RAN
 ```
 chmod +x deploy_oai.sh
-bash deploy_oai.sh . core ric gnb ue
+# the below command is to run 5g Core, nearRT-RIC, gNB, NR-UE which only works with gNB, xApp kpm
+bash deploy_oai.sh . core ric gnb ue-gnb kpm
 ```
