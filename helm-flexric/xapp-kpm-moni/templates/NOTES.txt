@@ -1,0 +1,22 @@
+1. Get the application name by running these commands:
+  export KPM_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "oai-xapp-kpm-moni.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+2. To check if the deployment is successfull:
+  kubectl logs $KPM_POD_NAME
+3. Note: if you can get logs similar to:
+"     39 KPM ind_msg latency = 1733236713916032 [μs]
+UE ID type = gNB-CU-UP, gnb_cu_cp_ue_e1ap = 1
+ran_ue_id = 1
+DRB.PdcpSduVolumeDL = 0 [kb]
+DRB.PdcpSduVolumeUL = 0 [kb]
+
+     40 KPM ind_msg latency = 1735435737172784 [μs]
+UE ID type = gNB-DU, gnb_cu_ue_f1ap = 1
+ran_ue_id = 1
+DRB.RlcSduDelayDl = 0.00 [μs]
+DRB.UEThpDl = 0.00 [kbps]
+DRB.UEThpUl = 0.00 [kbps]
+RRU.PrbTotDl = 15 [PRBs]
+RRU.PrbTotUl = 120 [PRBs]"
+
+then your deployment is working well.
+4. The xApp KPM only works when UE is successfullly registered to a PDU session.

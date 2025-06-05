@@ -84,7 +84,7 @@ config:
   f1cuPort: "2152"   #2153 if using same interface for f1 and n2 else standard port 2152 should be use if f1 and n3 interface are different
   f1duPort: "2152"   #2153 if using same interface for f1 and n2 else standard port 2152 should be use if f1 and n3 interface are different
   e2IfName: "e2"   #if multus.e1Interface.create is true then use e2
-  nearRicHost: "192.168.72.154"
+  nearRtHost: "192.168.72.154"
 # Debugging section
 podSecurityContext:
   runAsUser: 0

@@ -241,6 +241,6 @@ data:
 
       e2_agent =
       {
-        near_ric_ip_addr = "192.168.72.154";
+        near_ric_ip_addr = "{{ .Values.config.nearRtHost }}";
         sm_dir = "/usr/local/lib/flexric/";
       };

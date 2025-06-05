@@ -28,7 +28,7 @@ config:
   timeZone: "Europe/Paris"
   nearRtHost: "192.168.72.154"
   e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
-  duration: "20" #Duration in seconds for which the xApp will run. If it is set to 0 then it will run indefinitely
+  duration: "20" #Duration in seconds for which the xApp will run.
 
 ## Debugging section
 podSecurityContext:
