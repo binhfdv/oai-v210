@@ -1,0 +1,84 @@
+nfimage:   # image name either locally present or in a public/private repository
+  repository: ddocker122/oai-flexric 
+  version: dev # image tag or develop
+  # pullPolicy: IfNotPresent or Never or Always
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "oai-xapp-gtp-mac-rlc-pdcp-moni-sa"
+
+multus:
+  e2Interface:
+    create: true #false
+    ipAdd: "192.168.72.157"
+    netmask: "22"
+    name: "e2"
+    # if gatway is empty then it will be removed
+    #gateway: ""
+    #routes: 
+    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+
+config:
+  timeZone: "Europe/Paris"
+  nearRtHost: "192.168.72.154"
+  e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
+  duration: "20" #Duration in seconds for which the xApp will run.
+
+## Debugging section
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+securityContext:
+  privileged: false
+
+start:
+  oaixappgtpmmoni: true #If false the network function container will run in sleep mode for manually testing
+  tcpdump: false
+
+includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
+
+tcpdumpimage:
+  repository: docker.io/oaisoftwarealliance/oai-tcpdump-init
+  version: alpine-3.20
+  #pullPolicy: IfNotPresent or Never or Always
+  pullPolicy: IfNotPresent
+
+## NF is the network function and tcpdump is the tcpdump container. 
+## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
+## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers
+## https://kubernetes.io/docs/concepts/workloads/pods/pod-qos
+resources:
+  define: false
+  limits:
+    nf:
+      cpu: 100m
+      memory: 128Mi
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
+  requests:
+    nf:
+      cpu: 100m
+      memory: 128Mi
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
+
+tolerations: []
+
+affinity: {}
+
+terminationGracePeriodSeconds: 5
+
+nodeSelector: {}
+
+nodeName: 

@@ -18,7 +18,9 @@ uninstall_if_exists "near-rt-ric"
 uninstall_if_exists "emu-gnb"
 uninstall_if_exists "emu-cu"
 uninstall_if_exists "emu-du"
+uninstall_if_exists "xapp-gtp-mac-rlc-pdcp-moni"
 uninstall_if_exists "xapp-kpm-moni"
+uninstall_if_exists "xapp-rc-moni"
 
 echo "Waiting for cleanup to complete..."
 sleep 7
@@ -61,7 +63,13 @@ helm install emu-cu ./emu-cu
 echo "Installing emu-du..."
 helm install emu-du ./emu-du
 
+echo "Installing xapp-gtp-mac-rlc-pdcp-moni..."
+helm install xapp-gtp-mac-rlc-pdcp-moni ./xapp-gtp-mac-rlc-pdcp-moni
+
 echo "Installing xapp-kpm-moni..."
 helm install xapp-kpm-moni ./xapp-kpm-moni
+
+echo "Installing xapp-rc-moni..."
+helm install xapp-rc-moni ./xapp-rc-moni
 
 echo "Deployment complete."

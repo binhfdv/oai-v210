@@ -1,6 +1,6 @@
 # A testbed for O-RAN Research and Implementation
 
-## This README contains instructions to run OAI-5G Core, OAI-O-RAN, UERANSIM. OAI-FlexRIC
+## This README contains instructions to run OAI-5G Core, OAI-O-RAN, UERANSIM, OAI-FlexRIC
 
 ## Deploy OAI-5G Core
 ```

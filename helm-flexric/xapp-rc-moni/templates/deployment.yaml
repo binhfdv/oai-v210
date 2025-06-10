@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    {{- include "oai-xapp-rc-moni.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "oai-xapp-rc-moni.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "oai-xapp-rc-moni.selectorLabels" . | nindent 8 }}
+        app: oai-xapp-rc-moni
+    {{- if .Values.multus.e2Interface.create }}
+      annotations:
+        k8s.v1.cni.cncf.io/networks: >-
+          [{
+                 "name": "{{ .Chart.Name }}-{{ .Values.multus.e2Interface.name }}",
+                 "interface": "{{ .Values.multus.e2Interface.name }}"
+                {{- if .Values.multus.defaultGateway }}
+                 ,"default-route": ["{{ .Values.multus.defaultGateway }}"]
+                {{- end }}
+                {{- if .Values.multus.e2Interface.gateway }}
+                ,"gateway": "{{ .Values.multus.e2Interface.gateway }}"
+                {{- end }}
+          }]
+    {{- end }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.imagePullSecrets | indent 8 }}
+    {{- end }}
+      containers:
+      - name: xapp-rc-moni
+        image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
+        volumeMounts:
+          - mountPath: /usr/local/etc/flexric/flexric.conf
+            subPath: flexric.conf
+            name: configuration
+        {{- if .Values.resources.define}}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.nf.memory | quote }}
+            cpu: {{ .Values.resources.requests.nf.cpu | quote }}
+          limits:
+            memory: {{ .Values.resources.limits.nf.memory | quote }}
+            cpu: {{ .Values.resources.limits.nf.cpu | quote }}
+        {{- end}}
+        ports:
+        - containerPort: 36422
+          name: e2
+          protocol: SCTP
+        {{- if .Values.start.oaixapprcmoni}}
+        command: [ "stdbuf", "-o0", "/usr/local/flexric/xApp/c/monitor/xapp_rc_moni" ]
+        {{- else}}
+        command:
+          - /bin/sleep
+          - infinity
+        {{- end}}
+        env:
+          - name: TZ
+            value: {{ .Values.config.timeZone }}
+          - name: XAPP_DURATION
+            value: {{ .Values.config.duration | quote}}
+      {{- if .Values.includeTcpDumpContainer }}
+      - name: tcpdump
+        image: "{{ .Values.tcpdumpimage.repository }}:{{ .Values.tcpdumpimage.version }}"
+        imagePullPolicy: {{ .Values.tcpdumpimage.pullPolicy }}
+        {{- if .Values.resources.define}}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.tcpdump.memory | quote }}
+            cpu: {{ .Values.resources.requests.tcpdump.cpu | quote }}
+          limits:
+            memory: {{ .Values.resources.limits.tcpdump.memory | quote }}
+            cpu: {{ .Values.resources.limits.tcpdump.cpu | quote }}
+        {{- end}}
+        securityContext:
+           capabilities:
+              add:
+               - NET_ADMIN
+               - NET_RAW
+              drop:
+               - ALL
+        {{- if .Values.start.tcpdump}}
+        command:
+          - /bin/sh
+          - -c
+          - /usr/bin/tcpdump -i any -w /tmp/pcap/{{ .Chart.Name }}_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+        {{- else}}
+        command:
+          - /bin/sleep
+          - infinity
+        {{- end}}
+      {{- end }}
+      volumes:
+      - configMap:
+          name: {{ .Chart.Name }}-configmap
+        name: configuration
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- if .Values.nodeSelector}}
+      nodeSelector: 
+         {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
+      {{- if .Values.nodeName}}
+      nodeName: {{ .Values.nodeName }}
+      {{- end }}
+---

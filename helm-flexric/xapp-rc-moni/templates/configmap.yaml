@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-configmap
+data:
+  flexric.conf: |
+    [NEAR-RIC]
+    NEAR_RIC_IP = 192.168.72.154
+    
+    [XAPP]
+    DB_DIR = /tmp/

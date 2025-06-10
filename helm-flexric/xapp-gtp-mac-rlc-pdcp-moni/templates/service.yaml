@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-xapp-gtp-mac-rlc-pdcp-moni
+  labels:
+    {{- include "oai-xapp-gtp-mac-rlc-pdcp-moni.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: e2
+      port: 36422
+      targetPort: 36422
+      protocol: SCTP
+  selector:
+    {{- include "oai-xapp-gtp-mac-rlc-pdcp-moni.selectorLabels" . | nindent 4 }}
