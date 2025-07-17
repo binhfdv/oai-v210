@@ -203,18 +203,18 @@ oai-traffic-server:
   enabled: true
   trafficServer:
     repository: docker.io/oaisoftwarealliance/trf-gen-cn5g
-    version: latest
+    version: jammy
     #pullPolicy: IfNotPresent or Never or Always
     pullPolicy: IfNotPresent
   multus:
     create: false
-    ipAdd: "172.21.6.12"
+    ipAdd: 10.1.2.14 #"172.21.6.12"
     netmask: "22"
-    defaultGateway: "172.21.7.254"
+    defaultGateway: "" #"172.21.7.254"
     hostInterface: "enp2s0"  # Interface of the host machine on which this pod will be scheduled
   config:
     ueroute: 12.1.1.0/24
-    upfHost: oai-upf
+    upfHost: 10.1.3.18 #oai-upf n3 interface ip address
     routeInterface: eth0
     noOfIperf3Server: 2
   resources:
