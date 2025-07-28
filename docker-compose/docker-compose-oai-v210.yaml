@@ -321,10 +321,53 @@ services:
         # need to wait for UE to be ready
         command: >
             /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"
-
         networks:
             public_net:
                     ipv4_address: 192.168.70.155
+
+    oai-xapp-gtp-mac:
+        container_name: "oai-xapp-gtp-mac"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_gtp_mac_rlc_pdcp_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.156
+    
+    oai-xapp-rc:
+        container_name: "oai-xapp-rc"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_rc_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.157
 
 networks:
     public_net:
