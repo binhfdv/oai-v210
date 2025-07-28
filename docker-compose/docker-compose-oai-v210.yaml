@@ -3,7 +3,7 @@
 services:
     mysql:
         container_name: "mysql"
-        image: mysql:8.0
+        image: docker.io/mysql:9.0.1
         volumes:
             - ../charts/oai-5g-core/mysql/initialization/oai_db-basic.sql:/docker-entrypoint-initdb.d/oai_db.sql
             - ./healthscripts/mysql-healthcheck2.sh:/tmp/mysql-healthcheck.sh
@@ -221,28 +221,64 @@ services:
             public_net:
                     ipv4_address: 192.168.70.141
     
+    # oai-gnb:
+    #     container_name: "oai-gnb"
+    #     image: ddocker122/oai-e2gnb-mono:dev
+    #     expose:
+    #         - 2152/udp
+    #         - 2153/udp
+    #         - 38462/sctp
+    #         - 36422/sctp
+    #         - 36412/sctp
+    #     volumes:
+    #         - ./ran-conf/gnbe2_generated.conf:/opt/oai-gnb/etc/gnb.conf
+    #     environment:
+    #         - TZ=Europe/Paris
+    #     cap_add:
+    #         - NET_ADMIN
+    #         - SYS_ADMIN
+    #     depends_on:
+    #         - oai-amf
+    #     command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/gnb.conf", "--rfsim", "-E"]
+    #     networks:
+    #         public_net:
+    #                 ipv4_address: 192.168.70.141
+
     oai-ue:
         container_name: "oai-ue"
         image: ddocker122/oai-e2gnb-mono:dev
         # expose:
         #     - 2152/udp
         #     - 2153/udp
-        # volumes:
-        #     - ./ran-conf/ue_generated.conf:/opt/oai-gnb/etc/ue.conf
+        volumes:
+            # - ./ran-conf/nr-ue.conf:/opt/oai-gnb/etc/nr-ue.conf
+            - /dev/net/tun:/dev/net/tun
         environment:
             - TZ=Europe/Paris
         cap_add:
             - NET_ADMIN
-            - SYS_ADMIN
+        devices:
+            - /dev/net/tun
         depends_on:
             - oai-amf
+            # - oai-gnb
             - oai-cucp
             - oai-cuup
             - oai-du
+        # need to wait for AMF to be ready
         command: >
-            /bin/bash -c "exec ./nr-uesoftmodem --band 78 -C 3619200000 -r 106 \
-            --numerology 1 --ssb 516 -E --rfsim --uicc0.imsi 001010000000100 \
-            --rfsimulator.serveraddr 192.168.70.141"
+            /bin/bash -c "
+            sleep 30 &&
+            ./nr-uesoftmodem
+            -r 106
+            --numerology 1
+            --band 78
+            -C 3619200000
+            --rfsim
+            --uicc0.imsi 001010000000100
+            --rfsimulator.serveraddr 192.168.70.141
+            -E
+            "
         networks:
             public_net:
                     ipv4_address: 192.168.70.142
@@ -282,7 +318,10 @@ services:
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
-        command: [ "stdbuf", "-o0", "/usr/local/flexric/xApp/c/monitor/xapp_kpm_moni" ]
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"
+
         networks:
             public_net:
                     ipv4_address: 192.168.70.155
@@ -296,3 +335,15 @@ networks:
                 - subnet: 192.168.70.128/26
         driver_opts:
             com.docker.network.bridge.name: "demo-oai"
+
+
+
+###### Test #####
+## Uplink
+# docker exec -it oai-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
+
+## Downlink
+# sudo docker exec -it oai-ext-dn ping <ue_ip>
+# the ue ip can get by: sudo docker exec oai-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+
+###### Ref: https://openaicellular.github.io/oaic/OAIC-2024-Workshop-oai-flexric-documentation.html

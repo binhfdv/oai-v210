@@ -170,12 +170,12 @@ smf:
       config:
         enable_usage_reporting: no
   ue_dns:
-    primary_ipv4: "172.21.3.100"
+    primary_ipv4: "10.3.2.200"
     primary_ipv6: "2001:4860:4860::8888"
     secondary_ipv4: "8.8.8.8"
     secondary_ipv6: "2001:4860:4860::8888"
   ims:
-    pcscf_ipv4: "127.0.0.1"
+    pcscf_ipv4: "192.168.70.139"
     pcscf_ipv6: "fe80::7915:f408:1787:db8b"
   # the DNN you configure here should be configured in "dnns"
   # follows the SmfInfo datatype from 3GPP TS 29.510
@@ -186,18 +186,18 @@ smf:
           - dnn: "oai"
       - sNssai: *embb_slice2
         dnnSmfInfoList:
-          - dnn: "oai.ipv4"
+          - dnn: "ims"
   local_subscription_infos:
     - single_nssai: *embb_slice1
       dnn: "oai"
       qos_profile:
-        5qi: 9
+        5qi: 6
         session_ambr_ul: "200Mbps"
         session_ambr_dl: "400Mbps"
     - single_nssai: *embb_slice2
-      dnn: "oai.ipv4"
+      dnn: "ims"
       qos_profile:
-        5qi: 9
+        5qi: 5
         session_ambr_ul: "100Mbps"
         session_ambr_dl: "200Mbps"
 
@@ -205,17 +205,17 @@ upf:
   support_features:
     enable_bpf_datapath: no    # If "on": BPF is used as datapath else simpleswitch is used, DEFAULT= off
     enable_snat: yes           # If "on": Source natting is done for UE, DEFAULT= off
-  remote_n6_gw: localhost      # Dummy host since simple-switch does not use N6 GW
-  smfs:
-    - host: oai-smf            # To be used for PFCP association in case of no-NRF
+  remote_n6_gw: 127.0.0.1      # Dummy host since simple-switch does not use N6 GW
+  # smfs:
+  #   - host: oai-smf            # To be used for PFCP association in case of no-NRF
   upf_info:
     sNssaiUpfInfoList:
-      - sNssai: *embb_slice1
-        dnnUpfInfoList:
-          - dnn: "oai"
-      - sNssai: *embb_slice2
-        dnnUpfInfoList:
-          - dnn: "ims"
+    - sNssai: *embb_slice1
+      dnnUpfInfoList:
+        - dnn: oai
+    - sNssai: *embb_slice2
+      dnnUpfInfoList:
+        - dnn: ims
 
 ## DNN configuration
 dnns:
