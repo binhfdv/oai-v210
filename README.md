@@ -106,9 +106,12 @@ kubectl get network-attachment-definition
 
 # Roadmap
 # 1. AF implementation
-* AF influence traffic for dynamic traffic steering
+* AF influence traffic for dynamic traffic steering 🧠🚧
 # 2. OAI-RIC integration
-* rApp & xApp for Traffic steering use case
+* rApp & xApp for Traffic steering use case ❌
+* Use cases:
+    - Point Cloud tramission ✅
+    - Custom xApp
 
 ## FlexRIC
 ### Using Helm
@@ -152,6 +155,85 @@ bash deploy_oai.sh . core ric cu ue-gnb kpm
 
 # use docker compose, by default, it runs 5g Core, nearRT-RIC, CU/DU, NR-UE, xApp kpm, xApp gtp-mac-rlc-pdcp, xApp rc
 cd docker-compose
-sudo docker compose -f docker-compose-oai-v210.yaml up -d
-sudo docker compose -f docker-compose-oai-v210.yaml down
+docker compose -f docker-compose-oai-v210.yaml up -d
+docker compose -f docker-compose-oai-v210.yaml down
+```
+
+## Point cloud transmision with OAI
+### Clone Pointcloud project & build dependencies
+Draco compression
+```
+git clone https://github.com/binhfdv/pcl_handson.git
+cd pcl_handson/
+sudo apt update && sudo apt install -y wget unzip cmake make g++
+git clone https://github.com/google/draco.git && cd draco
+mkdir build && cd build
+cmake ..
+make
+```
+
+Visualizer
+```
+sudo apt update && sudo apt install -y libpcl-dev
+cd pcl_handson/pcl_viewer
+mkdir build && cd build
+cmake .. -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+make
+```
+
+Comment line `set(CMAKE_CXX_COMPILER g++-9)` in the `/pcl_viewer/CMakeLists.txt`.
+
+In OAI, we normally use `g++ 12` or `g++ 13` so to prevent built error we force it to use our current `g++` version.
+
+### Terminal 1. Deploy OAI, RIC, PointCloud Server
+```
+cd docker-compose/
+docker compose -f docker-compose-oai-v210-pointcloud.yaml up -d
+```
+
+This runs 5GC, split CU/DU, UE and Point cloud services.
+
+### Terminal 2. Run Client on UE
+```
+docker exec -it oai-ue /bin/bash
+export PATH=$PATH:/draco/build
+cd /client/
+python3 oai_main.py
+```
+
+### Terminal 3. Relay data generation
+```
+cd pcl_handson/
+sudo bash replay_ply.sh ./sample_ply/ ./media/ply_input/ 1
+```
+
+### Terminal 4. Visualize data
+```
+export DISPLAY=:0
+export PATH=$PATH:./pcl_handson/pcl_viewer/build
+pcl_viewer ./pcl_handson/PointClient/pythonProject/downloads/
+```
+
+**This is not tested in the demo yet due to the purpose of testing data connection between nr-UE to Pointcloud server for data transmission.**
+
+You can try your own visualizer with the datatype is `ply` in folder `./pcl_handson/PointClient/pythonProject/downloads/`. You can also try the visualizer in repo [pcl_handson](https://github.com/binhfdv/pcl_handson).
+
+The display is set up as `export DISPLAY=:0`. Depending on your OS.
+
+Should we run on a Ubuntu server, follow the instructions in repo [pcl_handson](https://github.com/binhfdv/pcl_handson).
+
+Check display by typing `xeyes`.
+
+Change graphics type to x11 if needed `sudo nano /etc/gdm3/custom.conf`, uncomment `WaylandEnable=false`.
+
+### Successful data transmisstion
+- 1. Ply data is downloaded to `./pcl_handson/PointClient/pythonProject/downloads/`
+- 2. Traffic trace from UE to Pointcloud Server:
+ <p align="center">
+  <img src="images/pcap_ue_pc.png" />
+</p>
+
+### Clean up
+```
+docker compose -f docker-compose-oai-v210-pointcloud.yaml down
 ```
