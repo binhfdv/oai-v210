@@ -136,6 +136,14 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       sleep 7
       ;;
 
+    rc)
+      echo "Deploying xapp-rc-moni..."
+      cd -
+      cd "$REPODIR/helm-flexric" || exit 1
+      helm install xapp-rc-moni ./xapp-rc-moni
+      sleep 7
+      ;;
+
     *)
       echo "Unknown component: $COMPONENT"
       echo "Valid options: core | cu | gnb | ue | ric"

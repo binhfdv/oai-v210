@@ -159,7 +159,10 @@ docker compose -f docker-compose-oai-v210.yaml up -d
 docker compose -f docker-compose-oai-v210.yaml down
 ```
 
-## Point cloud transmision with OAI
+## Point cloud transmision with OAI - Use case 1: UE is client (e.g., admin)
+<p align="center">
+  <img src="images/oai-pointcloud.drawio.png" />
+</p>
 ### Clone Pointcloud project & build dependencies
 Draco compression
 ```
@@ -188,7 +191,7 @@ In OAI, we normally use `g++ 12` or `g++ 13` so to prevent built error we force 
 ### Terminal 1. Deploy OAI, RIC, PointCloud Server
 ```
 cd docker-compose/
-docker compose -f docker-compose-oai-v210-pointcloud.yaml up -d
+docker compose -f docker-compose-oai-v210-pointcloud-usecase-1.yaml up -d
 ```
 
 This runs 5GC, split CU/DU, UE and Point cloud services.
@@ -235,5 +238,5 @@ Change graphics type to x11 if needed `sudo nano /etc/gdm3/custom.conf`, uncomme
 
 ### Clean up
 ```
-docker compose -f docker-compose-oai-v210-pointcloud.yaml down
+docker compose -f docker-compose-oai-v210-pointcloud-usecase-1.yaml down
 ```

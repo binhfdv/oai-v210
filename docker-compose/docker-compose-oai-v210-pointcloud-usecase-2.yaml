@@ -1,0 +1,388 @@
+
+services:
+############################################################### OAI Core ###############################################################
+    mysql:
+        container_name: "mysql"
+        image: docker.io/mysql:9.0.1
+        volumes:
+            - ../charts/oai-5g-core/mysql/initialization/oai_db-basic.sql:/docker-entrypoint-initdb.d/oai_db.sql
+            - ./healthscripts/mysql-healthcheck2.sh:/tmp/mysql-healthcheck.sh
+        environment:
+            - TZ=Europe/Paris
+            - MYSQL_DATABASE=oai_db
+            - MYSQL_USER=test
+            - MYSQL_PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=linux
+        healthcheck:
+            test: /bin/bash -c "/tmp/mysql-healthcheck.sh"
+            interval: 10s
+            timeout: 5s
+            retries: 30
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.131
+    oai-udr:
+        container_name: "oai-udr"
+        image: oaisoftwarealliance/oai-udr:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-udr/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - mysql
+            - oai-nrf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.136
+    oai-udm:
+        container_name: "oai-udm"
+        image: oaisoftwarealliance/oai-udm:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-udm/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai-nrf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.137
+    oai-ausf:
+        container_name: "oai-ausf"
+        image: oaisoftwarealliance/oai-ausf:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-ausf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai-nrf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.138
+    oai-nrf:
+        container_name: "oai-nrf"
+        image: oaisoftwarealliance/oai-nrf:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-nrf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.130
+    oai-amf:
+        container_name: "oai-amf"
+        image: oaisoftwarealliance/oai-amf:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+            - 38412/sctp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-amf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai-nrf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.132
+    oai-smf:
+        container_name: "oai-smf"
+        image: oaisoftwarealliance/oai-smf:v2.1.0
+        expose:
+            - 80/tcp
+            - 8080/tcp
+            - 8805/udp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-smf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai-nrf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.133
+    oai-upf:
+        container_name: "oai-upf"
+        image: oaisoftwarealliance/oai-upf:v2.1.0
+        expose:
+            - 2152/udp
+            - 8805/udp
+        volumes:
+            - ./conf/basic_nrf_config_v210.yaml:/openair-upf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai-nrf
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        cap_drop:
+            - ALL
+        privileged: true
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.134
+    oai-ext-dn:
+        privileged: true
+        init: true
+        container_name: oai-ext-dn
+        image: oaisoftwarealliance/trf-gen-cn5g:latest
+        
+        volumes:
+            - ../pcl_handson/PointClient/pythonProject:/client
+            - ../pcl_handson/draco/build:/draco/build
+        # inside container: export PATH=$PATH:/draco/build
+        # ip route add 192.168.70.160 via 12.1.1.100 dev eth0
+        environment:
+            - UPF_FQDN=oai-upf
+            - UE_NETWORK=12.1.1.0/24
+            - USE_FQDN=yes
+        
+        healthcheck:
+            test: /bin/bash -c "ip r | grep 12.1.1"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.135
+    
+    
+############################################################### OAI RAN ###############################################################  
+    oai-cucp:
+        container_name: "oai-cucp"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+            - 38462/sctp
+            - 36422/sctp
+            - 36412/sctp
+        volumes:
+            - ./ran-conf/cucp_generated.conf:/opt/oai-gnb/etc/cucp.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        depends_on:
+            - oai-amf
+        command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/cucp.conf"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.139
+    
+    oai-cuup:
+        container_name: "oai-cuup"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+            - 38462/sctp
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/cuup_generated.conf:/opt/oai-gnb/etc/cuup.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        depends_on:
+            - oai-amf
+            - oai-cucp
+        command: [ "./nr-cuup", "-O", "/opt/oai-gnb/etc/cuup.conf"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.140
+
+    oai-du:
+        container_name: "oai-du"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+        volumes:
+            - ./ran-conf/du_generated.conf:/opt/oai-gnb/etc/du.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        depends_on:
+            - oai-amf
+            - oai-cucp
+            - oai-cuup
+        command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/du.conf", "--rfsim", "-E"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.141
+    
+############################################################### OAI UE ###############################################################
+    oai-ue:
+        privileged: true
+        container_name: "oai-ue"
+        image: ddocker122/oai-e2gnb-mono:dev
+        # expose:
+        #     - 2152/udp
+        #     - 2153/udp
+        volumes:
+            # - ./ran-conf/nr-ue.conf:/opt/oai-gnb/etc/nr-ue.conf
+            - /dev/net/tun:/dev/net/tun
+            - ../pcl_handson:/pcl_handson
+            - ./docker-compose-pointcloud.yaml:/pcl_handson/docker-compose-pointcloud.yaml
+
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /usr/bin/docker:/usr/bin/docker
+            - ./docker-compose-ue.sh:/pcl_handson/docker-compose-ue.sh
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        devices:
+            - /dev/net/tun
+        depends_on:
+            - oai-amf
+            - oai-cucp
+            - oai-cuup
+            - oai-du
+        # need to wait for AMF to be ready
+        # inside container: export PATH=$PATH:/pcl_handson/draco/build
+        command: >
+            /bin/bash -c "
+            sleep 30 &&
+            ./nr-uesoftmodem
+            -r 106
+            --numerology 1
+            --band 78
+            -C 3619200000
+            --rfsim
+            --uicc0.imsi 001010000000100
+            --rfsimulator.serveraddr 192.168.70.141
+            -E
+            "
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.142
+
+
+############################################################### FlexRIC ###############################################################
+    oai-nearrt-ric:
+        container_name: "oai-nearrt-ric"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36421/sctp
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        command: [ "stdbuf", "-o0", "nearRT-RIC" ]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.154
+
+    oai-xapp-kpm:
+        container_name: "oai-xapp-kpm"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.155
+
+    oai-xapp-gtp-mac:
+        container_name: "oai-xapp-gtp-mac"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_gtp_mac_rlc_pdcp_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.156
+    
+    oai-xapp-rc:
+        container_name: "oai-xapp-rc"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_rc_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.157
+
+
+############################################################### Networks ###############################################################
+networks:
+    public_net:
+        driver: bridge
+        name: demo-oai-public-net
+        ipam:
+            config:
+                - subnet: 192.168.70.128/26
+        driver_opts:
+            com.docker.network.bridge.name: "demo-oai"
+
+
+
+###### Test #####
+## Uplink
+# docker exec -it oai-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
+
+## Downlink
+# sudo docker exec -it oai-ext-dn ping <ue_ip>
+# the ue ip can get by: sudo docker exec oai-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+
+###### Ref: https://openaicellular.github.io/oaic/OAIC-2024-Workshop-oai-flexric-documentation.html

@@ -1,0 +1,62 @@
+services:
+############################################################### Point Cloud ###############################################################
+    redis:
+        image: "bitnami/redis:latest"
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - "6379:6379"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.158
+
+    watcher:
+        image: "ddocker122/students-watcher:latest"
+        volumes:
+            - "../pcl_handson/media:/app/media"   # Watcher and server share the same media folder
+        depends_on:
+            - redis
+        
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.159
+
+    pointcloudserver:
+        image: "ddocker122/students-pointcloudserver:latest"
+        volumes:
+            - "../pcl_handson/media:/app/media"
+        ports:
+            - "8080:8080"
+        depends_on:
+            - redis
+        
+        cap_add:
+            - NET_ADMIN
+        
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - BASE_URL=http://192.168.71.160:8080/media/foo/
+        
+        command: ["python", "-m", "pointcloudserver.app", "dash", 
+                "--config", "configuration.yaml", "--host", "0.0.0.0",
+                "--port", "8080", "--mediaDir", "media/"]
+        
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.160
+
+############################################################### Networks ###############################################################
+networks:
+    public_net:
+        driver: bridge
+        name: demo-pointcloud-net
+        ipam:
+            config:
+                - subnet: 192.168.71.128/26
+        driver_opts:
+            com.docker.network.bridge.name: "demo-pointcloud"

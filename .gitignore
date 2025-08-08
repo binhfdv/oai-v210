@@ -20,3 +20,7 @@ charts/e2e_scenarios/case3/charts/
 oai/
 pcl_handson/
 *.pcapng
+*.zip
+*.tar
+*.tar.gz
+*.ply
