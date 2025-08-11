@@ -159,7 +159,7 @@ docker compose -f docker-compose-oai-v210.yaml up -d
 docker compose -f docker-compose-oai-v210.yaml down
 ```
 
-## Point cloud transmision with OAI - Use case 1: UE is client (e.g., admin)
+## Point cloud transmision with OAI - Scenario 1: UE is client (e.g., admin)
 <p align="center">
   <img src="images/oai-pointcloud.drawio.png" />
 </p>
@@ -191,7 +191,7 @@ In OAI, we normally use `g++ 12` or `g++ 13` so to prevent built error we force 
 ### Terminal 1. Deploy OAI, RIC, PointCloud Server
 ```
 cd docker-compose/
-docker compose -f docker-compose-oai-v210-pointcloud-usecase-1.yaml up -d
+docker compose -f docker-compose-oai-v210-pointcloud-scenario-1.yaml up -d
 ```
 
 This runs 5GC, split CU/DU, UE and Point cloud services.
@@ -201,7 +201,7 @@ This runs 5GC, split CU/DU, UE and Point cloud services.
 docker exec -it oai-ue /bin/bash
 export PATH=$PATH:/draco/build
 cd /client/
-python3 oai_main.py
+python3 oai_main_1.py
 ```
 
 ### Terminal 3. Relay data generation
@@ -236,7 +236,48 @@ Change graphics type to x11 if needed `sudo nano /etc/gdm3/custom.conf`, uncomme
   <img src="images/pcap_ue_pc.png" />
 </p>
 
+
+## Point cloud transmision with OAI - Scenario 2: UE is server (e.g., camera)
+<!-- <p align="center">
+  <img src="images/oai-pointcloud.drawio.png" />
+</p> -->
+
+### The prequistions are the same as scenarion 1.
+
+### Terminal 1. Deploy OAI, RIC, PointCloud Server
+```
+cd docker-compose/
+docker compose -f docker-compose-oai-v210-pointcloud-scenario-2.yaml up -d
+```
+
+This runs 5GC, split CU/DU, UE and Point cloud services.
+
+### Terminal 2. Run Server on UE
+```
+docker exec -it pcl-ue /bin/bash
+cd /app
+python -m pointcloudserver.app dash --config configuration.yaml --host 0.0.0.0 --port 8080 --mediaDir media/
+```
+
+### Terminal 3. Relay data generation
+```
+cd pcl_handson/
+sudo bash replay_ply.sh ./sample_ply/ ./media/ply_input/ 1
+```
+
+### Terminal 4. Run Client on ext-dn
+```
+docker exec -it oai-ext-dn /bin/bash
+export PATH=$PATH:/draco/build
+apt update && apt install python3 python3-pip -y
+pip3 install requests
+
+cd /client
+python3 oai_main_2.py
+```
+
 ### Clean up
 ```
-docker compose -f docker-compose-oai-v210-pointcloud-usecase-1.yaml down
+docker compose -f docker-compose-oai-v210-pointcloud-scenario-1.yaml down
+docker compose -f docker-compose-oai-v210-pointcloud-scenario-2.yaml down
 ```

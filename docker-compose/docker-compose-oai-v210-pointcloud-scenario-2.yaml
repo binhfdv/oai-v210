@@ -138,23 +138,22 @@ services:
         init: true
         container_name: oai-ext-dn
         image: oaisoftwarealliance/trf-gen-cn5g:latest
-        
         volumes:
-            - ../pcl_handson/PointClient/pythonProject:/client
             - ../pcl_handson/draco/build:/draco/build
-        # inside container: export PATH=$PATH:/draco/build
-        # ip route add 192.168.70.160 via 12.1.1.100 dev eth0
+            - ../pcl_handson/PointClient/pythonProject:/client
         environment:
             - UPF_FQDN=oai-upf
             - UE_NETWORK=12.1.1.0/24
             - USE_FQDN=yes
-        
+        # inside container:
+        # export PATH=$PATH:/draco/build
+        # apt update && apt install python3 python3-pip -y
+        # pip3 install requests
         healthcheck:
             test: /bin/bash -c "ip r | grep 12.1.1"
             interval: 10s
             timeout: 5s
             retries: 5
-        
         networks:
             public_net:
                 ipv4_address: 192.168.70.135
@@ -230,36 +229,35 @@ services:
                     ipv4_address: 192.168.70.141
     
 ############################################################### OAI UE ###############################################################
-    oai-ue:
-        privileged: true
-        container_name: "oai-ue"
-        image: ddocker122/oai-e2gnb-mono:dev
-        # expose:
-        #     - 2152/udp
-        #     - 2153/udp
+    pcl-ue:
+        container_name: "pcl-ue"
+        image: ddocker122/pointcloudserver-nr-ue:latest
+
         volumes:
             # - ./ran-conf/nr-ue.conf:/opt/oai-gnb/etc/nr-ue.conf
             - /dev/net/tun:/dev/net/tun
-            - ../pcl_handson:/pcl_handson
-            - ./docker-compose-pointcloud.yaml:/pcl_handson/docker-compose-pointcloud.yaml
+            - ../pcl_handson/media:/app/media
 
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /usr/bin/docker:/usr/bin/docker
-            - ./docker-compose-ue.sh:/pcl_handson/docker-compose-ue.sh
         environment:
             - TZ=Europe/Paris
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - BASE_URL=http://12.1.1.100:8080/media/foo/
+
         cap_add:
             - NET_ADMIN
-            - SYS_ADMIN
+
         devices:
             - /dev/net/tun
+
         depends_on:
             - oai-amf
+            # - oai-gnb
             - oai-cucp
             - oai-cuup
             - oai-du
         # need to wait for AMF to be ready
-        # inside container: export PATH=$PATH:/pcl_handson/draco/build
+        # run server in UE: python -m pointcloudserver.app dash --config configuration.yaml --host 0.0.0.0 --port 8080 --mediaDir media/
         command: >
             /bin/bash -c "
             sleep 30 &&
@@ -308,7 +306,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            - pcl-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
@@ -330,7 +328,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            - pcl-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
@@ -352,7 +350,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            - pcl-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
@@ -362,6 +360,60 @@ services:
         networks:
             public_net:
                     ipv4_address: 192.168.70.157
+
+
+############################################################### Point Cloud ###############################################################
+    redis:
+        container_name: "redis"
+        image: bitnami/redis:latest
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - "6379:6379"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.158
+
+    watcher:
+        container_name: "watcher"
+        image: ddocker122/students-watcher:latest
+        volumes:
+            - ../pcl_handson/media:/app/media   # Watcher and server share the same media folder
+        depends_on:
+            - redis
+        
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+
+        networks:
+            public_net:
+                    ipv4_address: 192.168.70.159
+
+    # pointcloudserver:
+    #     image: "ddocker122/students-pointcloudserver:latest"
+    #     volumes:
+    #         - "../pcl_handson/media:/app/media"
+    #     ports:
+    #         - "8080:8080"
+    #     depends_on:
+    #         - redis
+        
+    #     cap_add:
+    #         - NET_ADMIN
+        
+    #     environment:
+    #         - REDIS_HOST=redis
+    #         - REDIS_PORT=6379
+    #         - BASE_URL=http://192.168.70.160:8080/media/foo/
+        
+    #     command: ["python", "-m", "pointcloudserver.app", "dash", 
+    #             "--config", "configuration.yaml", "--host", "0.0.0.0",
+    #             "--port", "8080", "--mediaDir", "media/"]
+        
+    #     networks:
+    #         public_net:
+    #                 ipv4_address: 192.168.70.160
 
 
 ############################################################### Networks ###############################################################
@@ -379,10 +431,10 @@ networks:
 
 ###### Test #####
 ## Uplink
-# docker exec -it oai-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
+# docker exec -it pcl-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
 
 ## Downlink
 # sudo docker exec -it oai-ext-dn ping <ue_ip>
-# the ue ip can get by: sudo docker exec oai-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+# the ue ip can get by: sudo docker exec pcl-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
 
 ###### Ref: https://openaicellular.github.io/oaic/OAIC-2024-Workshop-oai-flexric-documentation.html
