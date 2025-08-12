@@ -242,7 +242,7 @@ Change graphics type to x11 if needed `sudo nano /etc/gdm3/custom.conf`, uncomme
   <img src="images/oai-pointcloud.drawio.png" />
 </p> -->
 
-### The prequistions are the same as scenarion 1.
+### The prerequisites are the same as scenarion 1.
 
 ### Terminal 1. Deploy OAI, RIC, PointCloud Server
 ```
