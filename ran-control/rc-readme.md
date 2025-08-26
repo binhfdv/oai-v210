@@ -75,6 +75,9 @@ UE_IP=$(ip -4 addr show oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 # Streaming Traffic with iPerf - Uplink
 iperf -c 192.168.70.135 -i 1 -b 10M -B $UE_IP
 
+# To test with xApp-RC - Uplink
+iperf -c 192.168.70.135 -i 1 -b 10000M -B $(ip -4 addr show oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}') -t 200
+
 # Streaming Traffic with iPerf - Downlink
 docker exec -it oai-ext-dn iperf -u -t 100 -i 1 -fk -B 192.168.70.135 -b 10M -c $UE_IP
 ```

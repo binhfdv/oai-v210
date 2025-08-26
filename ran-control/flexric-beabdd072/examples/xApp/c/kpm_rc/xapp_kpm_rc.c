@@ -206,7 +206,7 @@ void sm_cb_kpm(sm_ag_if_rd_t const* rd)
     counter++;
   }
 }
-
+// standardized in WG2.E2SM-RC-v01_03: https://specifications.o-ran.org/specifications?QueryOptions=%7B%22SearchString%22%3A%22E2SM%22%2C%22DocumentTypeIds%22%3A%5B%5D%2C%22Version%22%3A1.03%2C%22WorkGroupId%22%3Anull%2C%22ReleaseId%22%3Anull%2C%22FeaturePackageId%22%3Anull%2C%22FileType%22%3Anull%2C%22ShowLatest%22%3Afalse%2C%22IsVisible%22%3Afalse%2C%22PublicationDateRange%22%3A%7B%22StartDate%22%3Anull%2C%22EndDate%22%3Anull%7D%7D
 typedef enum {
   DRB_QoS_Configuration_7_6_2_1 = 1,
   QoS_flow_mapping_configuration_7_6_2_1 = 2,
@@ -282,7 +282,8 @@ seq_ran_param_t fill_qos_flows_param(void)
   assert(rps[0].ran_param_val.flag_true != NULL && "Memory exhausted");
   rps[0].ran_param_val.flag_true->type = INTEGER_RAN_PARAMETER_VALUE;
   // Let's suppose that we have QFI 10
-  rps[0].ran_param_val.flag_true->int_ran = 10;
+  // hardcode release UE 1
+  rps[0].ran_param_val.flag_true->int_ran = 1;
 
   // QoS Flow Mapping Indication
   rps[1].ran_param_id = QOS_FLOW_MAPPING_IND_8_4_2_2;

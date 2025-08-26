@@ -26,6 +26,7 @@
 #include "../../flexric/src/sm/rc_sm/ie/ir/lst_ran_param.h"
 #include "../../flexric/src/sm/rc_sm/ie/ir/ran_param_list.h"
 #include "../../flexric/src/agent/e2_agent_api.h"
+#include "../../../RRC/NR/rrc_gNB_UE_context.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -627,6 +628,9 @@ sm_ag_if_ans_t write_ctrl_rc_sm(void const* data)
   assert(lrp->ran_param_struct.ran_param_struct[0].ran_param_id == 4);
   assert(lrp->ran_param_struct.ran_param_struct[0].ran_param_val.type == ELEMENT_KEY_FLAG_TRUE_RAN_PARAMETER_VAL_TYPE);
   int64_t qfi = lrp->ran_param_struct.ran_param_struct[0].ran_param_val.flag_true->int_ran;
+  
+  ue_id_t ue_id = qfi; // hardcode release UE 1
+
   assert(qfi > -1 && qfi < 65);
 
   // QoS Flow Mapping Indication
@@ -635,8 +639,21 @@ sm_ag_if_ans_t write_ctrl_rc_sm(void const* data)
   int64_t dir = lrp->ran_param_struct.ran_param_struct[1].ran_param_val.flag_false->int_ran;
   assert(dir == 0 || dir == 1);
 
-  printf("qfi = %ld, dir %ld \n", qfi, dir);
+  // printf("qfi = %ld, dir %ld \n", qfi, dir);
 
+  printf("UE ID = %lu, dir %ld \n", ue_id, dir);
+  protocol_ctxt_t ctxt;
+
+  gNB_RRC_INST *rrc = RC.nrrrc[0];
+  rrc_gNB_ue_context_t *ue_context_p = rrc_gNB_get_ue_context(rrc, ue_id);
+  //assert(!ue_context_p && "UE context not found for given UE ID");
+  
+  gNB_RRC_UE_t *UE = &ue_context_p->ue_context;
+  PROTOCOL_CTXT_SET_BY_INSTANCE(&ctxt, 0, GNB_FLAG_YES, UE->rrc_ue_id, 0, 0);
+  ctxt.eNB_index = 0;
+
+  rrc_gNB_generate_RRCRelease(&ctxt, ue_context_p);
+  printf("RRC Release triggered for UE %lu\n", ue_id);
 
   sm_ag_if_ans_t ans = {.type = CTRL_OUTCOME_SM_AG_IF_ANS_V0};
   ans.ctrl_out.type = RAN_CTRL_V1_3_AGENT_IF_CTRL_ANS_V0;

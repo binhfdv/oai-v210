@@ -21,6 +21,7 @@ oai/
 pcl_handson/
 pcl/
 build/
+swig/
 *.pcapng
 *.zip
 *.tar
