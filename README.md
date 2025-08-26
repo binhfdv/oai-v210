@@ -165,7 +165,7 @@ docker compose -f docker-compose-oai-v210.yaml down
 
 ## Point cloud transmision with OAI - Scenario 1: UE is client (e.g., admin)
 <p align="center">
-  <img src="images/oai-pointcloud.drawio.png" />
+  <img src="images/oai-pointcloud-1.drawio.png" />
 </p>
 ### Clone Pointcloud project & build dependencies
 Draco compression
@@ -242,9 +242,9 @@ Change graphics type to x11 if needed `sudo nano /etc/gdm3/custom.conf`, uncomme
 
 
 ## Point cloud transmision with OAI - Scenario 2: UE is server (e.g., camera)
-<!-- <p align="center">
-  <img src="images/oai-pointcloud.drawio.png" />
-</p> -->
+<p align="center">
+  <img src="images/oai-pointcloud-2.drawio.png" />
+</p>
 
 ### The prerequisites are the same as scenarion 1.
 
