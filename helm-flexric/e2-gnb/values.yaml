@@ -24,7 +24,7 @@ multus:
     # if gatway is empty then it will be removed
     #gateway: "172.21.7.254"
     #routes: [{'dst': '10.8.0.0/24','gw': '172.21.7.254'}, {'dst': '10.9.0.0/24','gw': '172.21.7.254'}]
-    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
   n3Interface:
     create: true
     ipAdd: "10.1.3.17"
@@ -33,7 +33,7 @@ multus:
     # if gatway is empty then it will be removed
     #gateway: "172.21.11.254"
     #routes:
-    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
     ipAdd: "10.2.6.16"
@@ -43,7 +43,7 @@ multus:
     # gateway: "192.168.80.1"  #In case you don't have a gateway remove it from here
     ## The value must be [0, master's MTU]. If commented it will masters MTU
     #mtu: 1500
-    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
   e2Interface:
     create: true
     ipAdd: "192.168.72.150"
@@ -52,7 +52,7 @@ multus:
     # if gatway is empty then it will be removed
     #gateway: ""
     #routes: 
-    hostInterface: "enp2s0"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
 
 config:
 config:

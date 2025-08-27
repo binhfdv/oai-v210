@@ -136,6 +136,14 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       sleep 7
       ;;
 
+    gmrp)
+      echo "Deploying xapp-gtp-mac-rlc-pdcp-moni..."
+      cd -
+      cd "$REPODIR/helm-flexric" || exit 1
+      helm install xapp-gtp-mac-rlc-pdcp-moni ./xapp-gtp-mac-rlc-pdcp-moni
+      sleep 7
+      ;;
+
     rc)
       echo "Deploying xapp-rc-moni..."
       cd -
