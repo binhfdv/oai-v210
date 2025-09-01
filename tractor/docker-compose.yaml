@@ -9,7 +9,7 @@ services:
       - ./src/ue-sim/embb_2.csv:/app/traffic.csv
     networks:
       tractor_net:
-        # ipv4_address: 172.16.0.11
+        ipv4_address: 172.16.0.11
 
 ######################################################### gnb-sim #########################################################
   gnb-sim:
@@ -20,11 +20,11 @@ services:
       - ORCH_PORT=4200
     depends_on: [xapp-orchestrator]
     volumes:
-      - ../src/gnb-sim/embb1010123456002_metrics.csv:/app/kpi.csv
+      - ./src/gnb-sim/embb1010123456002_metrics.csv:/app/kpis.csv
 
     networks:
       tractor_net:
-        # ipv4_address: 172.16.0.31
+        ipv4_address: 172.16.0.31
 
 ######################################################### xapp-orchestrator #########################################################
   xapp-orchestrator:

@@ -88,6 +88,7 @@ def main():
         kpi_new = np.fromstring(data_sck, sep=',')
         if kpi_new.shape[0] < ALL_FEATS:
             logging.info('Discarding KPI: too short')
+            logging.info(f"Received data length: {kpi_new.shape[0]}, data: {data_sck}")
             continue
 
         ts = kpi_new[0]

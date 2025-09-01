@@ -17,17 +17,18 @@ def connect_and_stream():
 
     try:
         with open(CSV_PATH, "r") as f:
-            reader = csv.DictReader(f)
+            reader = csv.reader(f)
+            header = next(reader)  # first line
             prev_ts = None
-            for row in reader:
-                ts = int(row["Timestamp"])
+            for line in reader:
+                ts = int(line[0])   # assumes first column is Timestamp
                 if prev_ts is not None:
                     delay = (ts - prev_ts) / 1000.0
                     if delay > 0:
                         time.sleep(delay)
                 prev_ts = ts
 
-                msg = json.dumps(row).encode("utf-8")
+                msg = ",".join(line).encode("utf-8")
                 s.sendall(msg)
                 print(f"[gNB-sim] Sent KPI row at ts={ts}")
     except Exception as e:
