@@ -1,0 +1,10 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY xapp_normalizer_service.py /app/xapp_normalizer_service.py
+COPY python/ /app/python/
+
+RUN pip install --no-cache-dir flask torch numpy matplotlib pandas
+
+CMD ["python", "xapp_normalizer_service.py"]

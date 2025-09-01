@@ -1,0 +1,101 @@
+services:
+######################################################### ue-sim #########################################################
+  ue-sim:
+    container_name: ue-sim
+    build: ./src/ue-sim
+    depends_on: [gnb-sim]
+    # mount a CSV if you want to replay real traffic
+    volumes:
+      - ./src/ue-sim/embb_2.csv:/app/traffic.csv
+    networks:
+      tractor_net:
+        # ipv4_address: 172.16.0.11
+
+######################################################### gnb-sim #########################################################
+  gnb-sim:
+    container_name: gnb-sim
+    build: ./src/gnb-sim
+    environment:
+      - ORCH_HOST=xapp-orchestrator
+      - ORCH_PORT=4200
+    depends_on: [xapp-orchestrator]
+    volumes:
+      - ../src/gnb-sim/embb1010123456002_metrics.csv:/app/kpi.csv
+
+    networks:
+      tractor_net:
+        # ipv4_address: 172.16.0.31
+
+######################################################### xapp-orchestrator #########################################################
+  xapp-orchestrator:
+    container_name: xapp-orchestrator
+    build:
+      context: ./src/xapp
+      dockerfile: Dockerfile.xapp-orchestrator
+
+    environment:
+      - NORMALIZER_URL=http://xapp-normalizer:5002
+      - BUFFER_URL=http://xapp-buffer:5005
+      - MODEL_URL=http://xapp-model:5003
+      - MODEL_TYPE=CNN
+      - NCLASS=4
+      - ALL_FEATS=31
+      - STREAM_ID=default
+      - MODEL_PATH=/mnt/model/model.pt
+      - NORM_PATH=/mnt/model/norm.pkl
+
+    ports:
+      - "4200:4200"   # optional: expose for external tests
+
+    depends_on:
+      - xapp-normalizer
+      - xapp-buffer
+      - xapp-model
+
+    networks:
+      tractor_net:
+
+######################################################### xapp-normalizer #########################################################
+  xapp-normalizer:
+    container_name: xapp-normalizer
+    build:
+      context: ./src/xapp
+      dockerfile: Dockerfile.xapp-normalizer
+
+    volumes:
+      - ./src/xapp/models/cols_maxmin.pkl:/mnt/model/norm.pkl
+
+    networks:
+      tractor_net:
+
+######################################################### xapp-buffer #########################################################
+  xapp-buffer:
+    container_name: xapp-buffer
+    build:
+      context: ./src/xapp
+      dockerfile: Dockerfile.xapp-buffer
+
+    networks:
+      tractor_net:
+
+######################################################### xapp-model #########################################################
+  xapp-model:
+    container_name: xapp-model
+    build:
+      context: ./src/xapp
+      dockerfile: Dockerfile.xapp-model 
+    volumes:
+      - ./src/xapp/models/model.32.cnn.pt:/mnt/model/model.pt
+
+    networks:
+      tractor_net:
+
+networks:
+  tractor_net:
+    driver: bridge
+    name: demo-tractor-net
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24
+    driver_opts:
+      com.docker.network.bridge.name: "demo-tractor"

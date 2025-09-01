@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY run_xapp.py /app/run_xapp.py
+
+COPY xapp_control.py /app/xapp_control.py
+
+RUN pip install --no-cache-dir flask requests numpy torch
+
+# models mounted from volume
+ENV MODEL_PATH=/mnt/model/model.pt
+ENV NORM_PATH=/mnt/model/norm.pkl
+ENV MODEL_TYPE=CNN
+
+CMD ["python", "run_xapp.py"]
