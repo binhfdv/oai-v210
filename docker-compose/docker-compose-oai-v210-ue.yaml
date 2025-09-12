@@ -16,15 +16,15 @@ services:
         devices:
             - /dev/net/tun
         # depends_on:
-            # - oai-amf
-            # - oai-gnb
-            # - oai-cucp
-            # - oai-cuup
-            # - oai-du
+        #     - oai-amf
+        #     - oai-gnb
+        #     - oai-cucp
+        #     - oai-cuup
+        #     - oai-du
         # need to wait for AMF to be ready
         command: >
             /bin/bash -c "
-            sleep 1 &&
+            sleep 30 &&
             ./nr-uesoftmodem
             -r 106
             --numerology 1
