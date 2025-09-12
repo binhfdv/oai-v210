@@ -618,6 +618,44 @@ sm_ag_if_ans_t write_ctrl_rc_sm(void const* data)
   assert(ran_param[1].ran_param_id == 2 && "Second RAN Parameter ID has to be List of QoS Flows");
   assert(ran_param[1].ran_param_val.type == LIST_RAN_PARAMETER_VAL_TYPE);
   printf("List of QoS Flows to be modified in DRB\n");
+
+  //------------------------------------------------------------------------------------------------------------------------------------
+  rc_ctrl_req_data_t const* ctrl_check = (rc_ctrl_req_data_t const*)data;
+  if(ctrl_check->hdr.format == FORMAT_1_E2SM_RC_CTRL_HDR){
+    if(ctrl_check->hdr.frmt_1.ric_style_type == 1 && ctrl_check->hdr.frmt_1.ctrl_act_id == 2){
+      printf("###### QoS flow mapping configuration ######\n");
+      e2sm_rc_ctrl_msg_frmt_1_t const* frmt_1 = &ctrl_check->msg.frmt_1;
+      for(size_t i = 0; i < frmt_1->sz_ran_param; ++i){
+        seq_ran_param_t const* rp = frmt_1->ran_param;
+        if(rp[i].ran_param_id == 1){
+          assert(rp[i].ran_param_val.type == ELEMENT_KEY_FLAG_TRUE_RAN_PARAMETER_VAL_TYPE );
+          printf("DRB ID %ld \n", rp[i].ran_param_val.flag_true->int_ran);
+        } else if(rp[i].ran_param_id == 2){
+          assert(rp[i].ran_param_val.type == LIST_RAN_PARAMETER_VAL_TYPE);
+          printf("###### List of QoS Flows to be modified ######\n");
+          for(size_t j = 0; j < ctrl->msg.frmt_1.ran_param[i].ran_param_val.lst->sz_lst_ran_param; ++j){ 
+            lst_ran_param_t const* lrp = rp[i].ran_param_val.lst->lst_ran_param;
+            // The following assertion should be true, but there is a bug in the std
+            // check src/sm/rc_sm/enc/rc_enc_asn.c:1085 and src/sm/rc_sm/enc/rc_enc_asn.c:984 
+            // assert(lrp[j].ran_param_id == 3); 
+            assert(lrp[j].ran_param_struct.ran_param_struct[0].ran_param_id == 4) ;
+            assert(lrp[j].ran_param_struct.ran_param_struct[0].ran_param_val.type == ELEMENT_KEY_FLAG_TRUE_RAN_PARAMETER_VAL_TYPE);
+
+            int64_t qfi = lrp[j].ran_param_struct.ran_param_struct[0].ran_param_val.flag_true->int_ran;
+            assert(qfi > -1 && qfi < 65);
+
+            assert(lrp[j].ran_param_struct.ran_param_struct[1].ran_param_id == 5);
+            assert(lrp[j].ran_param_struct.ran_param_struct[1].ran_param_val.type == ELEMENT_KEY_FLAG_FALSE_RAN_PARAMETER_VAL_TYPE);
+            int64_t dir = lrp[j].ran_param_struct.ran_param_struct[1].ran_param_val.flag_false->int_ran;
+            assert(dir == 0 || dir == 1);
+            printf("###### qfi = %ld dir %ld ######\n", qfi, dir);
+          }
+        } 
+      }
+    }
+  }
+  //------------------------------------------------------------------------------------------------------------------------------------
+
   const lst_ran_param_t* lrp = ran_param[1].ran_param_val.lst->lst_ran_param;
 
   // The following assertion should be true, but there is a bug in the std

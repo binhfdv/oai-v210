@@ -186,6 +186,18 @@ smf:
         session_ambr_ul: "10Gbps"
         session_ambr_dl: "10Gbps"
     - single_nssai: *embb_slice
+      dnn: "oai"
+      qos_profile:
+        5qi: 7
+        session_ambr_ul: "5Gbps"
+        session_ambr_dl: "5Gbps"
+    - single_nssai: *embb_slice
+      dnn: "oai"
+      qos_profile:
+      5qi: 10
+      session_ambr_ul: "1Gbps"
+      session_ambr_dl: "1Gbps"
+    - single_nssai: *embb_slice
       dnn: "openairinterface"
       qos_profile:
         5qi: 9

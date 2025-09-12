@@ -1,0 +1,199 @@
+
+# version: '3.8'
+services:
+    oai-cucp:
+        container_name: "oai-cucp"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+            - 38462/sctp
+            - 36422/sctp
+            - 36412/sctp
+        volumes:
+            - ./ran-conf/cucp_generated.conf:/opt/oai-gnb/etc/cucp.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # depends_on:
+        #     - oai-amf
+        command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/cucp.conf"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.139
+    
+    oai-cuup:
+        container_name: "oai-cuup"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+            - 38462/sctp
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/cuup_generated.conf:/opt/oai-gnb/etc/cuup.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        depends_on:
+            # - oai-amf
+            - oai-cucp
+        command: [ "./nr-cuup", "-O", "/opt/oai-gnb/etc/cuup.conf"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.140
+
+    oai-du:
+        container_name: "oai-du"
+        image: ddocker122/oai-e2gnb-mono:dev
+        expose:
+            - 2152/udp
+            - 2153/udp
+        volumes:
+            - ./ran-conf/du_generated.conf:/opt/oai-gnb/etc/du.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        depends_on:
+            # - oai-amf
+            - oai-cucp
+            - oai-cuup
+        command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/du.conf", "--rfsim", "-E"]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.141
+    
+    # oai-gnb:
+    #     container_name: "oai-gnb"
+    #     image: ddocker122/oai-e2gnb-mono:dev
+    #     expose:
+    #         - 2152/udp
+    #         - 2153/udp
+    #         - 38462/sctp
+    #         - 36422/sctp
+    #         - 36412/sctp
+    #     volumes:
+    #         - ./ran-conf/gnbe2_generated.conf:/opt/oai-gnb/etc/gnb.conf
+    #     environment:
+    #         - TZ=Europe/Paris
+    #     cap_add:
+    #         - NET_ADMIN
+    #         - SYS_ADMIN
+    #     depends_on:
+    #         - oai-amf
+    #     command: [ "./nr-softmodem", "-O", "/opt/oai-gnb/etc/gnb.conf", "--rfsim", "-E"]
+    #     networks:
+    #         public_net:
+    #                 ipv4_address: 192.168.71.141
+
+    oai-nearrt-ric:
+        container_name: "oai-nearrt-ric"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36421/sctp
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - TZ=Europe/Paris
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        command: [ "stdbuf", "-o0", "nearRT-RIC" ]
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.154
+
+    oai-xapp-kpm:
+        container_name: "oai-xapp-kpm"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.155
+
+    oai-xapp-gtp-mac:
+        container_name: "oai-xapp-gtp-mac"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_gtp_mac_rlc_pdcp_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.156
+    
+    oai-xapp-rc:
+        container_name: "oai-xapp-rc"
+        image: ddocker122/oai-flexric:dev
+        expose:
+            - 36422/sctp
+        volumes:
+            - ./ran-conf/nearrt_ric.conf:/usr/local/etc/flexric/flexric.conf
+        environment:
+            - XAPP_DURATION=20000
+        depends_on:
+            - oai-nearrt-ric
+            - oai-ue
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        # need to wait for UE to be ready
+        command: >
+            /bin/bash -c "sleep 30 && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_rc_moni"
+        networks:
+            public_net:
+                    ipv4_address: 192.168.71.157
+
+networks:
+    public_net:
+        driver: bridge
+        name: demo-oai-public-net
+        ipam:
+            config:
+                - subnet: 192.168.71.128/26
+        driver_opts:
+            com.docker.network.bridge.name: "demo-oai"
+
+
+
+###### Test #####
+## Uplink
+# docker exec -it oai-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
+
+## Downlink
+# sudo docker exec -it oai-ext-dn ping <ue_ip>
+# the ue ip can get by: sudo docker exec oai-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+
+###### Ref: https://openaicellular.github.io/oaic/OAIC-2024-Workshop-oai-flexric-documentation.html
