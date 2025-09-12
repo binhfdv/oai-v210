@@ -121,7 +121,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            # - oai-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
@@ -143,7 +143,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            # - oai-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
@@ -165,7 +165,7 @@ services:
             - XAPP_DURATION=20000
         depends_on:
             - oai-nearrt-ric
-            - oai-ue
+            # - oai-ue
         cap_add:
             - NET_ADMIN
             - SYS_ADMIN
