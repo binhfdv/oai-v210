@@ -25,7 +25,7 @@ sudo iptables -I FORWARD -i demo-oai -o enp0s31f6 -j ACCEPT
 1. 5G CORE
 2. gNB
     ```bash
-        sudo ip route add 192.168.70.128/26 via 192.168.0.233 dev enp0s31f6
+        sudo ip route add 192.168.70.128/26 via 192.168.0.242 dev enp0s31f6
         # check the route
         ip route get 192.168.70.132
         

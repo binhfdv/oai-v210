@@ -83,6 +83,7 @@ resources:
 
 terminationGracePeriodSeconds: 0
 
-nodeSelector: {}
+nodeSelector:
+  node-role: ue
 
 nodeName:
