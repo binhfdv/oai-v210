@@ -64,7 +64,10 @@ docker compose -f docker-compose-oai-v210.yaml down
 docker compose -f docker-compose-oai-v210-ran-ric.yaml up -d oai-cucp oai-cuup oai-du
 
 # RIC
-docker compose -f docker-compose-oai-v210-ran-ric.yaml up oai-nearrt-ric oai-xapp-kpm oai-xapp-gtp-mac oai-xapp-rc
+docker compose -f docker-compose-oai-v210-ran-ric.yaml up -d oai-nearrt-ric
+
+# wait for oai-nearrt-ric to connect to all RAN function and UE can ping oai-ext-dn first, 
+docker compose -f docker-compose-oai-v210-ran-ric.yaml up -d oai-xapp-kpm oai-xapp-gtp-mac oai-xapp-rc
 
 docker compose -f docker-compose-oai-v210-ran-ric.yaml down
 ```

@@ -9,10 +9,10 @@ def connect_and_stream():
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((ORCH_HOST, ORCH_PORT))
-            print(f"[gNB-sim] Connected to orchestrator at {ORCH_HOST}:{ORCH_PORT}")
+            print(f"[KPM-sim] Connected to orchestrator at {ORCH_HOST}:{ORCH_PORT}")
             break
         except Exception as e:
-            print("[gNB-sim] Waiting for orchestrator...", e)
+            print("[KPM-sim] Waiting for orchestrator...", e)
             time.sleep(1)
 
     try:
@@ -30,9 +30,9 @@ def connect_and_stream():
 
                 msg = ",".join(line).encode("utf-8")
                 s.sendall(msg)
-                print(f"[gNB-sim] Sent KPI row at ts={ts}")
+                print(f"[KPM-sim] Sent KPI row at ts={ts}")
     except Exception as e:
-        print("[gNB-sim] Stream ended:", e)
+        print("[KPM-sim] Stream ended:", e)
     finally:
         s.close()
 
