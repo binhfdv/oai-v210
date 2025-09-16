@@ -214,7 +214,7 @@ oai-traffic-server:
     #pullPolicy: IfNotPresent or Never or Always
     pullPolicy: IfNotPresent
   multus:
-    create: false
+    create: true
     ipAdd: 10.1.2.14 #"172.21.6.12"
     netmask: "22"
     defaultGateway: "" #"172.21.7.254"
