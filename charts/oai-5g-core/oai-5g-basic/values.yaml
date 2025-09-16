@@ -215,11 +215,9 @@ oai-traffic-server:
     pullPolicy: IfNotPresent
   multus:
     create: true
-    ipAdd: 10.1.10.14 #"172.21.6.12"
+    ipAdd: 10.1.2.14 #"172.21.6.12"
     netmask: "22"
     defaultGateway: "" #"172.21.7.254"
-    gateway: ""
-    routes: ""
     hostInterface: "enp0s31f6"  # Interface of the host machine on which this pod will be scheduled
   config:
     ueroute: 12.1.1.0/24
