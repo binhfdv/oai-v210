@@ -1,0 +1,38 @@
+services:
+  oai-ue:
+    container_name: "oai-ue"
+    image: ddocker122/oai-e2gnb-mono:dev
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TZ=Europe/Paris
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    command: >
+      /bin/bash -c "
+      sleep 30 &&
+      ./nr-uesoftmodem
+      -r 106
+      --numerology 1
+      --band 78
+      -C 3619200000
+      --rfsim
+      --uicc0.imsi 001010000000100
+      --rfsimulator.serveraddr 192.168.71.141
+      -E
+      "
+    network_mode: "host"
+
+
+
+###### Test #####
+## Uplink
+# docker exec -it oai-ue ping 192.168.70.135 -I oaitun_ue1 -c 3
+
+## Downlink
+# sudo docker exec -it oai-ext-dn ping <ue_ip>
+# the ue ip can get by: sudo docker exec oai-ue ip -4 addr show dev oaitun_ue1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+
+###### Ref: https://openaicellular.github.io/oaic/OAIC-2024-Workshop-oai-flexric-documentation.html

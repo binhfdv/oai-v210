@@ -63,7 +63,7 @@ docker compose -f docker-compose-oai-v210.yaml down
 # gNB
 docker compose -f docker-compose-oai-v210-ran-ric.yaml up -d oai-cucp oai-cuup oai-du
 
-# RIC
+# RIC, only run this after the UE connected to gNB
 docker compose -f docker-compose-oai-v210-ran-ric.yaml up -d oai-nearrt-ric
 
 # wait for oai-nearrt-ric to connect to all RAN function and UE can ping oai-ext-dn first, 
