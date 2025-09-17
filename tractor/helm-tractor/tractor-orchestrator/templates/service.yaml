@@ -2,14 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "tractor-orchestrator.fullname" . }}
-  labels:
-    {{- include "tractor-orchestrator.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    {{- include "tractor-orchestrator.selectorLabels" . | nindent 4 }}
+    app: {{ include "tractor-orchestrator.name" . }}
+  ports:
+    - port: 4200
+      targetPort: 4200
+      protocol: TCP

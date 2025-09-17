@@ -28,8 +28,8 @@ kubectl exec -it $UEPOD -- bash
 #ping towards spgwu/upf
 ping -c 3 -I oaitun_ue1 12.1.1.1
 
-#ping towards google dns
-ping -c 3 -I oaitun_ue1 8.8.8.8
+#ping towards ext-dn (old name) / traffic-gen
+ping -c 3 -I oaitun_ue1 10.1.2.14
 ```
 
 ## Or use scripts to deploy OAI
