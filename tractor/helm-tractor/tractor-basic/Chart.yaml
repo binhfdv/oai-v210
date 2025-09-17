@@ -6,9 +6,9 @@ description: Tractor deployment umbrella chart for TRACTOR
 type: application
 
 dependencies:
-  - condition: kpm-sim.enabled
-    name: kpm-sim
-    repository: "file://../kpm-sim"
+  - condition: tractor-kpm-simu.enabled
+    name: tractor-kpm-simu
+    repository: "file://../tractor-kpm-simu"
     version: 0.1.0
   - condition: tractor-orchestrator.enabled
     name: tractor-orchestrator

@@ -1,4 +1,4 @@
-kpm-sim:
+tractor-kpm-simu:
   enabled: true
 tractor-orchestrator:
   enabled: true
