@@ -1,4 +1,22 @@
 replicaCount: 1
+
 image:
-  repository: ddocker122/tractor-buffer
+  repository: ddocker122/tractor-xapp-buffer
   tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  port: 5005
+
+resources: {}
+#  limits:
+#    cpu: 200m
+#    memory: 256Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+nodeSelector: {}
+
+affinity: {}
+tolerations: []

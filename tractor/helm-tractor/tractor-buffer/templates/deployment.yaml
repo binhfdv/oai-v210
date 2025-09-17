@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "tractor-buffer.fullname" . }}
+  labels:
+    app: {{ include "tractor-buffer.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -12,6 +14,25 @@ spec:
       labels:
         app: {{ include "tractor-buffer.name" . }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       containers:
         - name: tractor-buffer
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | nindent 12 }}

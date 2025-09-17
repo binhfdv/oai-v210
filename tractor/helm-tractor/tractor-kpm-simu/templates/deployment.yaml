@@ -1,29 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kpm-sim.fullname" . }}
+  name: {{ include "tractor-kpm-simu.fullname" . }}
+  labels:
+    app: {{ include "tractor-kpm-simu.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "kpm-sim.name" . }}
+      app: {{ include "tractor-kpm-simu.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "kpm-sim.name" . }}
+        app: {{ include "tractor-kpm-simu.name" . }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       containers:
-        - name: kpm-sim
+        - name: tractor-kpm-simu
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
-            - name: ORCH_HOST
-              value: "{{ .Values.env.ORCH_HOST }}"
-            - name: ORCH_PORT
-              value: "{{ .Values.env.ORCH_PORT }}"
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
           volumeMounts:
             - name: kpis-csv
               mountPath: {{ .Values.volumeMounts.kpisCsv.mountPath }}
               subPath: embb1010123456002_metrics.csv
+          resources:
+{{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: kpis-csv
           hostPath:

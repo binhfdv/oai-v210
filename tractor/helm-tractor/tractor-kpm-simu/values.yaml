@@ -1,11 +1,20 @@
 replicaCount: 1
+
 image:
   repository: ddocker122/kpm-sim
   tag: latest
+  pullPolicy: IfNotPresent
+
 env:
   ORCH_HOST: tractor-orchestrator
   ORCH_PORT: "4200"
+
 volumeMounts:
   kpisCsv:
     hostPath: ../../src/kpm-sim/embb1010123456002_metrics.csv
     mountPath: /app/kpis.csv
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

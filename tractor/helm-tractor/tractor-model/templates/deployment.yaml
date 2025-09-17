@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "tractor-model.fullname" . }}
+  labels:
+    app: {{ include "tractor-model.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -12,13 +14,28 @@ spec:
       labels:
         app: {{ include "tractor-model.name" . }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       containers:
         - name: tractor-model
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}
               subPath: model.32.cnn.pt
+          resources:
+{{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: model
           hostPath:

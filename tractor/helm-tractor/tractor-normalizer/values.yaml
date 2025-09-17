@@ -1,8 +1,16 @@
 replicaCount: 1
+
 image:
-  repository: ddocker122/tractor-normalizer
+  repository: ddocker122/tractor-xapp-normalizer
   tag: latest
+  pullPolicy: IfNotPresent
+
 volumeMounts:
   norm:
     hostPath: ../../src/xapp/models/cols_maxmin.pkl
     mountPath: /mnt/model/norm.pkl
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

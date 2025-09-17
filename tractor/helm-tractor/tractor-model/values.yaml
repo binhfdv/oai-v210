@@ -1,8 +1,16 @@
 replicaCount: 1
+
 image:
-  repository: ddocker122/tractor-model
+  repository: ddocker122/tractor-xapp-model
   tag: latest
+  pullPolicy: IfNotPresent
+
 volumeMounts:
   model:
     hostPath: ../../src/xapp/models/model.32.cnn.pt
     mountPath: /mnt/model/model.pt
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []
