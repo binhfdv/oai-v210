@@ -3,7 +3,7 @@ services:
   ue-sim:
     container_name: ue-sim
     build: ./src/ue-sim
-    depends_on: [gnb-sim]
+    depends_on: [kpm-sim]
     # mount a CSV if you want to replay real traffic
     volumes:
       - ./src/ue-sim/embb_2.csv:/app/traffic.csv
@@ -11,16 +11,16 @@ services:
       tractor_net:
         ipv4_address: 172.16.0.11
 
-######################################################### gnb-sim #########################################################
-  gnb-sim:
-    container_name: gnb-sim
-    build: ./src/gnb-sim
+######################################################### kpm-sim #########################################################
+  kpm-sim:
+    container_name: kpm-sim
+    build: ./src/kpm-sim
     environment:
       - ORCH_HOST=xapp-orchestrator
       - ORCH_PORT=4200
     depends_on: [xapp-orchestrator]
     volumes:
-      - ./src/gnb-sim/embb1010123456002_metrics.csv:/app/kpis.csv
+      - ./src/kpm-sim/embb1010123456002_metrics.csv:/app/kpis.csv
 
     networks:
       tractor_net:
