@@ -1,10 +1,20 @@
 tractor-kpm-simu:
   enabled: true
+  nodeSelector:
+    node-role: core
 tractor-orchestrator:
   enabled: true
+  nodeSelector:
+    node-role: core
 tractor-normalizer:
   enabled: true
+  nodeSelector:
+    node-role: core
 tractor-buffer:
   enabled: true
+  nodeSelector:
+    node-role: core
 tractor-model:
   enabled: true
+  nodeSelector:
+    node-role: core
