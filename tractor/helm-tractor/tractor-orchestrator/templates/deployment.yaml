@@ -12,6 +12,16 @@ spec:
       labels:
         app: {{ include "tractor-orchestrator.name" . }}
     spec:
+      initContainers:
+        - name: wait-for-normalizer
+          image: busybox
+          command: ['sh', '-c', 'until nc -z tractor-normalizer 5002; do echo "waiting for tractor-normalizer"; sleep 5; done']
+        - name: wait-for-buffer
+          image: busybox
+          command: ['sh', '-c', 'until nc -z tractor-buffer 5005; do echo "waiting for tractor-buffer"; sleep 5; done']
+        - name: wait-for-model
+          image: busybox
+          command: ['sh', '-c', 'until nc -z tractor-model 5003; do echo "waiting for tractor-model"; sleep 5; done']
       containers:
         - name: tractor-orchestrator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
