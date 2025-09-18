@@ -14,6 +14,13 @@ docker compose down
 cd ./helm-tractor/
 pip3 install ruamel.yaml
 # run this in the node where you schedule the pods
+# then you have to copy the hostpath changed in
+#        modified:   tractor-kpm-simu/values.yaml
+#        modified:   tractor-model/values.yaml
+#        modified:   tractor-normalizer/values.yaml
+
+# to the files in your control-plane node
+
 ./update_hostpath.py embb1010123456002_metrics.csv model.32.cnn.pt cols_maxmin.pkl
 
 cd tractor-basic/
