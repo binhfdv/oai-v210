@@ -3,7 +3,7 @@
 # Usage check
 if [ -z "$1" ]; then
   echo "Usage: $0 <repodir> [--c] [components...]"
-  echo "Components: core | cu | gnb | ric"
+  echo "Components: core | cu | gnb | ric | ue | ue-gnb | tractor-basic"
   echo "Options:"
   echo "  --c    Continue deployment (skip helm uninstall)"
   exit 1
@@ -60,7 +60,7 @@ wait_for_pod_ready() {
   done
 }
 
-# Optionally clean environment
+
 if ! $SKIP_UNINSTALL; then
   echo "Uninstalling existing Helm releases in namespace 'oai'..."
   helm uninstall $(helm list -aq -n oai) -n oai
@@ -76,7 +76,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       echo "Deploying 5G Core..."
       cd "$REPODIR/charts/oai-5g-core/oai-5g-basic" || exit 1
       helm dependency update
-      helm install oai-5g-basic . -n oai
+      helm install oai-5g-basic .
       wait_for_pod_ready oai-amf AMF
       ;;
 
@@ -152,9 +152,18 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       sleep 7
       ;;
 
+    tractor-basic)
+      echo "Deploying tractor-basic..."
+      cd -
+      cd "$REPODIR/tractor/helm-tractor/tractor-basic" || exit 1
+      helm dependency update
+      helm install tractor-basic .
+      wait_for_pod_ready tractor-orchestrator TRACTOR-Orchestrator
+      ;;
+
     *)
       echo "Unknown component: $COMPONENT"
-      echo "Valid options: core | cu | gnb | ue | ric"
+      echo "Valid options: core | cu | gnb | ue | ue-gnb | ric | kpm | gmrp | rc | tractor-basic"
       exit 1
       ;;
   esac
