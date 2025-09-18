@@ -3,11 +3,11 @@ import os
 import sys
 from ruamel.yaml import YAML
 
-# Map filenames to subchart values.yaml keys and mount paths
-mount_map = {
-    "embb1010123456002_metrics.csv": ("tractor-kpm-simu/values.yaml", "kpisCsv", "/app/kpis.csv"),
-    "model.32.cnn.pt": ("tractor-model/values.yaml", "model", "/mnt/model/model.pt"),
-    "cols_maxmin.pkl": ("tractor-normalizer/values.yaml", "norm", "/mnt/model/norm.pkl")
+# Map filenames to subchart values.yaml keys
+pv_map = {
+    "embb1010123456002_metrics.csv": ("tractor-kpm-simu/values.yaml", "persistentVolume"),
+    "model.32.cnn.pt": ("tractor-model/values.yaml", "persistentVolume"),
+    "cols_maxmin.pkl": ("tractor-normalizer/values.yaml", "persistentVolume")
 }
 
 def find_src_folder():
@@ -18,7 +18,7 @@ def find_src_folder():
         if os.path.isdir(candidate):
             return candidate
         parent = os.path.dirname(path)
-        if parent == path:  # reached root
+        if parent == path:
             break
         path = parent
     return None
@@ -31,54 +31,54 @@ def find_file_in_src(filename, src_root):
     return None
 
 def main():
-    # If no filenames provided, use all defaults
     if len(sys.argv) < 2:
-        filenames = list(mount_map.keys())
-        print("No filenames provided. Updating all known files:", filenames)
-    else:
-        filenames = sys.argv[1:]
+        print("Usage: ./update_hostpath.py <file1> <file2> ...")
+        sys.exit(1)
 
+    filenames = sys.argv[1:]
     src_root = find_src_folder()
     if not src_root:
         print("Error: Could not find 'src/' folder in parent directories.", file=sys.stderr)
         sys.exit(1)
 
     yaml = YAML()
-    yaml.preserve_quotes = True  # preserve quotes if any
+    yaml.preserve_quotes = True
 
     for fname in filenames:
-        if fname not in mount_map:
+        if fname not in pv_map:
             print(f"Skipping unknown file: {fname}")
             continue
 
-        values_file, vol_key, mount_path = mount_map[fname]
-
-        abs_path = find_file_in_src(fname, src_root)
-        if not abs_path:
+        values_file, pv_key = pv_map[fname]
+        abs_file_path = find_file_in_src(fname, src_root)
+        if not abs_file_path:
             print(f"Error: {fname} not found in src/ folder.", file=sys.stderr)
             continue
 
-        print(f"Updating {values_file} with {fname} -> {abs_path}")
+        # Use directory for hostPath
+        abs_path = os.path.dirname(abs_file_path)
 
         if not os.path.exists(values_file):
             print(f"Error: {values_file} not found.", file=sys.stderr)
             continue
 
+        print(f"Updating {values_file} persistentVolume.hostPath -> {abs_path}")
+
         # Load YAML
         with open(values_file, "r") as f:
             values = yaml.load(f) or {}
 
-        if "volumeMounts" not in values or values["volumeMounts"] is None:
-            values["volumeMounts"] = {}
+        if pv_key not in values or values[pv_key] is None:
+            values[pv_key] = {}
 
-        # ✅ Ensure hostPath is always a string
-        values["volumeMounts"][vol_key] = {"hostPath": str(abs_path), "mountPath": mount_path}
+        # Update hostPath
+        values[pv_key]["hostPath"] = abs_path
 
         # Save YAML back
         with open(values_file, "w") as f:
             yaml.dump(values, f)
 
-    print("All hostPaths updated successfully.")
+    print("All hostPaths in values.yaml updated successfully.")
 
 if __name__ == "__main__":
     main()
