@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "tractor-buffer.fullname" . }}
   labels:
-    app: {{ include "tractor-buffer.name" . }}
+    {{- include "tractor-buffer.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "tractor-buffer.name" . }}
+      {{- include "tractor-buffer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "tractor-buffer.name" . }}
+        {{- include "tractor-buffer.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:

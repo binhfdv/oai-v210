@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "tractor-kpm-simu.fullname" . }}
   labels:
-    app: {{ include "tractor-kpm-simu.name" . }}
+    {{- include "tractor-kpm-simu.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "tractor-kpm-simu.name" . }}
+      {{- include "tractor-kpm-simu.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "tractor-kpm-simu.name" . }}
+        {{- include "tractor-kpm-simu.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
@@ -29,6 +29,7 @@ spec:
       containers:
         - name: tractor-kpm-simu
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "tractor-model.fullname" . }}
   labels:
-    app: {{ include "tractor-model.name" . }}
+    {{- include "tractor-model.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "tractor-model.name" . }}
+      {{- include "tractor-model.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "tractor-model.name" . }}
+        {{- include "tractor-model.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
@@ -30,6 +30,10 @@ spec:
         - name: tractor-model
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}

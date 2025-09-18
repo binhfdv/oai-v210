@@ -29,18 +29,22 @@ spec:
       initContainers:
         - name: wait-for-normalizer
           image: busybox
+          imagePullPolicy: IfNotPresent
           command: ['sh', '-c', 'until nc -z tractor-normalizer 5002; do echo "waiting for tractor-normalizer"; sleep 5; done']
         - name: wait-for-buffer
           image: busybox
+          imagePullPolicy: IfNotPresent
           command: ['sh', '-c', 'until nc -z tractor-buffer 5005; do echo "waiting for tractor-buffer"; sleep 5; done']
         - name: wait-for-model
           image: busybox
+          imagePullPolicy: IfNotPresent
           command: ['sh', '-c', 'until nc -z tractor-model 5003; do echo "waiting for tractor-model"; sleep 5; done']
       containers:
         - name: tractor-orchestrator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
-          command: {{ .Values.command }}
+          command: ["/bin/sh", "-c"]
+          args: ["sleep 1 && python run_xapp.py"]
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
