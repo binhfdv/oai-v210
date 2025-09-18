@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "tractor-orchestrator.fullname" . }}
   labels:
-    app: {{ include "tractor-orchestrator.name" . }}
+    {{- include "tractor-orchestrator.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "tractor-orchestrator.name" . }}
+      {{- include "tractor-orchestrator.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "tractor-orchestrator.name" . }}
+        {{- include "tractor-orchestrator.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
