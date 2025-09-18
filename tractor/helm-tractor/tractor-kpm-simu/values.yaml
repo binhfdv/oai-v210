@@ -21,10 +21,17 @@ serviceAccount:
 
 volumeMounts:
   kpisCsv:
-    hostPath: 
-      /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim/embb1010123456002_metrics.csv
     mountPath: /app/kpis.csv
+
+persistentVolume:
+  enabled: true
+  name: tractor-kpm-simu-pv
+  claimName: tractor-kpm-simu-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim
+
 resources: {}
-nodeSelector: []
+nodeSelector: {}
 tolerations: []
 affinity: {}

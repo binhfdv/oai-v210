@@ -38,5 +38,5 @@ spec:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: model
-          hostPath:
-            path: {{ .Values.volumeMounts.model.hostPath }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}

@@ -42,5 +42,5 @@ spec:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: kpis-csv
-          hostPath:
-            path: {{ .Values.volumeMounts.kpisCsv.hostPath }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}

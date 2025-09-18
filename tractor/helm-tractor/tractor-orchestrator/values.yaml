@@ -29,6 +29,6 @@ serviceAccount:
   name: ""
 
 resources: {}
-nodeSelector: []
+nodeSelector: {}
 tolerations: []
 affinity: {}

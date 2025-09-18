@@ -31,11 +31,12 @@ def find_file_in_src(filename, src_root):
     return None
 
 def main():
+    # If no filenames provided, use all defaults
     if len(sys.argv) < 2:
-        print("Usage: ./update_hostpaths.py <file1> <file2> ...")
-        sys.exit(1)
-
-    filenames = sys.argv[1:]
+        filenames = list(mount_map.keys())
+        print("No filenames provided. Updating all known files:", filenames)
+    else:
+        filenames = sys.argv[1:]
 
     src_root = find_src_folder()
     if not src_root:
@@ -70,11 +71,8 @@ def main():
         if "volumeMounts" not in values or values["volumeMounts"] is None:
             values["volumeMounts"] = {}
 
-        # Update hostPath while preserving rest of YAML
-        values["volumeMounts"][vol_key] = {"hostPath": abs_path, "mountPath": mount_path}
-
-        # Ensure directory exists
-        os.makedirs(os.path.dirname(values_file), exist_ok=True)
+        # ✅ Ensure hostPath is always a string
+        values["volumeMounts"][vol_key] = {"hostPath": str(abs_path), "mountPath": mount_path}
 
         # Save YAML back
         with open(values_file, "w") as f:

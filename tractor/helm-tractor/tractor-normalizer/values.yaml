@@ -16,10 +16,17 @@ serviceAccount:
 
 volumeMounts:
   norm:
-    hostPath: 
-      /home/lapdk/workspace/oai-v210/tractor/src/xapp/models/cols_maxmin.pkl
     mountPath: /mnt/model/norm.pkl
+
+persistentVolume:
+  enabled: true
+  name: tractor-normalizer-pv
+  claimName: tractor-normalizer-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+
 resources: {}
-nodeSelector: []
+nodeSelector: {}
 tolerations: []
 affinity: {}

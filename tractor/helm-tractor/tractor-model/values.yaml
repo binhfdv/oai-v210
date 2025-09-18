@@ -16,10 +16,17 @@ serviceAccount:
 
 volumeMounts:
   model:
-    hostPath: 
-      /home/lapdk/workspace/oai-v210/tractor/src/xapp/models/model.32.cnn.pt
     mountPath: /mnt/model/model.pt
+
+persistentVolume:
+  enabled: true
+  name: tractor-model-pv
+  claimName: tractor-model-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+
 resources: {}
-nodeSelector: []
+nodeSelector: {}
 tolerations: []
 affinity: {}
