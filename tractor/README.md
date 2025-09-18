@@ -11,7 +11,12 @@ docker compose down
 
 ### Use K8s deployment with helm chart, you already have the K8s cluster
 ```bash
-cd ./helm-tractor/tractor-basic
+cd ./helm-tractor/
+pip3 install ruamel.yaml
+# run this in the node where you schedule the pods
+./update_hostpath.py embb1010123456002_metrics.csv model.32.cnn.pt cols_maxmin.pkl
+
+cd tractor-basic/
 helm dependency update
 
 helm install tractor-basic .
