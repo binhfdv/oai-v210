@@ -22,12 +22,13 @@ ports:
 
 command: ["sh", "-c", "sleep 30 && python run_tractor.py"]
 
-volumeMounts:
-  model:
-    hostPath: /mnt/models  # must be absolute path
-    mountPath: /mnt/model
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
 
 resources: {}
-nodeSelector: {}
-affinity: {}
+nodeSelector: []
 tolerations: []
+affinity: {}

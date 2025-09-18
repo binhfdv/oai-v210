@@ -51,12 +51,3 @@ spec:
             - name: {{ .name }}
               containerPort: {{ .containerPort }}
           {{- end }}
-          volumeMounts:
-            - name: model
-              mountPath: {{ .Values.volumeMounts.model.mountPath }}
-          resources:
-{{ toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: model
-          hostPath:
-            path: {{ .Values.volumeMounts.model.hostPath }}

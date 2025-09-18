@@ -1,20 +1,30 @@
 replicaCount: 1
 
 image:
-  repository: ddocker122/kpm-sim
-  tag: latest
   pullPolicy: IfNotPresent
+  repository: ddocker122/tractor-kpm-sim
+  tag: latest
 
 env:
   ORCH_HOST: tractor-orchestrator
-  ORCH_PORT: "4200"
+  ORCH_PORT: '4200'
+
+service:
+  port: 4200
+  type: ClusterIP
+
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ''
 
 volumeMounts:
   kpisCsv:
-    hostPath: ../../src/kpm-sim/embb1010123456002_metrics.csv
+    hostPath: 
+      /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim/embb1010123456002_metrics.csv
     mountPath: /app/kpis.csv
-
 resources: {}
-nodeSelector: {}
-affinity: {}
+nodeSelector: []
 tolerations: []
+affinity: {}

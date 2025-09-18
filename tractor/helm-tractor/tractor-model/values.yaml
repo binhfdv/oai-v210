@@ -1,16 +1,25 @@
 replicaCount: 1
 
 image:
+  pullPolicy: IfNotPresent
   repository: ddocker122/tractor-xapp-model
   tag: latest
-  pullPolicy: IfNotPresent
+
+service:
+  port: 5003
+
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ''
 
 volumeMounts:
   model:
-    hostPath: ../../src/xapp/models/model.32.cnn.pt
+    hostPath: 
+      /home/lapdk/workspace/oai-v210/tractor/src/xapp/models/model.32.cnn.pt
     mountPath: /mnt/model/model.pt
-
 resources: {}
-nodeSelector: {}
-affinity: {}
+nodeSelector: []
 tolerations: []
+affinity: {}

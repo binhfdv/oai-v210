@@ -1,16 +1,25 @@
 replicaCount: 1
 
 image:
+  pullPolicy: IfNotPresent
   repository: ddocker122/tractor-xapp-normalizer
   tag: latest
-  pullPolicy: IfNotPresent
+
+service:
+  port: 5002
+
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ''
 
 volumeMounts:
   norm:
-    hostPath: ../../src/xapp/models/cols_maxmin.pkl
+    hostPath: 
+      /home/lapdk/workspace/oai-v210/tractor/src/xapp/models/cols_maxmin.pkl
     mountPath: /mnt/model/norm.pkl
-
 resources: {}
-nodeSelector: {}
-affinity: {}
+nodeSelector: []
 tolerations: []
+affinity: {}
