@@ -4,8 +4,10 @@ metadata:
   name: {{ include "tractor-orchestrator.fullname" . }}
 spec:
   selector:
-    app: {{ include "tractor-orchestrator.name" . }}
+    {{- include "tractor-orchestrator.labels" . | nindent 4 }}
   ports:
     - port: 4200
       targetPort: 4200
       protocol: TCP
+  selector:
+    {{- include "tractor-orchestrator.selectorLabels" . | nindent 4 }}
