@@ -30,7 +30,8 @@ persistentVolume:
   size: 1Gi
   accessMode: ReadWriteMany
   hostPath: /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim
-
+  reclaimPolicy: Delete
+  
 resources: {}
 nodeSelector: {}
 tolerations: []

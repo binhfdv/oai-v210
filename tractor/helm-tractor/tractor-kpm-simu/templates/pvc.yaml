@@ -8,6 +8,7 @@ spec:
     storage: {{ .Values.persistentVolume.size }}
   accessModes:
     - {{ .Values.persistentVolume.accessMode }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
   hostPath:
     path: {{ .Values.persistentVolume.hostPath }}
 ---
