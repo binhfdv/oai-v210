@@ -17,6 +17,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.persistentVolume.claimName }}
 spec:
+  volumeName: {{ .Values.persistentVolume.name }}
   accessModes:
     - {{ .Values.persistentVolume.accessMode }}
   resources:
