@@ -81,8 +81,7 @@ The testbed consists of multiple Ubuntu servers, an Aruba switch, and a Kubernet
 ---
 
 ## 5. Notes
-- Ensure BIOS settings allow virtualization.  
-- Verify Docker and K8s versions match compatibility with OAI/O-RAN components.  
-- Carefully verify interface configurations.cle 
+- Verify Docker and K8s versions match compatibility with OAI components.  
+- Carefully verify interface configurations. 
 
 ---
