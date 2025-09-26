@@ -150,16 +150,28 @@ sudo make install
 ## Flexric + OAI O-RAN + TRACTOR on K8s
 
 Before run the deployment scripts, make sure to configure the correct those parameters in oai-5g-basic, oai-5g-ran, helm-flexric, helm-tractor:
+
+For example,
 ```configuration
 * hostInterface: "enp0s31f6"  # Interface of the host machine on which this pod will be scheduled
 
 * nodeSelector:
     node-role: core
 
-To label a K8s node:
+* nodeSelector:
+    node-role: gnb
+
+* nodeSelector:
+    node-role: ue
+```
+
+**To label a K8s node:**
+```configuration
 kubectl label nodes ubuntu20-core node-role=core
 where ubuntu20-core is node name
 ```
+
+**In case, there is only one node in the cluster. Just give the same label of the node on configs or just to remove the `nodeSelector`.**
 
 Now, you're ready to deploy
 ```

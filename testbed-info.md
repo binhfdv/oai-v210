@@ -5,12 +5,20 @@ This document describes the hardware and software configuration of the testbed e
 
 The testbed consists of multiple Ubuntu servers, an Aruba switch, and a Kubernetes cluster.
 
+**The hardware, such as server and switch, can be different depending on purpose of use. However software, such as Kubernetes version, OAI version and Docker version, must be the same as provided in this instructions.**
+
+**Notes: Based on the hardwares, the interface configurations are required to be configured arcordingly.**
+
 <p align="center">
   <img src="images/k8s-testbed-infra.png" />
 </p>
+
 ---
 
 ## 2. Hardware Information
+
+**The Ubuntu version 20 or above is required.**
+In this testbed, both version 20 and 22 are used.
 
 ### 2.1 Ubuntu 22 – *ue*
 - **System**: NUC7i7BNHX  
