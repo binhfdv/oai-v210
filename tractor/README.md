@@ -27,7 +27,7 @@ cd tractor-basic/
 helm dependency update
 
 helm install tractor-basic .
-kubectl logs -l app=tractor-orchestrator
+kubectl logs -l app.kubernetes.io/name=tractor-orchestrator
 
 helm uninstall tractor-basic
 ```
