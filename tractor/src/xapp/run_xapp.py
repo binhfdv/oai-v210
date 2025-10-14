@@ -96,33 +96,48 @@ def main():
             continue
         last_timestamp = ts
 
-        # normalize one KPI vector -> filtered+normalized vector
+        # --- normalize step ---
+        t0 = time.time()
         norm = requests.post(f"{NORMALIZER}/normalize", json={"kpi": kpi_new.tolist()}).json()
+        t1 = time.time()
+        normalize_time_ms = (t1 - t0) * 1000.0
+
         kpi_norm_vec = norm["normalized"]  # shape: [num_feats]
 
-        # update buffer
+        # --- update buffer step ---
+        t0 = time.time()
         buf = requests.post(f"{BUFFER}/update", json={
             "stream": STREAM_ID,
             "kpi": kpi_norm_vec,
             "slice_len": slice_len,
             "num_feats": num_feats
         }).json()
+        t1 = time.time()
+        buffer_time_ms = (t1 - t0) * 1000.0
 
         ready = buf["ready"]
         if not ready:
+            logging.info(f"Processing times: normalize={normalize_time_ms:.2f} ms | buffer={buffer_time_ms:.2f} ms | predict=--")
             continue
 
         window = buf["window"]  # shape [slice_len, num_feats]
 
-        # predict
+        # --- predict step ---
+        t0 = time.time()
         pred = requests.post(f"{MODEL}/predict", json={
             "window": window
         }).json()
+        t1 = time.time()
+        predict_time_ms = (t1 - t0) * 1000.0
 
         this_class = pred["class"]
         logging.info(f"Predicted class: {this_class}")
+        logging.info(
+            f"Processing times: normalize={normalize_time_ms:.2f} ms | "
+            f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
+        )
 
-        # optional: keep raw window for pickling (like your original)
+        # optional: keep raw window for pickling
         kpi_raw_window.append(kpi_new.copy())
         if len(kpi_raw_window) > slice_len:
             kpi_raw_window.pop(0)
