@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+######################################################### ue-sim #########################################################
+  ue-sim:
+    container_name: ue-sim
+    build: ./src/ue-sim
+    depends_on: [kpm-sim]
+    volumes:
+      - ./src/ue-sim/embb_2.csv:/app/traffic.csv
+    networks:
+      tractor_net:
+        ipv4_address: 172.16.0.11
+
+######################################################### kpm-sim #########################################################
+  kpm-sim:
+    container_name: kpm-sim
+    build: ./src/kpm-sim
+    environment:
+      - ORCH_HOST=xapp-mono
+      - ORCH_PORT=4200
+    depends_on: [xapp-mono]
+    volumes:
+      - ./src/kpm-sim/embb1010123456002_metrics.csv:/app/kpis.csv
+    networks:
+      tractor_net:
+        ipv4_address: 172.16.0.31
+
+######################################################### xapp-mono #########################################################
+  xapp-mono:
+    container_name: xapp-mono
+    build:
+      context: ./src
+      dockerfile: xapp-mono/Dockerfile
+
+    environment:
+      - MODEL_TYPE=CNN
+      - NCLASS=4
+      - ALL_FEATS=31
+      - STREAM_ID=default
+      - MODEL_PATH=/mnt/model/model.pt
+      - NORM_PATH=/mnt/model/norm.pkl
+
+    volumes:
+      - ./src/xapp/models/model.32.cnn.pt:/mnt/model/model.pt
+      - ./src/xapp/models/cols_maxmin.pkl:/mnt/model/norm.pkl
+
+    ports:
+      - "4200:4200"   # E2 control interface (external access if needed)
+
+    networks:
+      tractor_net:
+
+networks:
+  tractor_net:
+    driver: bridge
+    name: demo-tractor-net
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24
+    driver_opts:
+      com.docker.network.bridge.name: "demo-tractor"

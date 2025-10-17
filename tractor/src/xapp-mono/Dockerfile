@@ -1,0 +1,35 @@
+# Dockerfile
+FROM python:3.10-slim
+
+WORKDIR /app
+
+
+COPY xapp-mono/main.py /app/main.py
+COPY xapp-mono/app_server.py /app/app_server.py
+COPY xapp-mono/orchestrator.py /app/orchestrator.py
+
+COPY xapp/xapp_control.py /app/xapp_control.py
+COPY xapp/python /app/python
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libblas-dev \
+    liblapack-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
+RUN pip install --no-cache-dir flask numpy torch matplotlib pandas
+
+
+# Default envs
+ENV MODEL_PATH=/mnt/model/model.pt
+ENV NORM_PATH=/mnt/model/norm.pkl
+
+# Expose HTTP port for API and TCP port for orchestration control
+EXPOSE 5000 4200
+
+CMD ["python", "main.py"]
