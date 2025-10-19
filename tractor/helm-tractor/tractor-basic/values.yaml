@@ -4,22 +4,27 @@ tractor-kpm-simu:
   nodeSelector:
     node-role: core
 tractor-orchestrator:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-orchestrator"
   nodeSelector:
     node-role: core
 tractor-normalizer:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-normalizer"
   nodeSelector:
     node-role: core
 tractor-buffer:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-buffer"
   nodeSelector:
     node-role: core
 tractor-model:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-model"
   nodeSelector:
-    node-role: core  
+    node-role: core
+tractor-mono:
+  enabled: true
+  fullnameOverride: "tractor-mono"
+  nodeSelector:
+    node-role: core

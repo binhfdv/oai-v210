@@ -1,0 +1,51 @@
+{{- if .Values.persistentVolume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistentVolume.model.name }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.model.size }}
+  accessModes:
+    - {{ .Values.persistentVolume.model.accessMode }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  hostPath:
+    path: {{ .Values.persistentVolume.hostPath }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistentVolume.model.claimName }}
+spec:
+  volumeName: {{ .Values.persistentVolume.model.name }}
+  accessModes:
+    - {{ .Values.persistentVolume.model.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.model.size }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistentVolume.norm.name }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.norm.size }}
+  accessModes:
+    - {{ .Values.persistentVolume.norm.accessMode }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  hostPath:
+    path: {{ .Values.persistentVolume.hostPath }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistentVolume.norm.claimName }}
+spec:
+  volumeName: {{ .Values.persistentVolume.norm.name }}
+  accessModes:
+    - {{ .Values.persistentVolume.norm.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.norm.size }}
+{{- end }}

@@ -1,0 +1,45 @@
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+  repository: ddocker122/tractor-mono
+  tag: latest
+
+service:
+  kpm-port: 5000
+  mono-port: 4200
+
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ''
+
+volumeMounts:
+  model:
+    mountPath: /mnt/model/model.pt
+  norm:
+    mountPath: /mnt/model/norm.pkl
+
+persistentVolume:
+  model:
+    enabled: true
+    name: tractor-model-pv
+    claimName: tractor-model-pvc
+    size: 1Gi
+    accessMode: ReadWriteMany
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+    reclaimPolicy: Delete
+  norm:
+    enabled: true
+    name: tractor-normalizer-pv
+    claimName: tractor-normalizer-pvc
+    size: 1Gi
+    accessMode: ReadWriteMany
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+    reclaimPolicy: Delete
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

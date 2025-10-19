@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tractor-mono.fullname" . }}
+  labels:
+    {{- include "tractor-mono.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "tractor-mono.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "tractor-mono.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: tractor-mono
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: model
+              mountPath: {{ .Values.volumeMounts.model.mountPath }}
+              subPath: model.32.cnn.pt
+            - name: norm
+              mountPath: {{ .Values.volumeMounts.norm.mountPath }}
+              subPath: cols_maxmin.pkl
+          resources:
+{{ toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: model
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.model.claimName }}
+        - name: norm
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.norm.claimName }}
