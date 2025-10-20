@@ -26,3 +26,7 @@ dependencies:
     name: tractor-model
     repository: "file://../tractor-model"
     version: 0.1.0
+  - condition: tractor-mono.enabled
+    name: tractor-mono
+    repository: "file://../tractor-mono"
+    version: 0.1.0
