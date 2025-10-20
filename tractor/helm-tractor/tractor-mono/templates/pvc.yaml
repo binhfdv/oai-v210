@@ -1,4 +1,5 @@
-{{- if .Values.persistentVolume.enabled }}
+{{- if or .Values.persistentVolume.model.enabled .Values.persistentVolume.norm.enabled }}
+{{- if .Values.persistentVolume.model.enabled }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -8,9 +9,9 @@ spec:
     storage: {{ .Values.persistentVolume.model.size }}
   accessModes:
     - {{ .Values.persistentVolume.model.accessMode }}
-  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.model.reclaimPolicy | default "Retain" }}
   hostPath:
-    path: {{ .Values.persistentVolume.hostPath }}
+    path: {{ .Values.persistentVolume.model.hostPath }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,7 +24,10 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistentVolume.model.size }}
+{{- end }}
+
 ---
+{{- if .Values.persistentVolume.norm.enabled }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -33,9 +37,9 @@ spec:
     storage: {{ .Values.persistentVolume.norm.size }}
   accessModes:
     - {{ .Values.persistentVolume.norm.accessMode }}
-  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.norm.reclaimPolicy | default "Retain" }}
   hostPath:
-    path: {{ .Values.persistentVolume.hostPath }}
+    path: {{ .Values.persistentVolume.norm.hostPath }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -48,4 +52,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistentVolume.norm.size }}
+{{- end }}
 {{- end }}
