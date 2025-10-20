@@ -7,25 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.kpm-port }}
+    - port: {{ .Values.service.kpmPort }}
       targetPort: http
       protocol: TCP
-      name: http
-  selector:
-    {{- include "tractor-mono.selectorLabels" . | nindent 4 }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "tractor-mono.fullname" . }}
-  labels:
-    {{- include "tractor-mono.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.mono-port }}
+      name: kpm-http
+    - port: {{ .Values.service.monoPort }}
       targetPort: http
       protocol: TCP
-      name: http
+      name: mono-http
   selector:
     {{- include "tractor-mono.selectorLabels" . | nindent 4 }}

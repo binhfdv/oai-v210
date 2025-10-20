@@ -29,7 +29,7 @@ persistentVolume:
   claimName: tractor-kpm-simu-pvc
   size: 1Gi
   accessMode: ReadWriteMany
-  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim
+  hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
   reclaimPolicy: Delete
   
 resources: {}

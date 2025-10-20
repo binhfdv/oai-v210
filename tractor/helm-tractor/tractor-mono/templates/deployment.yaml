@@ -31,8 +31,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+            - name: kpm-http
+              containerPort: {{ .Values.service.kpmPort }}
+              protocol: TCP
+            - name: mono-http
+              containerPort: {{ .Values.service.monoPort }}
               protocol: TCP
           volumeMounts:
             - name: model

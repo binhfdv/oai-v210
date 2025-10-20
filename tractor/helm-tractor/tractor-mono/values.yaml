@@ -6,8 +6,8 @@ image:
   tag: latest
 
 service:
-  kpm-port: 5000
-  mono-port: 4200
+  kpmPort: 5000
+  monoPort: 4200
 
 serviceAccount:
   annotations: {}
@@ -28,7 +28,7 @@ persistentVolume:
     claimName: tractor-model-pvc
     size: 1Gi
     accessMode: ReadWriteMany
-    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+    hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
     reclaimPolicy: Delete
   norm:
     enabled: true
@@ -36,7 +36,7 @@ persistentVolume:
     claimName: tractor-normalizer-pvc
     size: 1Gi
     accessMode: ReadWriteMany
-    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+    hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
     reclaimPolicy: Delete
 
 resources: {}
