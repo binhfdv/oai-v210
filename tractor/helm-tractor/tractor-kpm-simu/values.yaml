@@ -31,7 +31,7 @@ persistentVolume:
   accessMode: ReadWriteMany
   hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
   reclaimPolicy: Delete
-  
+
 resources: {}
 nodeSelector: {}
 tolerations: []

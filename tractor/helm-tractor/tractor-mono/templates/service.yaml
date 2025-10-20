@@ -5,15 +5,13 @@ metadata:
   labels:
     {{- include "tractor-mono.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.serviceType | default "ClusterIP" }}
   ports:
-    - port: {{ .Values.service.kpmPort }}
-      targetPort: http
+    {{- range .Values.service }}
+    - name: {{ .name }}
+      port: {{ .containerPort }}
+      targetPort: {{ .name }}
       protocol: TCP
-      name: kpm-http
-    - port: {{ .Values.service.monoPort }}
-      targetPort: http
-      protocol: TCP
-      name: mono-http
+    {{- end }}
   selector:
     {{- include "tractor-mono.selectorLabels" . | nindent 4 }}

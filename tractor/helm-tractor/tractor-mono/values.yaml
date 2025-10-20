@@ -2,12 +2,15 @@ replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
-  repository: ddocker122/tractor-mono
+  repository: ddocker122/tractor-xapp-mono
   tag: latest
 
+serviceType: ClusterIP
 service:
-  kpmPort: 5000
-  monoPort: 4200
+  - name: kpm-http
+    containerPort: 4200
+  - name: mono-http
+    containerPort: 5000
 
 serviceAccount:
   annotations: {}
@@ -28,7 +31,7 @@ persistentVolume:
     claimName: tractor-model-pvc
     size: 1Gi
     accessMode: ReadWriteMany
-    hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
     reclaimPolicy: Delete
   norm:
     enabled: true
@@ -36,8 +39,16 @@ persistentVolume:
     claimName: tractor-normalizer-pvc
     size: 1Gi
     accessMode: ReadWriteMany
-    hostPath: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
     reclaimPolicy: Delete
+
+env:
+  MODEL_TYPE: CNN
+  NCLASS: "4"
+  ALL_FEATS: "31"
+  STREAM_ID: default
+  MODEL_PATH: /mnt/model/model.pt
+  NORM_PATH: /mnt/model/norm.pkl
 
 resources: {}
 nodeSelector: {}

@@ -3,6 +3,8 @@ tractor-kpm-simu:
   fullnameOverride: "tractor-kpm-simu"
   nodeSelector:
     node-role: core
+  env:
+    ORCH_HOST: tractor-mono
 tractor-orchestrator:
   enabled: false
   fullnameOverride: "tractor-orchestrator"

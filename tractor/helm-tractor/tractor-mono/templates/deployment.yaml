@@ -30,13 +30,18 @@ spec:
         - name: tractor-mono
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          command: ["/bin/sh", "-c"]
+          args: ["sleep 1 && python main.py"]
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
           ports:
-            - name: kpm-http
-              containerPort: {{ .Values.service.kpmPort }}
-              protocol: TCP
-            - name: mono-http
-              containerPort: {{ .Values.service.monoPort }}
-              protocol: TCP
+          {{- range .Values.service }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+          {{- end }}
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}
