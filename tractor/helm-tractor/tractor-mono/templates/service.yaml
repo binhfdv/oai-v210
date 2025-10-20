@@ -10,7 +10,7 @@ spec:
     {{- range .Values.service }}
     - name: {{ .name }}
       port: {{ .containerPort }}
-      targetPort: {{ .name }}
+      targetPort: {{ .containerPort }}
       protocol: TCP
     {{- end }}
   selector:
