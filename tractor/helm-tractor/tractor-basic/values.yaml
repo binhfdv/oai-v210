@@ -15,6 +15,8 @@ tractor-normalizer:
   fullnameOverride: "tractor-normalizer"
   nodeSelector:
     node-role: core
+  persistentVolume:
+    hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
 tractor-buffer:
   enabled: false
   fullnameOverride: "tractor-buffer"
@@ -25,8 +27,15 @@ tractor-model:
   fullnameOverride: "tractor-model"
   nodeSelector:
     node-role: core
+  persistentVolume:
+    hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
 tractor-mono:
   enabled: true
   fullnameOverride: "tractor-mono"
   nodeSelector:
     node-role: core
+  persistentVolume:
+    model:
+      hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+    norm:
+      hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models

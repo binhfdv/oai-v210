@@ -19,11 +19,11 @@ pip3 install ruamel.yaml
 #        modified:   tractor-model/values.yaml
 #        modified:   tractor-normalizer/values.yaml
 
-# to the files in your control-plane node
+# to the tractor-basic/values.yaml hostPath, respectively.
 
 ./update_hostpath.py embb1010123456002_metrics.csv model.32.cnn.pt cols_maxmin.pkl
 
-# for monolithic tractor, run one more command below and make changes in tractor-mono/values.yaml
+# for monolithic tractor, run one more command below and make changes in tractor-basic/values.yaml
 # expected output from the script with your path updated:
 # Updating tractor-mono/values.yaml -> persistentVolume.model.hostPath = /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
 # Updating tractor-mono/values.yaml -> persistentVolume.norm.hostPath = /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
