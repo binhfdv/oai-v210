@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  # name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}
   labels:
     {{- include "oai-nr-ue-gnb.labels" . | nindent 4 }}
 spec:
