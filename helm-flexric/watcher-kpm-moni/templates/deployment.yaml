@@ -26,7 +26,7 @@ spec:
               value: "/config/metrics.json"
           volumeMounts:
             - name: data
-              mountPath: "{{ .Values.persistence.mountPath }}"
+              mountPath: "{{ .Values.persistentVolume.mountPath }}"
             - name: config
               mountPath: /config
           resources:

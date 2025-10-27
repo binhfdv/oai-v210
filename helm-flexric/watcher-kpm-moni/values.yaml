@@ -14,11 +14,14 @@ resources:
     memory: 256Mi
 
 # Persistent storage settings
-persistence:
+persistentVolume:
   enabled: true
-  accessMode: ReadWriteOnce
+  name: kpm-data-pv
+  claimName: kpm-data-pvc
   size: 1Gi
-  storageClass: ""
+  accessMode: ReadWriteOnce
+  hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/watcher-kpm-moni/data
+  reclaimPolicy: Delete
   mountPath: /data
 
 # Dynamic metrics configuration
@@ -27,14 +30,15 @@ metricsConfig:
   # (escaped backslashes for Helm/YAML compatibility)
   metricsJson: |
     {
-      "UE ID type": "UE ID type = ([\\\\w-]+)",
-      "gnb_cu_ue_f1ap": "gnb_cu_ue_f1ap = (\\\\d+)",
-      "ran_ue_id": "ran_ue_id = (\\\\d+)",
-      "DRB.PdcpSduVolumeDL": "DRB\\.PdcpSduVolumeDL = ([\\\\d.]+)",
-      "DRB.PdcpSduVolumeUL": "DRB\\.PdcpSduVolumeUL = ([\\\\d.]+)",
-      "DRB.RlcSduDelayDl": "DRB\\.RlcSduDelayDl = ([\\\\d.]+)",
-      "DRB.UEThpDl": "DRB\\.UEThpDl = ([\\\\d.]+)",
-      "DRB.UEThpUl": "DRB\\.UEThpUl = ([\\\\d.]+)",
-      "RRU.PrbTotDl": "RRU\\.PrbTotDl = ([\\\\d.]+)",
-      "RRU.PrbTotUl": "RRU\\.PrbTotUl = ([\\\\d.]+)"
+      "UE ID type": "UE ID type = ([\\w-]+)",
+      "gnb_cu_cp_ue_e1ap": "gnb_cu_cp_ue_e1ap = (\\d+)",
+      "gnb_cu_ue_f1ap": "gnb_cu_ue_f1ap = (\\d+)",
+      "ran_ue_id": "ran_ue_id = (\\d+)",
+      "DRB.PdcpSduVolumeDL": "DRB\\.PdcpSduVolumeDL = ([\\d.]+) \\[kb\\]",
+      "DRB.PdcpSduVolumeUL": "DRB\\.PdcpSduVolumeUL = ([\\d.]+) \\[kb\\]",
+      "DRB.RlcSduDelayDl": "DRB\\.RlcSduDelayDl = ([\\d.]+) \\[[μu]s\\]",
+      "DRB.UEThpDl": "DRB\\.UEThpDl = ([\\d.]+) \\[kbps\\]",
+      "DRB.UEThpUl": "DRB\\.UEThpUl = ([\\d.]+) \\[kbps\\]",
+      "RRU.PrbTotDl": "RRU\\.PrbTotDl = ([\\d.]+) \\[PRBs\\]",
+      "RRU.PrbTotUl": "RRU\\.PrbTotUl = ([\\d.]+) \\[PRBs\\]"
     }

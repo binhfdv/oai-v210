@@ -1,17 +1,26 @@
-{{- if .Values.persistence.enabled }}
+{{- if .Values.persistentVolume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistentVolume.name }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.size }}
+  accessModes:
+    - {{ .Values.persistentVolume.accessMode }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  hostPath:
+    path: {{ .Values.persistentVolume.hostPath }}
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: kpm-data-pvc
-  labels:
-    app: watcher-kpm-moni
+  name: {{ .Values.persistentVolume.claimName }}
 spec:
+  volumeName: {{ .Values.persistentVolume.name }}
   accessModes:
-    - {{ .Values.persistence.accessMode }}
+    - {{ .Values.persistentVolume.accessMode }}
   resources:
     requests:
-      storage: {{ .Values.persistence.size }}
-  {{- if .Values.persistence.storageClass }}
-  storageClassName: {{ .Values.persistence.storageClass }}
-  {{- end }}
+      storage: {{ .Values.persistentVolume.size }}
 {{- end }}

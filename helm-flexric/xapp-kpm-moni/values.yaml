@@ -22,7 +22,7 @@ multus:
     # if gatway is empty then it will be removed
     #gateway: ""
     #routes: 
-    hostInterface: "enp0s31f6"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
 
 config:
   timeZone: "Europe/Paris"
@@ -80,6 +80,6 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
-  node-role: gnb
+  node-role: core
 
 nodeName: 

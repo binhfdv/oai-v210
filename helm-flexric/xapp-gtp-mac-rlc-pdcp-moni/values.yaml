@@ -80,6 +80,6 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
-  node-role: gnb
+  node-role: core
 
 nodeName: 
