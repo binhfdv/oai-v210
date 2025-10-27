@@ -20,7 +20,7 @@ persistentVolume:
   claimName: kpm-data-pvc
   size: 1Gi
   accessMode: ReadWriteOnce
-  hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/watcher-kpm-moni/data
+  hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/watcher-kpm-moni/data/raw
   reclaimPolicy: Delete
   mountPath: /data
 
