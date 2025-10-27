@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cleaner-kpm-moni
+description: Real-time OAI KPM data cleaner working with watcher-kpm-moni
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

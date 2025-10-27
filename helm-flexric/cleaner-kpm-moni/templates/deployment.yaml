@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cleaner-kpm-moni.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "cleaner-kpm-moni.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "cleaner-kpm-moni.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "cleaner-kpm-moni.name" . }}
+    spec:
+      serviceAccountName: {{ include "cleaner-kpm-moni.serviceAccountName" . }}
+      containers:
+        - name: cleaner-kpm-moni
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: RAW_DIR
+              value: {{ .Values.env.RAW_DIR | quote }}
+            - name: CLEAN_DIR
+              value: {{ .Values.env.CLEAN_DIR | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.env.LOG_LEVEL | quote }}
+          volumeMounts:
+            - name: kpm-data
+              mountPath: {{ .Values.persistentVolume.mountPath }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: kpm-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}

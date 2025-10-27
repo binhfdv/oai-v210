@@ -1,0 +1,30 @@
+image:
+  repository: ddocker122/cleaner-kpm-moni
+  tag: latest
+  pullPolicy: IfNotPresent
+
+namespace: oai
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "cleaner-kpm-moni-sa"
+
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+persistentVolume:
+  enabled: true
+  claimName: kpm-data-pvc    # Reuse same PVC as watcher
+  mountPath: /data
+
+env:
+  RAW_DIR: /data/raw
+  CLEAN_DIR: /data/clean
+  LOG_LEVEL: INFO

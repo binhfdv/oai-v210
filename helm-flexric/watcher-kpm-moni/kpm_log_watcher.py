@@ -68,7 +68,7 @@ def compile_patterns(metrics):
 # --- Helpers ---
 def get_csv_filename():
     now = datetime.utcnow()
-    filename = f"/data/oai-kpm-{now.year}-{now.month:02d}-{now.day:02d}-{now.strftime('%H%M%S')}.csv"
+    filename = f"/data/raw/oai-kpm-{now.year}-{now.month:02d}-{now.day:02d}-{now.strftime('%H%M%S')}.csv"
     logger.info(f"CSV output path: {filename}")
     return filename
 
