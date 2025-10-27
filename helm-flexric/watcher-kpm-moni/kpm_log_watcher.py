@@ -28,7 +28,7 @@ except Exception as e:
 
 v1 = client.CoreV1Api()
 
-# --- Default metrics (used if no config is provided) ---
+# --- Default metrics ---
 DEFAULT_METRICS = {
     "UE ID type": r"UE ID type = ([\w-]+)",
     "gnb_cu_cp_ue_e1ap": r"gnb_cu_cp_ue_e1ap = (\d+)",
@@ -42,8 +42,6 @@ DEFAULT_METRICS = {
     "RRU.PrbTotDl": r"RRU\.PrbTotDl = ([\d.]+) \[PRBs\]",
     "RRU.PrbTotUl": r"RRU\.PrbTotUl = ([\d.]+) \[PRBs\]"
 }
-
-
 
 # --- Load dynamic fields configuration ---
 def load_metrics_config():
@@ -61,13 +59,11 @@ def load_metrics_config():
     logger.warning("No custom metrics found. Using default metrics.")
     return DEFAULT_METRICS
 
-
 # --- Compile regex patterns from config ---
 def compile_patterns(metrics):
     compiled = {field: re.compile(pattern) for field, pattern in metrics.items()}
     logger.debug(f"Compiled {len(compiled)} metric patterns.")
     return compiled
-
 
 # --- Helpers ---
 def get_csv_filename():
@@ -75,7 +71,6 @@ def get_csv_filename():
     filename = f"/data/oai-kpm-{now.year}-{now.month:02d}-{now.day:02d}-{now.strftime('%H%M%S')}.csv"
     logger.info(f"CSV output path: {filename}")
     return filename
-
 
 def ensure_csv_exists(filepath, fields):
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -86,7 +81,6 @@ def ensure_csv_exists(filepath, fields):
             writer.writeheader()
     else:
         logger.debug(f"Appending to existing CSV: {filepath}")
-
 
 # --- Watch logs and stream to CSV ---
 def watch_xapp_logs(namespace="default"):
@@ -112,7 +106,9 @@ def watch_xapp_logs(namespace="default"):
         for pod in xapp_pods:
             logger.info(f"Streaming logs from pod: {pod}")
             try:
+                current_ue = None
                 buffer = {}
+
                 for event in w.stream(
                     v1.read_namespaced_pod_log,
                     name=pod,
@@ -120,41 +116,73 @@ def watch_xapp_logs(namespace="default"):
                     follow=True,
                     _preload_content=False
                 ):
-                    # Handle both bytes and str
                     if isinstance(event, bytes):
                         line = event.decode("utf-8").strip()
                     else:
                         line = str(event).strip()
+
                     if not line:
                         continue
 
                     logger.debug(f"Line received: {line}")
 
-                    # Detect start of new KPM indication block
-                    if "KPM ind_msg latency" in line and buffer:
-                        logger.debug(f"New KPM block detected. Writing previous block: {buffer}")
-                        if any(v is not None for v in buffer.values()):
+                    # Detect start of a new UE by gnb_cu_ue_f1ap or gnb_cu_cp_ue_e1ap
+                    ue_match = None
+                    for ue_field in ["gnb_cu_ue_f1ap", "gnb_cu_cp_ue_e1ap"]:
+                        match = patterns.get(ue_field).search(line)
+                        if match:
+                            ue_id = match.group(1)
+                            ue_match = (ue_field, ue_id)
+                            break
+
+                    if ue_match:
+                        # Flush previous UE buffer
+                        if current_ue and buffer:
                             buffer["timestamp"] = datetime.utcnow().isoformat()
                             writer.writerow(buffer)
                             f.flush()
+                            logger.debug(f"Flushed metrics for UE {current_ue}: {buffer}")
+                        # Start new UE buffer
+                        current_ue = ue_match[1]
+                        buffer = {ue_match[0]: current_ue}
+                        logger.debug(f"Detected new UE {current_ue}, starting buffer")
+
+                        # Also check if "UE ID type" is on the same line
+                        type_match = patterns.get("UE ID type").search(line)
+                        if type_match:
+                            buffer["UE ID type"] = type_match.group(1)
+                            logger.debug(f"Captured UE ID type={buffer['UE ID type']} for UE {current_ue}")
+                        continue
+
+                    # Add other metric lines to current UE buffer
+                    if current_ue:
+                        matched_any = False
+                        for field, pattern in patterns.items():
+                            if field in ["gnb_cu_ue_f1ap", "gnb_cu_cp_ue_e1ap", "UE ID type"]:
+                                continue
+                            m = pattern.search(line)
+                            if m:
+                                buffer[field] = m.group(1)
+                                matched_any = True
+                                logger.debug(f"Matched {field}={m.group(1)} for UE {current_ue}")
+                        if not matched_any:
+                            logger.debug("No pattern matched this line.")
+                    else:
+                        logger.debug("No current UE buffer, skipping line.")
+
+                    # Detect end of KPM block
+                    if "KPM ind_msg latency" in line:
+                        # Flush previous UE buffer at start of new KPM block
+                        if current_ue and buffer:
+                            buffer["timestamp"] = datetime.utcnow().isoformat()
+                            writer.writerow(buffer)
+                            f.flush()
+                            logger.debug(f"Flushed metrics for UE {current_ue} at new KPM block: {buffer}")
+                        current_ue = None
                         buffer = {}
-
-                    # Try matching each pattern on this line
-                    matched = False
-                    for field, pattern in patterns.items():
-                        match = pattern.search(line)
-                        if match:
-                            value = match.group(1)
-                            buffer[field] = value
-                            matched = True
-                            logger.debug(f"Matched {field}: {value}")
-
-                    if not matched:
-                        logger.debug("No pattern matched this line.")
 
             except Exception as e:
                 logger.exception(f"Error streaming logs from {pod}: {e}")
-
 
 if __name__ == "__main__":
     ns = os.getenv("WATCH_NAMESPACE", "default")

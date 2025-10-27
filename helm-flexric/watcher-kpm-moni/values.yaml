@@ -1,5 +1,5 @@
 image:
-  repository: watcher-kpm-moni
+  repository: ddocker122/watcher-kpm-moni
   tag: latest
   pullPolicy: IfNotPresent
 
