@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: watcher-kpm-moni-config
+  labels:
+    app: watcher-kpm-moni
+data:
+  metrics.json: |
+{{ .Values.metricsConfig.metricsJson | indent 4 }}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: watcher-kpm-moni
+  labels:
+    app: watcher-kpm-moni
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: watcher-kpm-moni
+  template:
+    metadata:
+      labels:
+        app: watcher-kpm-moni
+    spec:
+      serviceAccountName: watcher-kpm-moni
+      containers:
+        - name: watcher-kpm-moni
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          env:
+            - name: WATCH_NAMESPACE
+              value: "{{ .Values.namespace }}"
+            - name: METRICS_CONFIG_PATH
+              value: "/config/metrics.json"
+          volumeMounts:
+            - name: data
+              mountPath: "{{ .Values.persistence.mountPath }}"
+            - name: config
+              mountPath: /config
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: kpm-data-pvc
+        - name: config
+          configMap:
+            name: watcher-kpm-moni-config

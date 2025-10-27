@@ -1,0 +1,40 @@
+image:
+  repository: watcher-kpm-moni
+  tag: latest
+  pullPolicy: IfNotPresent
+
+namespace: oai
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# Persistent storage settings
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: ""
+  mountPath: /data
+
+# Dynamic metrics configuration
+metricsConfig:
+  # This JSON defines all metrics and regex patterns
+  # (escaped backslashes for Helm/YAML compatibility)
+  metricsJson: |
+    {
+      "UE ID type": "UE ID type = ([\\\\w-]+)",
+      "gnb_cu_ue_f1ap": "gnb_cu_ue_f1ap = (\\\\d+)",
+      "ran_ue_id": "ran_ue_id = (\\\\d+)",
+      "DRB.PdcpSduVolumeDL": "DRB\\.PdcpSduVolumeDL = ([\\\\d.]+)",
+      "DRB.PdcpSduVolumeUL": "DRB\\.PdcpSduVolumeUL = ([\\\\d.]+)",
+      "DRB.RlcSduDelayDl": "DRB\\.RlcSduDelayDl = ([\\\\d.]+)",
+      "DRB.UEThpDl": "DRB\\.UEThpDl = ([\\\\d.]+)",
+      "DRB.UEThpUl": "DRB\\.UEThpUl = ([\\\\d.]+)",
+      "RRU.PrbTotDl": "RRU\\.PrbTotDl = ([\\\\d.]+)",
+      "RRU.PrbTotUl": "RRU\\.PrbTotUl = ([\\\\d.]+)"
+    }
