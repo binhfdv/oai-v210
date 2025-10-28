@@ -6,6 +6,9 @@ description: Tractor deployment umbrella chart for TRACTOR
 type: application
 
 dependencies:
+  - condition: tractor-kpm-oai.enabled
+    name: tractor-kpm-oai
+    repository: "file://../tractor-kpm-oai"
   - condition: tractor-kpm-simu.enabled
     name: tractor-kpm-simu
     repository: "file://../tractor-kpm-simu"

@@ -5,6 +5,8 @@ image:
   repository: ddocker122/tractor-xapp-mono
   tag: latest
 
+fullnameOverride: "tractor-mono"
+
 serviceType: ClusterIP
 service:
   - name: kpm-http

@@ -5,6 +5,8 @@ image:
   repository: ddocker122/tractor-xapp-model
   tag: latest
 
+fullnameOverride: "tractor-model"
+
 service:
   port: 5003
 

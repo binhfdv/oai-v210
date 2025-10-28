@@ -5,6 +5,8 @@ image:
   repository: ddocker122/tractor-kpm-sim
   tag: latest
 
+fullnameOverride: "tractor-kpm-simu"
+
 env:
   ORCH_HOST: tractor-orchestrator
   ORCH_PORT: '4200'

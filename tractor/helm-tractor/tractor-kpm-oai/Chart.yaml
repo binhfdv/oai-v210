@@ -1,0 +1,5 @@
+apiVersion: v2
+name: tractor-kpm-oai
+description: Helm chart for KPM OAI (streams cleaned data to orchestrator/xApps)
+version: 0.1.0
+appVersion: "latest"

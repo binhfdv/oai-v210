@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/tractor-kpm-oai
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "tractor-kpm-oai"
+
+env:
+  CLEAN_DIR: /data/clean
+  ORCH_HOST: tractor-orchestrator
+  ORCH_PORT: "4200"
+  LOG_LEVEL: INFO
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "tractor-kpm-oai-sa"
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 4200
+
+persistentVolume:
+  enabled: true
+  claimName: kpm-data-pvc   # Shared with watcher & cleaner
+  mountPath: /data
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,3 +1,11 @@
+tractor-kpm-oai:
+  enabled: true
+  fullnameOverride: "tractor-kpm-oai"
+  nodeSelector:
+    node-role: core
+  env:
+    ORCH_HOST: tractor-mono
+
 tractor-kpm-simu:
   enabled: true
   fullnameOverride: "tractor-kpm-simu"
@@ -5,11 +13,13 @@ tractor-kpm-simu:
     node-role: core
   env:
     ORCH_HOST: tractor-mono
+
 tractor-orchestrator:
   enabled: false
   fullnameOverride: "tractor-orchestrator"
   nodeSelector:
     node-role: core
+
 tractor-normalizer:
   enabled: false
   fullnameOverride: "tractor-normalizer"
@@ -17,11 +27,13 @@ tractor-normalizer:
     node-role: core
   persistentVolume:
     hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+
 tractor-buffer:
   enabled: false
   fullnameOverride: "tractor-buffer"
   nodeSelector:
     node-role: core
+
 tractor-model:
   enabled: false
   fullnameOverride: "tractor-model"
@@ -29,6 +41,7 @@ tractor-model:
     node-role: core
   persistentVolume:
     hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+
 tractor-mono:
   enabled: true
   fullnameOverride: "tractor-mono"

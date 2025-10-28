@@ -5,6 +5,8 @@ image:
   repository: ddocker122/tractor-xapp-buffer
   tag: latest
 
+fullnameOverride: "tractor-buffer"
+
 service:
   port: 5005
 

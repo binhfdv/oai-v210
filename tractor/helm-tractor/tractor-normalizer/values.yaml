@@ -5,6 +5,8 @@ image:
   repository: ddocker122/tractor-xapp-normalizer
   tag: latest
 
+fullnameOverride: "tractor-normalizer"
+
 service:
   port: 5002
 

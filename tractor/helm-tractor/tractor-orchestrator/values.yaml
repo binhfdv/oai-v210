@@ -5,6 +5,8 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+fullnameOverride: "tractor-orchestrator"
+
 env:
   NORMALIZER_URL: http://tractor-normalizer:5002
   BUFFER_URL: http://tractor-buffer:5005

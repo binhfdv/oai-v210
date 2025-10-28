@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tractor-kpm-oai.fullname" . }}
+  labels:
+    {{- include "tractor-kpm-oai.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "tractor-kpm-oai.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "tractor-kpm-oai.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: tractor-kpm-oai
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: CLEAN_DIR
+              value: {{ .Values.env.CLEAN_DIR }}
+            - name: ORCH_HOST
+              value: {{ .Values.env.ORCH_HOST }}
+            - name: ORCH_PORT
+              value: {{ .Values.env.ORCH_PORT | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.env.LOG_LEVEL }}
+          volumeMounts:
+            - name: data-volume
+              mountPath: {{ .Values.persistentVolume.mountPath }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}
