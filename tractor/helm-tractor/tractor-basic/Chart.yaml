@@ -9,26 +9,33 @@ dependencies:
   - condition: tractor-kpm-oai.enabled
     name: tractor-kpm-oai
     repository: "file://../tractor-kpm-oai"
+    version: 0.1.0
+  
   - condition: tractor-kpm-simu.enabled
     name: tractor-kpm-simu
     repository: "file://../tractor-kpm-simu"
     version: 0.1.0
+  
   - condition: tractor-orchestrator.enabled
     name: tractor-orchestrator
     repository: "file://../tractor-orchestrator"
     version: 0.1.0
+  
   - condition: tractor-normalizer.enabled
     name: tractor-normalizer
     repository: "file://../tractor-normalizer"
     version: 0.1.0
+  
   - condition: tractor-buffer.enabled
     name: tractor-buffer
     repository: "file://../tractor-buffer"
     version: 0.1.0
+  
   - condition: tractor-model.enabled
     name: tractor-model
     repository: "file://../tractor-model"
     version: 0.1.0
+  
   - condition: tractor-mono.enabled
     name: tractor-mono
     repository: "file://../tractor-mono"

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 TCP streamer for cleaned OAI KPM data with timestamp as first metric.
 
@@ -18,7 +17,7 @@ from pathlib import Path
 from copy import deepcopy
 
 # --- Config from env ---
-ORCH_HOST = os.getenv("ORCH_HOST", "0.0.0.0")
+ORCH_HOST = os.getenv("ORCH_HOST", "xapp-orchestrator")
 ORCH_PORT = int(os.getenv("ORCH_PORT", "4200"))
 CLEAN_DIR = os.getenv("CLEAN_DIR", "/data/clean")
 POLL_INTERVAL = float(os.getenv("POLL_INTERVAL", "1.0"))
@@ -143,27 +142,20 @@ def read_latest_snapshot_by_ue(csv_path):
     return order, ue_last
 
 
-def start_server():
-    logger.info(f"Starting TCP server on {ORCH_HOST}:{ORCH_PORT}")
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
-        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        srv.bind((ORCH_HOST, ORCH_PORT))
-        srv.listen(1)
+def start_client():
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((ORCH_HOST, ORCH_PORT))
+            logger.info(f"Connected to Tractor at {ORCH_HOST}:{ORCH_PORT}")
+            stream_loop(s)
+        except Exception as e:
+            logger.warning(f"Connection failed, retrying... {e}")
+            time.sleep(2)
+        finally:
+            s.close()
 
-        while True:
-            logger.info("Waiting for a client to connect...")
-            conn, addr = srv.accept()
-            with conn:
-                logger.info(f"Client connected from {addr}")
-                try:
-                    stream_loop(conn)
-                except Exception as e:
-                    logger.error(f"Error during stream: {e}")
-                logger.info("Client disconnected")
-
-
-def stream_loop(conn):
-    """Continuously streams the latest snapshot of cleaned data."""
+def stream_loop(sock):
     while True:
         latest = get_latest_csv_file()
         if not latest:
@@ -176,26 +168,24 @@ def stream_loop(conn):
             continue
 
         num_ues = len(order)
-
         for ue_id in order:
             row = ue_last.get(ue_id)
-            if not row:
-                continue
+            if not row: continue
             metrics = build_ue_vector_from_row(row)
-            metrics[1] = num_ues  # overwrite num_ues value (2nd element)
+            metrics[1] = num_ues  # overwrite num_ues
             msg = ",".join(str(v) for v in metrics) + "\n"
             try:
-                conn.sendall(msg.encode("utf-8"))
+                sock.sendall(msg.encode("utf-8"))
             except BrokenPipeError:
-                logger.info("Client disconnected")
+                logger.info("Server disconnected")
                 return
             except Exception as e:
                 logger.error(f"Send failed: {e}")
                 return
-        time.sleep(POLL_INTERVAL)
 
+        time.sleep(POLL_INTERVAL)
 
 if __name__ == "__main__":
     Path(CLEAN_DIR).mkdir(parents=True, exist_ok=True)
-    logger.info("KPM Streamer started with timestamp in output")
-    start_server()
+    logger.info("KPM Streamer started (TCP client)")
+    start_client()

@@ -7,7 +7,7 @@ tractor-kpm-oai:
     ORCH_HOST: tractor-mono
 
 tractor-kpm-simu:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-kpm-simu"
   nodeSelector:
     node-role: core
@@ -49,6 +49,6 @@ tractor-mono:
     node-role: core
   persistentVolume:
     model:
-      hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+      hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
     norm:
-      hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+      hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
