@@ -84,7 +84,6 @@ def convert_kb_to_mbps(x):
     except Exception:
         return None
 
-
 def parse_timestamp_safe(ts_str):
     """Parse timestamp safely. Never raise, return datetime or None."""
     if not ts_str:
@@ -102,9 +101,8 @@ def parse_timestamp_safe(ts_str):
         except Exception:
             return None
 
-
 def build_ue_vector_from_row(clean_row):
-    """Builds full metric list (timestamp + 31 metrics) for one UE."""
+    """Builds full metric list (timestamp, timestamp_ms + 31 metrics) for one UE."""
     ue_metrics = deepcopy(DEFAULT_METRICS)
 
     # Replace RNTI
@@ -125,23 +123,23 @@ def build_ue_vector_from_row(clean_row):
     # Compose ordered list
     values = [ue_metrics.get(k, "") for k in METRIC_ORDER]
 
-    # Prepend timestamp from OAI cleaned CSV
+    # Prepend timestamp from OAI cleaned CSV + ms epoch
     timestamp = clean_row.get('timestamp', '')
-    return [timestamp] + values
+    ts_dt = parse_timestamp_safe(timestamp)
+    if ts_dt:
+        timestamp_ms = int(ts_dt.timestamp() * 1000)
+    else:
+        timestamp_ms = 0
 
+    return [timestamp, timestamp_ms] + values  # <---- added ms timestamp here
 
 def get_latest_csv_file():
     p = Path(CLEAN_DIR)
     csv_files = list(p.glob("*.csv"))
     return max(csv_files, key=lambda f: f.stat().st_mtime) if csv_files else None
 
-
 def read_latest_snapshot_by_ue(csv_path):
-    """
-    Read per-UE rows from the cleaned CSV, including all valid timestamps.
-    If timestamp can't be parsed, still include the row but don't use it
-    to update last_sent_ts.
-    """
+    """Read per-UE rows from the cleaned CSV, including all valid timestamps."""
     global last_sent_ts
     ue_last, order = {}, []
     latest_ts_seen = last_sent_ts
@@ -157,27 +155,20 @@ def read_latest_snapshot_by_ue(csv_path):
                 if not rid:
                     continue
 
-                # Always include row — even if timestamp invalid
                 if rid not in ue_last:
                     order.append(rid)
                 ue_last[rid] = row
 
-                # Only update last_sent_ts if timestamp valid and newer
-                if ts_val:
-                    if not last_sent_ts or ts_val > last_sent_ts:
-                        latest_ts_seen = ts_val
-                else:
-                    logger.debug(f"Skipping timestamp parsing for: {ts_str}")
+                if ts_val and (not last_sent_ts or ts_val > last_sent_ts):
+                    latest_ts_seen = ts_val
 
     except Exception as e:
         logger.error(f"Failed reading {csv_path}: {e}")
 
-    # Update tracker only if we saw valid timestamps
     if latest_ts_seen:
         last_sent_ts = latest_ts_seen
 
     return order, ue_last
-
 
 def start_client():
     while True:
@@ -191,7 +182,6 @@ def start_client():
             time.sleep(2)
         finally:
             s.close()
-
 
 def stream_loop(sock):
     while True:
@@ -213,7 +203,7 @@ def stream_loop(sock):
             if not row:
                 continue
             metrics = build_ue_vector_from_row(row)
-            metrics[1] = num_ues  # overwrite num_ues
+            metrics[2] = num_ues  # overwrite num_ues (after timestamp, timestamp_ms)
             msg_batch.append(",".join(str(v) for v in metrics))
 
         if not msg_batch:
@@ -235,7 +225,6 @@ def stream_loop(sock):
             return
 
         time.sleep(POLL_INTERVAL)
-
 
 if __name__ == "__main__":
     Path(CLEAN_DIR).mkdir(parents=True, exist_ok=True)
