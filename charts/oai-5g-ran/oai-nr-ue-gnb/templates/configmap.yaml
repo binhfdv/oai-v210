@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   # name: {{ .Chart.Name }}-configmap
-  name: {{ .Release.Name}}-configmap
+  name: {{ .Release.Name }}-configmap
 data:
   nr-ue.conf: # current deployment does not need this config file but still it is there for future use
       uicc0 = {

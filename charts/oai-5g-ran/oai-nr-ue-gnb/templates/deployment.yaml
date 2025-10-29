@@ -109,7 +109,7 @@ spec:
       {{- end }}
       volumes:
       - configMap:
-          name: {{ .Chart.Name }}-configmap
+          name: {{ .Release.Name }}-configmap
         name: configuration
       - name: dev-net-tun
         hostPath:
