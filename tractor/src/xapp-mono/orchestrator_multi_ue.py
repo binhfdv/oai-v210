@@ -12,7 +12,7 @@ MODEL_PATH = os.getenv("MODEL_PATH", "/mnt/model/model.pt")
 NORM_PATH  = os.getenv("NORM_PATH",  "/mnt/model/norm.pkl")
 MODEL_TYPE = os.getenv("MODEL_TYPE", "Tv1")
 NCLASS     = int(os.getenv("NCLASS", "4"))
-ALL_FEATS  = int(os.getenv("ALL_FEATS", "32"))  # now includes the readable timestamp
+ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))  # now includes the readable timestamp
 STREAM_ID  = os.getenv("STREAM_ID", "default")
 PORT       = int(os.getenv("PORT", "4200"))
 
@@ -26,7 +26,7 @@ last_timestamp_per_ue = {}
 
 def init_system():
     logging.info("Loading normalizer parameters")
-    r = load_norm_internal({"norm_param_path": NORM_PATH, "all_feats_raw": ALL_FEATS - 1})  # minus the timestamp
+    r = load_norm_internal({"norm_param_path": NORM_PATH, "all_feats_raw": ALL_FEATS})  # minus the timestamp
     num_feats = r["num_feats"]
     slice_len = r["slice_len"]
     logging.info(f"Normalizer ready: num_feats={num_feats}, slice_len={slice_len}")
@@ -93,13 +93,13 @@ def processing_worker(num_feats, slice_len):
 
             # Convert line to numeric array
             kpi_new = np.fromstring(data_line, sep=',')
-            if kpi_new.shape[0] < ALL_FEATS - 1:
+            if kpi_new.shape[0] < ALL_FEATS:
                 logging.info(f"Discarded: too few features ({kpi_new.shape[0]})")
                 data_queue.task_done()
                 continue
 
             ts_int = int(kpi_new[0])  # integer timestamp
-            ue_id = kpi_new[2] if kpi_new.shape[0] > 2 else 0
+            ue_id = kpi_new[3]
 
             # optional timestamp filter per UE
             last_ts = last_timestamp_per_ue.get(ue_id, 0)
@@ -110,7 +110,7 @@ def processing_worker(num_feats, slice_len):
 
             # Normalize
             t0 = time.time()
-            norm = _call_normalize(kpi_new[1:].tolist())  # exclude timestamp
+            norm = _call_normalize(kpi_new.tolist())  # exclude timestamp
             t1 = time.time()
             normalize_time_ms = (t1 - t0) * 1000.0
 

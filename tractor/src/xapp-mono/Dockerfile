@@ -1,12 +1,18 @@
 # Dockerfile
-FROM python:3.10-slim
+# FROM python:3.10-slim
+FROM python:3.11-slim
+
+# Default envs
+ENV MODEL_PATH=/mnt/model/model.pt
+ENV NORM_PATH=/mnt/model/norm.pkl
 
 WORKDIR /app
 
 
 COPY xapp-mono/main.py /app/main.py
 COPY xapp-mono/app_server.py /app/app_server.py
-COPY xapp-mono/orchestrator.py /app/orchestrator.py
+# COPY xapp-mono/orchestrator.py /app/orchestrator.py
+COPY xapp-mono/orchestrator_multi_ue.py /app/orchestrator.py
 
 COPY xapp/xapp_control.py /app/xapp_control.py
 COPY xapp/python /app/python
@@ -24,10 +30,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --no-cache-dir flask numpy torch matplotlib pandas
 
-
-# Default envs
-ENV MODEL_PATH=/mnt/model/model.pt
-ENV NORM_PATH=/mnt/model/norm.pkl
 
 # Expose HTTP port for API and TCP port for orchestration control
 EXPOSE 5000 4200

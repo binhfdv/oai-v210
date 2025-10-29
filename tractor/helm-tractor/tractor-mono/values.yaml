@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   pullPolicy: IfNotPresent
   repository: ddocker122/tractor-xapp-mono
-  tag: latest
+  tag: dev
 
 fullnameOverride: "tractor-mono"
 
