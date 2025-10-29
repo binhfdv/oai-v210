@@ -1,6 +1,7 @@
 import logging, time, pickle, os, queue, threading
 import numpy as np
 from datetime import datetime
+from collections import defaultdict
 from app_server import (
     load_norm_internal, _call_buffer_update, predict_internal,
     load_model, _call_normalize
@@ -12,7 +13,7 @@ MODEL_PATH = os.getenv("MODEL_PATH", "/mnt/model/model.pt")
 NORM_PATH  = os.getenv("NORM_PATH",  "/mnt/model/norm.pkl")
 MODEL_TYPE = os.getenv("MODEL_TYPE", "Tv1")
 NCLASS     = int(os.getenv("NCLASS", "4"))
-ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))  # now includes the readable timestamp
+ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))
 STREAM_ID  = os.getenv("STREAM_ID", "default")
 PORT       = int(os.getenv("PORT", "4200"))
 
@@ -26,7 +27,7 @@ last_timestamp_per_ue = {}
 
 def init_system():
     logging.info("Loading normalizer parameters")
-    r = load_norm_internal({"norm_param_path": NORM_PATH, "all_feats_raw": ALL_FEATS})  # minus the timestamp
+    r = load_norm_internal({"norm_param_path": NORM_PATH, "all_feats_raw": ALL_FEATS})
     num_feats = r["num_feats"]
     slice_len = r["slice_len"]
     logging.info(f"Normalizer ready: num_feats={num_feats}, slice_len={slice_len}")
@@ -61,35 +62,48 @@ def socket_listener(control_sck):
         if not data:
             continue
 
-        # Each UE metric row separated by newline
         rows = [r.strip() for r in data.split("\n") if r.strip()]
         recv_time = time.time()
 
+        # Assign a batch ID to all rows from this KPM message
+        batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+        batch_size = len(rows)
+
         for r in rows:
-            # Drop readable timestamp (first field)
             parts = r.split(",")
             if len(parts) < 2:
                 continue
 
-            # remove first column (readable timestamp)
-            numeric_line = ",".join(parts[1:])
-
-            # enqueue with received time
-            data_queue.put((numeric_line, recv_time))
+            numeric_line = ",".join(parts[1:])  # remove readable timestamp
+            data_queue.put((batch_id, numeric_line, recv_time, batch_size))
 
 
 def processing_worker(num_feats, slice_len):
-    """Worker that processes queued KPI data."""
+    """Worker that processes queued KPI data and logs total per-batch timing."""
     from app_server import buffers
     logging.info("Processing worker started...")
 
-    kpi_raw_window = []
+    batch_stats = defaultdict(lambda: {
+        "queue_wait": 0.0,
+        "normalize": 0.0,
+        "buffer": 0.0,
+        "predict": 0.0,
+        "count": 0,
+        "expected": 0,
+        "start_time": None,
+    })
 
     while True:
         try:
-            data_line, recv_time = data_queue.get(block=True)
+            batch_id, data_line, recv_time, batch_size = data_queue.get(block=True)
             start_proc = time.time()
             queue_wait_ms = (start_proc - recv_time) * 1000.0
+
+            # Initialize batch stats
+            stats = batch_stats[batch_id]
+            if stats["start_time"] is None:
+                stats["start_time"] = recv_time
+                stats["expected"] = batch_size
 
             # Convert line to numeric array
             kpi_new = np.fromstring(data_line, sep=',')
@@ -98,10 +112,10 @@ def processing_worker(num_feats, slice_len):
                 data_queue.task_done()
                 continue
 
-            ts_int = int(kpi_new[0])  # integer timestamp
+            ts_int = int(kpi_new[0])
             ue_id = kpi_new[3]
 
-            # optional timestamp filter per UE
+            # timestamp filter per UE
             last_ts = last_timestamp_per_ue.get(ue_id, 0)
             if ts_int <= last_ts:
                 data_queue.task_done()
@@ -110,7 +124,7 @@ def processing_worker(num_feats, slice_len):
 
             # Normalize
             t0 = time.time()
-            norm = _call_normalize(kpi_new.tolist())  # exclude timestamp
+            norm = _call_normalize(kpi_new.tolist())
             t1 = time.time()
             normalize_time_ms = (t1 - t0) * 1000.0
 
@@ -143,6 +157,31 @@ def processing_worker(num_feats, slice_len):
                 f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
             )
 
+            # accumulate per-batch stats
+            stats["queue_wait"] += queue_wait_ms
+            stats["normalize"] += normalize_time_ms
+            stats["buffer"] += buffer_time_ms
+            stats["predict"] += predict_time_ms
+            stats["count"] += 1
+
+            # when all UEs in batch processed
+            if stats["count"] >= stats["expected"]:
+                total_stage = (
+                    stats["queue_wait"] +
+                    stats["normalize"] +
+                    stats["buffer"] +
+                    stats["predict"]
+                )
+                wall_clock = (time.time() - stats["start_time"]) * 1000.0
+
+                logging.info(
+                    f"[BATCH KPM {batch_id}] Completed {stats['count']} UEs | "
+                    f"queue_wait={stats['queue_wait']:.2f} ms | normalize={stats['normalize']:.2f} ms | "
+                    f"buffer={stats['buffer']:.2f} ms | predict={stats['predict']:.2f} ms | "
+                    f"total_stage={total_stage:.2f} ms | wall_clock={wall_clock:.2f} ms"
+                )
+                del batch_stats[batch_id]
+
             # Save sample
             try:
                 pickle.dump(
@@ -170,7 +209,6 @@ def main():
     control_sck = open_control_socket(PORT)
     logging.info(f"Listening on port {PORT}")
 
-    # start listener and worker threads
     t_listener = threading.Thread(target=socket_listener, args=(control_sck,), daemon=True)
     t_worker = threading.Thread(target=processing_worker, args=(num_feats, slice_len), daemon=True)
 
