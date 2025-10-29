@@ -33,7 +33,7 @@ metricsConfig:
       "UE ID type": "UE ID type = ([\\w-]+)",
       "gnb_cu_cp_ue_e1ap": "gnb_cu_cp_ue_e1ap = (\\d+)",
       "gnb_cu_ue_f1ap": "gnb_cu_ue_f1ap = (\\d+)",
-      "ran_ue_id": "ran_ue_id = (\\d+)",
+      "ran_ue_id": "ran_ue_id = ([\\w-]+)",
       "DRB.PdcpSduVolumeDL": "DRB\\.PdcpSduVolumeDL = ([\\d.]+) \\[kb\\]",
       "DRB.PdcpSduVolumeUL": "DRB\\.PdcpSduVolumeUL = ([\\d.]+) \\[kb\\]",
       "DRB.RlcSduDelayDl": "DRB\\.RlcSduDelayDl = ([\\d.]+) \\[[μu]s\\]",

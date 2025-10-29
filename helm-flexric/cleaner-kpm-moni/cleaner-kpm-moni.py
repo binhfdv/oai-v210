@@ -18,6 +18,27 @@ logger = logging.getLogger("cleaner")
 # In-memory cache for CU rows per UE
 cu_cache = {}
 
+def is_number(s):
+    """Return True if s is numeric (int or float)."""
+    try:
+        float(s)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+def normalize_ue_id(row):
+    """
+    Ensure ran_ue_id is numeric. If not, use gnb_cu_ue_f1ap or gnb_cu_cp_ue_e1ap.
+    """
+    ran_ue_id = row.get("ran_ue_id", "")
+    if not is_number(ran_ue_id):
+        # Try alternative IDs
+        alt = row.get("gnb_cu_ue_f1ap", "") or row.get("gnb_cu_cp_ue_e1ap", "")
+        if alt:
+            row["ran_ue_id"] = alt
+    return row
+
 def clean_kpm_file(input_file, output_file):
     try:
         with open(input_file, "r") as f_in:
@@ -31,21 +52,27 @@ def clean_kpm_file(input_file, output_file):
         cleaned_rows = []
 
         for row in rows:
+            # Step 1: Normalize UE ID field
+            row = normalize_ue_id(row)
+
             ue_type = row.get("UE ID type", "")
             ran_ue_id = row.get("ran_ue_id", "")
             if not ran_ue_id:
                 continue
 
+            # Step 2: Separate CU and DU
             if "CU" in ue_type:
-                # Save CU row in cache for this UE
                 cu_cache[ran_ue_id] = row
             elif "DU" in ue_type:
                 merged = row.copy()
+
+                # Step 3: Merge CU metrics if available
                 if ran_ue_id in cu_cache:
                     cu_row = cu_cache[ran_ue_id]
                     merged["gnb_cu_cp_ue_e1ap"] = cu_row.get("gnb_cu_cp_ue_e1ap", "")
                     merged["DRB.PdcpSduVolumeDL"] = cu_row.get("DRB.PdcpSduVolumeDL", "")
                     merged["DRB.PdcpSduVolumeUL"] = cu_row.get("DRB.PdcpSduVolumeUL", "")
+
                 merged.pop("UE ID type", None)
                 cleaned_rows.append(merged)
 
@@ -55,7 +82,9 @@ def clean_kpm_file(input_file, output_file):
                 writer = csv.DictWriter(f_out, fieldnames=fields)
                 writer.writeheader()
                 writer.writerows(cleaned_rows)
-            logger.info(f"Cleaned: {input_file} -> {output_file} ({len(cleaned_rows)} rows)")
+            logger.info(
+                f"Cleaned: {input_file} -> {output_file} ({len(cleaned_rows)} rows)"
+            )
 
     except Exception as e:
         logger.error(f"Error cleaning {input_file}: {e}")
