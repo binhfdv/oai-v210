@@ -215,6 +215,7 @@ def stream_loop(sock):
         try:
             sock.sendall(final_msg.encode("utf-8"))
             logger.info(f"Sent {num_ues} UE metrics in one message")
+            logger.info(f"Message content:\n{final_msg}")
             if last_sent_ts:
                 logger.info(f"Streaming data up to {last_sent_ts.isoformat()}")
         except BrokenPipeError:

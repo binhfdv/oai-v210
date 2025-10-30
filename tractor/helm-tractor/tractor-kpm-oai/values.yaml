@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ddocker122/tractor-kpm-oai
-  tag: latest
+  tag: dev
   pullPolicy: IfNotPresent
 
 fullnameOverride: "tractor-kpm-oai"

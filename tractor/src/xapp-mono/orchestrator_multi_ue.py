@@ -106,9 +106,15 @@ def processing_worker(num_feats, slice_len):
                 stats["expected"] = batch_size
 
             # Convert line to numeric array
-            kpi_new = np.fromstring(data_line, sep=',')
+            try:
+                kpi_new = np.fromstring(data_line, sep=',')
+            except ValueError:
+                logging.info(f"Non-numeric or malformed data row, skipping: {data_line}")
+                data_queue.task_done()
+                continue
+
             if kpi_new.shape[0] < ALL_FEATS:
-                logging.info(f"Discarded: too few features ({kpi_new.shape[0]})")
+                logging.info(f"Discarded row: too few features ({kpi_new.shape[0]}), skipping: {data_line}")
                 data_queue.task_done()
                 continue
 
