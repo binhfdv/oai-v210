@@ -19,10 +19,7 @@ PORT       = int(os.getenv("PORT", "4200"))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-# Shared queue for incoming data rows
 data_queue = queue.Queue()
-
-# Dictionary to track last timestamp per UE (if needed)
 last_timestamp_per_ue = {}
 
 def init_system():
@@ -49,7 +46,6 @@ def init_system():
             data = resp.get_json()
         except:
             data = resp
-
     logging.info(f"Model loaded: {data}")
     return num_feats, slice_len
 
@@ -64,22 +60,28 @@ def socket_listener(control_sck):
 
         rows = [r.strip() for r in data.split("\n") if r.strip()]
         recv_time = time.time()
-
-        # Assign a batch ID to all rows from this KPM message
         batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-        batch_size = len(rows)
+        valid_rows = []
 
         for r in rows:
             parts = r.split(",")
-            if len(parts) < 2:
+            ue_id = parts[3] if len(parts) > ALL_FEATS else "?"
+            if len(parts) < ALL_FEATS + 1:
+                ue_id = 0
+                logging.info(f"[UE={ue_id}] Skipping malformed row: {r}")
                 continue
-
             numeric_line = ",".join(parts[1:])  # remove readable timestamp
+            valid_rows.append((batch_id, numeric_line, recv_time))
+
+        batch_size = len(valid_rows)
+        if batch_size == 0:
+            continue
+
+        for batch_id, numeric_line, recv_time in valid_rows:
             data_queue.put((batch_id, numeric_line, recv_time, batch_size))
 
 
 def processing_worker(num_feats, slice_len):
-    """Worker that processes queued KPI data and logs total per-batch timing."""
     from app_server import buffers
     logging.info("Processing worker started...")
 
@@ -99,32 +101,31 @@ def processing_worker(num_feats, slice_len):
             start_proc = time.time()
             queue_wait_ms = (start_proc - recv_time) * 1000.0
 
-            # Initialize batch stats
             stats = batch_stats[batch_id]
             if stats["start_time"] is None:
                 stats["start_time"] = recv_time
                 stats["expected"] = batch_size
 
-            # Convert line to numeric array
-            try:
-                kpi_new = np.fromstring(data_line, sep=',')
-            except ValueError:
-                logging.info(f"Non-numeric or malformed data row, skipping: {data_line}")
-                data_queue.task_done()
-                continue
-
+            kpi_new = np.fromstring(data_line, sep=',')
             if kpi_new.shape[0] < ALL_FEATS:
-                logging.info(f"Discarded row: too few features ({kpi_new.shape[0]}), skipping: {data_line}")
+                logging.info(f"Discarded short feature row ({kpi_new.shape[0]} features): {data_line}")
+                stats["count"] += 1
                 data_queue.task_done()
+                if stats["count"] >= stats["expected"]:
+                    log_batch_summary(batch_id, stats)
+                    del batch_stats[batch_id]
                 continue
 
             ts_int = int(kpi_new[0])
             ue_id = kpi_new[3]
 
-            # timestamp filter per UE
             last_ts = last_timestamp_per_ue.get(ue_id, 0)
             if ts_int <= last_ts:
+                stats["count"] += 1
                 data_queue.task_done()
+                if stats["count"] >= stats["expected"]:
+                    log_batch_summary(batch_id, stats)
+                    del batch_stats[batch_id]
                 continue
             last_timestamp_per_ue[ue_id] = ts_int
 
@@ -145,54 +146,40 @@ def processing_worker(num_feats, slice_len):
                     f"[UE={ue_id}] queue_wait={queue_wait_ms:.2f} ms | "
                     f"normalize={normalize_time_ms:.2f} ms | buffer={buffer_time_ms:.2f} ms | predict=--"
                 )
+                stats["count"] += 1
                 data_queue.task_done()
+                if stats["count"] >= stats["expected"]:
+                    log_batch_summary(batch_id, stats)
+                    del batch_stats[batch_id]
                 continue
-
-            window = buf["window"]
 
             # Predict
             t0 = time.time()
-            pred = predict_internal({"window": window})
+            pred = predict_internal({"window": buf["window"]})
             t1 = time.time()
             predict_time_ms = (t1 - t0) * 1000.0
-
             pred_class = pred["class"]
+
             logging.info(
                 f"[UE={ue_id}] Predicted class: {pred_class} | "
                 f"queue_wait={queue_wait_ms:.2f} ms | normalize={normalize_time_ms:.2f} ms | "
                 f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
             )
 
-            # accumulate per-batch stats
             stats["queue_wait"] += queue_wait_ms
             stats["normalize"] += normalize_time_ms
             stats["buffer"] += buffer_time_ms
             stats["predict"] += predict_time_ms
             stats["count"] += 1
 
-            # when all UEs in batch processed
             if stats["count"] >= stats["expected"]:
-                total_stage = (
-                    stats["queue_wait"] +
-                    stats["normalize"] +
-                    stats["buffer"] +
-                    stats["predict"]
-                )
-                wall_clock = (time.time() - stats["start_time"]) * 1000.0
-
-                logging.info(
-                    f"[BATCH KPM {batch_id}] Completed {stats['count']} UEs | "
-                    f"queue_wait={stats['queue_wait']:.2f} ms | normalize={stats['normalize']:.2f} ms | "
-                    f"buffer={stats['buffer']:.2f} ms | predict={stats['predict']:.2f} ms | "
-                    f"total_stage={total_stage:.2f} ms | wall_clock={wall_clock:.2f} ms"
-                )
+                log_batch_summary(batch_id, stats)
                 del batch_stats[batch_id]
 
-            # Save sample
             try:
                 pickle.dump(
                     {
-                        'input': np.array(window),
+                        'input': np.array(buf["window"]),
                         'label': pred_class,
                         'input_raw': kpi_new.copy(),
                         'ue_id': ue_id,
@@ -201,13 +188,26 @@ def processing_worker(num_feats, slice_len):
                     open(f'/home/class_output_{ue_id}_{ts_int}.pkl', 'wb')
                 )
             except Exception as e:
-                logging.warning(f"Pickle dump failed: {e}")
+                logging.info(f"Pickle dump failed: {e}")
 
             data_queue.task_done()
 
         except Exception as e:
             logging.error(f"Processing error: {e}")
             time.sleep(0.5)
+
+
+def log_batch_summary(batch_id, stats):
+    total_stage = (
+        stats["queue_wait"] + stats["normalize"] + stats["buffer"] + stats["predict"]
+    )
+    end2end = (time.time() - stats["start_time"]) * 1000.0
+    logging.info(
+        f"[BATCH KPM {batch_id}] Completed {stats['count']} UEs | "
+        f"queue_wait={stats['queue_wait']:.2f} ms | normalize={stats['normalize']:.2f} ms | "
+        f"buffer={stats['buffer']:.2f} ms | predict={stats['predict']:.2f} ms | "
+        f"total_stage={total_stage:.2f} ms | end2end={end2end:.2f} ms"
+    )
 
 
 def main():
@@ -217,10 +217,8 @@ def main():
 
     t_listener = threading.Thread(target=socket_listener, args=(control_sck,), daemon=True)
     t_worker = threading.Thread(target=processing_worker, args=(num_feats, slice_len), daemon=True)
-
     t_listener.start()
     t_worker.start()
-
     t_listener.join()
     t_worker.join()
 
