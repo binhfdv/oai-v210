@@ -1,0 +1,16 @@
+commands to run at the ext-dn
+apt update
+apt install build-essential
+apt install libpcap-dev
+apt install python3
+apt install scapy
+cd tcpreplay-4.4.2
+./configure
+apt-get install -y automake
+make
+make install
+cd ..
+
+
+To run the pcap file
+tcpreplay -i eth0 --timer=nano ENCODER_vid_1080.pcap
