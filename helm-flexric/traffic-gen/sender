@@ -1,9 +1,10 @@
 commands to run at the ext-dn
-apt update
-apt install build-essential
-apt install libpcap-dev
-apt install python3
-apt install scapy
+apt update && \
+apt install -y --no-install-recommends \
+  iproute2 tcpdump netcat-openbsd curl tcpreplay \
+  build-essential libpcap-dev python3 python3-pip && \
+apt-get clean && rm -rf /var/lib/apt/lists/* && \
+pip3 install --no-cache-dir scapy
 cd tcpreplay-4.4.2
 ./configure
 apt-get install -y automake
@@ -13,4 +14,15 @@ cd ..
 
 
 To run the pcap file
-tcpreplay -i eth0 --timer=nano ENCODER_vid_1080.pcap
+tcpreplay -i net1 --timer=nano ENCODER_vid_1080_modified.pcap
+
+tcpreplay -i net1 --timer=nano ENCODER_aud_modified.pcap
+
+tcpreplay -i net1 --timer=nano ENCODER_hap_modified.pcap
+
+
+tcpdump -i net1 -nn -vv -e udp port 9050
+
+tcpdump -i oaitun_ue1 -nn -vv udp port 9050
+
+echo "hello UE" | nc -u -w1 12.1.1.100 9050

@@ -49,6 +49,10 @@ spec:
           - mountPath: /dev/bus/usb/
             name: usrp
         {{- end}}
+        {{- if .Values.persistentVolume.enabled }}
+          - mountPath: {{ .Values.persistentVolume.mountPath }}
+            name: traffic-gen-volume
+        {{- end }}
         {{- if .Values.resources.define}}
         resources:
           requests:
@@ -114,6 +118,11 @@ spec:
       - name: dev-net-tun
         hostPath:
           path: /dev/net/tun
+      {{- if .Values.persistentVolume.enabled }}
+      - name: traffic-gen-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistentVolume.claimName }}
+      {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       serviceAccountName: {{ .Values.serviceAccount.name }}

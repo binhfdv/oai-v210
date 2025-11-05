@@ -50,6 +50,11 @@ start:
   nrue: true
   tcpdump: false  # if false then started in sleep mode else it will start capturing packets, nr ue will have a lot of packets per sec better avoid this or add a filter in the deployment.yaml
 
+persistentVolume:
+  enabled: true
+  claimName: traffic-gen-pvc   # Reuse same PVC as traffic-server
+  mountPath: /traffic-gen
+
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
 tcpdumpimage:

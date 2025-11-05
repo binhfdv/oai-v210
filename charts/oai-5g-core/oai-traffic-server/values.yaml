@@ -41,6 +41,20 @@ securityContext:
     drop:
      - ALL
 
+persistentVolume:
+  enabled: false
+  name: traffic-gen-pv
+  claimName: traffic-gen-pvc
+  size: 1Gi
+  accessMode: ReadWriteOnce
+  hostPath: /data/oai-5g-core/traffic-gen
+  reclaimPolicy: Delete
+  mountPath: /traffic-gen
+
+debug:
+  enabled: false
+  image: ubuntu:22.04
+
 ## NF is the network function and tcpdump is the tcpdump container. 
 ## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
 ## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers

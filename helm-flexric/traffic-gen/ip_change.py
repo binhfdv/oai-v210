@@ -9,14 +9,14 @@ Created on Tue Nov  4 11:34:19 2025
 from scapy.all import *
 
 # Input/output filenames
-input_pcap = "ENCODER_vid_1080.pcap"
-output_pcap = "ENCODER_vid_1080_modified.pcap"
+input_pcap = "ENCODER_hap.pcap"
+output_pcap = "ENCODER_hap_modified.pcap"
 
 # IPs to replace
 old_src = "192.168.70.135"   # replace with the original source IP to modify
 old_dst = "192.168.70.145"   # replace with the original destination IP to modify
-new_src = "10.0.0.10"      # replace with desired new source IP
-new_dst = "10.0.0.20"      # replace with desired new destination IP
+new_src = "10.1.2.14"      # replace with desired new source IP
+new_dst = "12.1.1.100"      # replace with desired new destination IP
 
 pkts = rdpcap(input_pcap)
 

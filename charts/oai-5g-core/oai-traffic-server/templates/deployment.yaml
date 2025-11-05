@@ -55,7 +55,11 @@ spec:
         volumeMounts:
         - mountPath: /tmp/script.sh
           name: scripts
-          subPath: script.sh 
+          subPath: script.sh
+        {{- if .Values.persistentVolume.enabled }}
+        - name: traffic-gen-volume
+          mountPath: {{ .Values.persistentVolume.mountPath }}
+        {{- end }}
         command: ["/tmp/script.sh"]
         image: "{{ .Values.trafficServer.repository }}:{{ .Values.trafficServer.version }}"
         {{- if .Values.resources.define}}
@@ -88,11 +92,37 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
         {{- end}}
+      {{- if .Values.debug.enabled }}
+      - name: debug
+        image: {{ .Values.debug.image }}
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+          {{- if .Values.persistentVolume.enabled }}
+          - name: traffic-gen-volume
+            mountPath: {{ .Values.persistentVolume.mountPath }}
+          {{- end }}
+          - name: scripts
+            mountPath: /tmp/scripts
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      {{- end }}
       volumes:
       - name: scripts
         configMap:
           name: iperf-pod
           defaultMode: 0777
+      {{- if .Values.persistentVolume.enabled }}
+      - name: traffic-gen-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistentVolume.claimName }}
+      {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

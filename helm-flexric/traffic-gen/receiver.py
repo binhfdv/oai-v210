@@ -1,7 +1,6 @@
 # Python code for decoder
 #from scapy.all import *
 import socket
-import pynckernel
 import struct
 import sys
 import time
@@ -10,8 +9,8 @@ import sys
 import threading
 
 
-ue_ip = "10.0.0.3" # sys.argv[1]
-ue_port = 9000 # int(sys.argv[2])
+ue_ip = "12.1.1.100" # sys.argv[1]
+ue_port = 9050 # int(sys.argv[2])
 
 owd_result = list() # list of oneway delays
 data_buffer = list() #list storing received data and its timestamp
@@ -20,6 +19,10 @@ data_buffer.clear()
 
 OUTPUT_FILE = sys.argv[1]
 tot_pkt = int(sys.argv[2])
+
+print(f'Receiving at {ue_ip}:{ue_port}')
+print(f'Total packets to receive: {tot_pkt}')
+print(f'Output file: {OUTPUT_FILE}')
 
 BUFSIZE = 4084
 
@@ -41,7 +44,8 @@ while True:
      recv_time = time.time() * 1e6
      if packet_count == 0:        
        bw_mon_st = recv_time 
-       packet_count = packet_count+1       
+       packet_count = packet_count+1
+       print("Packet counting started: ", packet_count)
      sender_infobits = struct.unpack("!cccccccccccc", pkt_data[0:12])
      send_time_bytes = sender_infobits[0] + sender_infobits[1] + sender_infobits[2] + sender_infobits[3] + sender_infobits[4] + sender_infobits[5] + sender_infobits[6] + sender_infobits[7]
      send_time =int.from_bytes(send_time_bytes, 'little')

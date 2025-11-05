@@ -224,6 +224,18 @@ oai-traffic-server:
     upfHost: 10.1.3.18 #oai-upf n3 interface ip address
     routeInterface: eth0
     noOfIperf3Server: 2
+  persistentVolume:
+    enabled: true
+    name: traffic-gen-pv
+    claimName: traffic-gen-pvc
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/traffic-gen
+    reclaimPolicy: Delete
+    mountPath: /traffic-gen
+  debug:
+    enabled: true
+    image: ubuntu:22.04
   resources:
     define: false
     limits:
