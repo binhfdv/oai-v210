@@ -31,9 +31,15 @@ spec:
           volumeMounts:
             - name: data-volume
               mountPath: {{ .Values.persistentVolume.mountPath }}
+            - name: metrics-config
+              mountPath: /app/metrics_config.py
+              subPath: metrics_config.py
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: data-volume
           persistentVolumeClaim:
             claimName: {{ .Values.persistentVolume.claimName }}
+        - name: metrics-config
+          configMap:
+            name: {{ include "tractor-kpm-oai.fullname" . }}-config
