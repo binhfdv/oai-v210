@@ -15,8 +15,8 @@ output_pcap = "ENCODER_hap_modified.pcap"
 # IPs to replace
 old_src = "192.168.70.135"   # replace with the original source IP to modify
 old_dst = "192.168.70.145"   # replace with the original destination IP to modify
-new_src = "10.1.2.14"      # replace with desired new source IP
-new_dst = "12.1.1.100"      # replace with desired new destination IP
+new_src = "10.1.2.14"      # replace with desired new source IP: ext-dn/traffic-server IP
+new_dst = "12.1.1.100"      # replace with desired new destination IP: UE IP
 
 pkts = rdpcap(input_pcap)
 

@@ -1,0 +1,78 @@
+commands to run at the ext-dn
+apt update && \
+apt install -y --no-install-recommends \
+  iproute2 tcpdump netcat-openbsd curl tcpreplay \
+  build-essential libpcap-dev python3 python3-pip && \
+apt-get clean && rm -rf /var/lib/apt/lists/* && \
+pip3 install --no-cache-dir scapy
+wget https://sourceforge.net/projects/tcpreplay/files/tcpreplay/4.4.2/tcpreplay-4.4.2.tar.xz -O tcpreplay-4.4.2.tar.xz
+tar xf tcpreplay-4.4.2.tar.xz
+cd tcpreplay-4.4.2
+./configure
+apt-get install -y automake
+make
+make install
+cd ..
+
+
+
+To run the pcap file
+tcpreplay -i net1 --timer=nano ENCODER_vid_1080_modified.pcap
+
+tcpreplay -i net1 --timer=nano ENCODER_aud_modified.pcap
+
+tcpreplay -i net1 --timer=nano ENCODER_hap_modified.pcap
+
+
+tcpdump -i net1 -nn -vv -e udp port 9050
+
+tcpdump -i oaitun_ue1 -nn -vv udp port 9050
+
+SRC_IP=10.1.2.14
+SRC_PORT=44585
+DST_IP=12.1.1.100
+DST_PORT=9050
+
+# Build payload by repeating the phrase 100 times (adjust 100)
+PAYLOAD=$(printf 'hello UE '%.0s {1..100})
+
+for ((i=1;i<=100;i++)); do
+  printf '%s\n' "$PAYLOAD" | nc -u -s "$SRC_IP" -p "$SRC_PORT" -w1 "$DST_IP" "$DST_PORT"
+  sleep 0.01
+done
+
+ENCODER_hap_modified.pcap
+===========================
+  11356 KPM ind_msg latency = 1748687568045007 [μs]
+UE ID type = gNB-DU, gnb_cu_ue_f1ap = 1
+ran_ue_id = 1
+DRB.RlcSduDelayDl = 86.69 [μs]
+DRB.UEThpDl = 860.28 [kbps]
+DRB.UEThpUl = 5.61 [kbps]
+RRU.PrbTotDl = 4665 [PRBs]
+RRU.PrbTotUl = 1845 [PRBs]
+
+
+ENCODER_vid_1080_modified.pcap
+=============================
+  11510 KPM ind_msg latency = 1748686353199295 [μs]
+UE ID type = gNB-DU, gnb_cu_ue_f1ap = 1
+ran_ue_id = 1
+DRB.RlcSduDelayDl = 116.94 [μs]
+DRB.UEThpDl = 3138.35 [kbps]
+DRB.UEThpUl = 6.45 [kbps]
+RRU.PrbTotDl = 5030 [PRBs]
+RRU.PrbTotUl = 1027 [PRBs]
+
+ENCODER_aud_modified.pcap
+=========================
+  11630 KPM ind_msg latency = 1748685406566435 [μs]
+UE ID type = gNB-DU, gnb_cu_ue_f1ap = 1
+ran_ue_id = 1
+DRB.RlcSduDelayDl = 217.57 [μs]
+DRB.UEThpDl = 170.22 [kbps]
+DRB.UEThpUl = 5.38 [kbps]
+RRU.PrbTotDl = 5654 [PRBs]
+RRU.PrbTotUl = 846 [PRBs]
+
+The receiver.py script can be used at the UE side to receive sent UDP packets. I don't need it so you can modify as needed.

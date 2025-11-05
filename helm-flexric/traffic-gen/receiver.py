@@ -45,7 +45,6 @@ while True:
      if packet_count == 0:        
        bw_mon_st = recv_time 
        packet_count = packet_count+1
-       print("Packet counting started: ", packet_count)
      sender_infobits = struct.unpack("!cccccccccccc", pkt_data[0:12])
      send_time_bytes = sender_infobits[0] + sender_infobits[1] + sender_infobits[2] + sender_infobits[3] + sender_infobits[4] + sender_infobits[5] + sender_infobits[6] + sender_infobits[7]
      send_time =int.from_bytes(send_time_bytes, 'little')
