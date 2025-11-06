@@ -28,38 +28,136 @@ persistentVolume:
   claimName: kpm-data-pvc   # Shared with watcher & cleaner
   mountPath: /data
 
-# emBB mean value default metrics configuration
+# eMBB mean value default metrics configuration
+# defaultMetrics:
+#   num_ues: 1.0
+#   IMSI: "1010123456002"
+#   RNTI: 75.09719588863386
+#   slicing_enabled: 1.0
+#   slice_id: 1.0
+#   slice_prb: 18.0
+#   power_multiplier: 1.0
+#   scheduling_policy: 1.0
+#   dl_mcs: 1.72031630615707
+#   dl_n_samples: 55.49456142101587
+#   dl_buffer [bytes]: 4792.096397565113
+#   tx_brate downlink [Mbps]: 0.20226417124039517
+#   tx_pkts downlink: 15.853807005288893
+#   tx_errors downlink (%): 0.0
+#   dl_cqi: 6.709994766989323
+#   ul_mcs: 2.6767620197585074
+#   ul_n_samples: 11.697335595249974
+#   ul_buffer [bytes]: 771.5226025346772
+#   rx_brate uplink [Mbps]: 0.1392692611515817
+#   rx_pkts uplink: 3.337191897016266
+#   rx_errors uplink (%): 0.0
+#   ul_rssi: 0.0
+#   ul_sinr: 6.47131010877158
+#   phr: 5.948807504241094
+#   sum_requested_prbs: 663.8665801816186
+#   sum_granted_prbs: 267.45055383694245
+#   dl_pmi: 0.0
+#   dl_ri: 0.0
+#   ul_n: 0.0
+#   ul_turbo_iters: 0.18870372218341483
+
+# mMTC mean value default metrics configuration
+# defaultMetrics:
+#   num_ues: 1.0
+#   IMSI: 1010120000000.0
+#   RNTI: 73.48241928350288
+#   slicing_enabled: 1.0
+#   slice_id: 1.0
+#   slice_prb: 18.0
+#   power_multiplier: 1.0
+#   scheduling_policy: 1.0
+#   dl_mcs: 1.398594761167625
+#   dl_n_samples: 15.825796107916851
+#   dl_buffer [bytes]: 452.1603825740823
+#   tx_brate downlink [Mbps]: 0.08573570368034056
+#   tx_pkts downlink: 4.515922158337019
+#   tx_errors downlink (%): 0.0
+#   dl_cqi: 8.446284323308271
+#   ul_mcs: 1.902760813799204
+#   ul_n_samples: 5.0054732419283505
+#   ul_buffer [bytes]: 233.4969593100398
+#   rx_brate uplink [Mbps]: 0.05011733005307386
+#   rx_pkts uplink: 1.4411211853162318
+#   rx_errors uplink (%): 0.0
+#   ul_rssi: 0.0
+#   ul_sinr: 4.935021577841663
+#   phr: 4.483414418398938
+#   sum_requested_prbs: 193.10813799203893
+#   sum_granted_prbs: 74.750055285272
+#   dl_pmi: 0.0
+#   dl_ri: 0.0
+#   ul_n: 0.0
+#   ul_turbo_iters: 0.14009287925696595
+
+# URLLC mean value default metrics configuration
 defaultMetrics:
   num_ues: 1.0
-  IMSI: 1010123456002.0
-  RNTI: 75.09719588863386
+  IMSI: 1010123456002.0001
+  RNTI: 95.73007123914513
   slicing_enabled: 1.0
   slice_id: 1.0
   slice_prb: 18.0
   power_multiplier: 1.0
   scheduling_policy: 1.0
-  dl_mcs: 1.72031630615707
-  dl_n_samples: 55.49456142101587
-  dl_buffer [bytes]: 4792.096397565113
-  tx_brate downlink [Mbps]: 0.20226417124039517
-  tx_pkts downlink: 15.853807005288893
+  dl_mcs: 1.5734519022931723
+  dl_n_samples: 30.736311164266027
+  dl_buffer [bytes]: 213.56892517289793
+  tx_brate downlink [Mbps]: 0.1816787606588321
+  tx_pkts downlink: 8.773386719359367
   tx_errors downlink (%): 0.0
-  dl_cqi: 6.709994766989323
-  ul_mcs: 2.6767620197585074
-  ul_n_samples: 11.697335595249974
-  ul_buffer [bytes]: 771.5226025346772
-  rx_brate uplink [Mbps]: 0.1392692611515817
-  rx_pkts uplink: 3.337191897016266
-  rx_errors uplink (%): 0.0
+  dl_cqi: 8.926272115334616
+  ul_mcs: 1.838908896573241
+  ul_n_samples: 18.929332848005824
+  ul_buffer [bytes]: 398.7140034319588
+  rx_brate uplink [Mbps]: 0.28683883313400244
+  rx_pkts uplink: 5.432686807758307
+  rx_errors uplink (%): 0.00024185741771098746
   ul_rssi: 0.0
-  ul_sinr: 6.47131010877158
-  phr: 5.948807504241094
-  sum_requested_prbs: 663.8665801816186
-  sum_granted_prbs: 267.45055383694245
+  ul_sinr: 4.2767535749571
+  phr: 4.03478758254901
+  sum_requested_prbs: 221.17757786906557
+  sum_granted_prbs: 141.28282460610473
   dl_pmi: 0.0
   dl_ri: 0.0
   ul_n: 0.0
-  ul_turbo_iters: 0.18870372218341483
+  ul_turbo_iters: 0.12830294524465707
+
+metricOrder:
+  - num_ues
+  - IMSI
+  - RNTI
+  - slicing_enabled
+  - slice_id
+  - slice_prb
+  - power_multiplier
+  - scheduling_policy
+  - dl_mcs
+  - dl_n_samples
+  - dl_buffer [bytes]
+  - tx_brate downlink [Mbps]
+  - tx_pkts downlink
+  - tx_errors downlink (%)
+  - dl_cqi
+  - ul_mcs
+  - ul_n_samples
+  - ul_buffer [bytes]
+  - rx_brate uplink [Mbps]
+  - rx_pkts uplink
+  - rx_errors uplink (%)
+  - ul_rssi
+  - ul_sinr
+  - phr
+  - sum_requested_prbs
+  - sum_granted_prbs
+  - dl_pmi
+  - dl_ri
+  - ul_n
+  - ul_turbo_iters
 
 resources: {}
 nodeSelector: {}

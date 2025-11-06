@@ -1,9 +1,9 @@
 # This folder contains dataset and utils to replay traffic from pcap files.
 
 ## Traffic dataset:
-video has total 11942 packets
-audio has total 26425 packets
-haptic has total 635000 packets
+- video has total `11942` packets
+- audio has total `26425` packets
+- haptic has total `635000` packets
 
 
 ## Preparation
@@ -14,6 +14,7 @@ $oai-v210$ bash deploy_oai.sh . core ric cu ue-gnb kpm
 
 I added a side-container to `ext-dn/traffic-server` to use tcpreplay and other ubuntu libraries. A persistence volume is also added to mount this folder to `ext-dn/traffic-server` pod:
 
+`Notes: name ext-dn or traffic-server is up to your OAI version, this repo follows v2.1.0`
 ```bash
 ### charts/oai-5g-core/oai-5g-basic/values.yaml
 # Change the hostPath based on the node where the pod will be scheduled. Otherwise, the pod cannot access the traffic-gen folder. You got it :)))
