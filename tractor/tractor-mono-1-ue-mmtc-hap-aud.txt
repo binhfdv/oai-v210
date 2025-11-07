@@ -1,518 +1,679 @@
-2025-11-06 12:29:20,580 INFO Loading normalizer parameters
+2025-11-07 13:15:45,283 INFO Loading normalizer parameters
  * Serving Flask app 'app_server'
  * Debug mode: off
-2025-11-06 12:29:20,583 INFO Normalizer ready: num_feats=17, slice_len=32
-2025-11-06 12:29:20,583 INFO Buffer reset for stream default
-2025-11-06 12:29:20,588 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-11-07 13:15:45,285 INFO Normalizer ready: num_feats=17, slice_len=32
+2025-11-07 13:15:45,285 INFO Buffer reset for stream default
+2025-11-07 13:15:45,287 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://10.244.0.221:5000
-2025-11-06 12:29:20,588 INFO [33mPress CTRL+C to quit[0m
-2025-11-06 12:29:20,664 INFO Model loaded: {'device': 'cpu', 'status': 'ok'}
-2025-11-06 12:29:21,880 INFO Listening on port 4200
-2025-11-06 12:29:21,881 INFO Socket listener started...
-2025-11-06 12:29:21,881 INFO Processing worker started...
-2025-11-06 12:29:21,882 INFO [UE=1.0] queue_wait=0.07 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:21,882 INFO [BATCH KPM 20251106122921881783] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.31 ms
-2025-11-06 12:29:22,883 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:22,883 INFO [BATCH KPM 20251106122922882886] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.38 ms
-2025-11-06 12:29:23,884 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:23,884 INFO [BATCH KPM 20251106122923884194] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.45 ms
-2025-11-06 12:29:24,885 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:24,885 INFO [BATCH KPM 20251106122924885244] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.38 ms
-2025-11-06 12:29:25,886 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:25,886 INFO [BATCH KPM 20251106122925886383] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.38 ms
-2025-11-06 12:29:26,887 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:26,887 INFO [BATCH KPM 20251106122926887506] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.45 ms
-2025-11-06 12:29:27,888 INFO [UE=1.0] queue_wait=0.14 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:27,888 INFO [BATCH KPM 20251106122927888538] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.42 ms
-2025-11-06 12:29:28,890 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:28,890 INFO [BATCH KPM 20251106122928889921] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.36 ms
-2025-11-06 12:29:29,891 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:29,891 INFO [BATCH KPM 20251106122929891120] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.29 ms
-2025-11-06 12:29:30,892 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:30,892 INFO [BATCH KPM 20251106122930892280] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
-2025-11-06 12:29:31,893 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:31,893 INFO [BATCH KPM 20251106122931893395] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.39 ms
-2025-11-06 12:29:32,895 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:32,895 INFO [BATCH KPM 20251106122932894892] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.38 ms
-2025-11-06 12:29:33,896 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.00 ms | predict=--
-2025-11-06 12:29:33,896 INFO [BATCH KPM 20251106122933896016] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.32 ms
-2025-11-06 12:29:34,897 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:34,897 INFO [BATCH KPM 20251106122934897171] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.35 ms
-2025-11-06 12:29:35,898 INFO [UE=1.0] queue_wait=0.16 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:35,898 INFO [BATCH KPM 20251106122935898334] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.44 ms
-2025-11-06 12:29:36,899 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:36,899 INFO [BATCH KPM 20251106122936899361] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.42 ms
-2025-11-06 12:29:37,900 INFO [UE=1.0] queue_wait=0.15 ms | normalize=0.11 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:37,901 INFO [BATCH KPM 20251106122937900591] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.45 ms
-2025-11-06 12:29:38,902 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:38,902 INFO [BATCH KPM 20251106122938901879] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.40 ms
-2025-11-06 12:29:39,903 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:39,903 INFO [BATCH KPM 20251106122939902969] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
-2025-11-06 12:29:40,904 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:40,904 INFO [BATCH KPM 20251106122940904160] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.40 ms
-2025-11-06 12:29:41,905 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:41,905 INFO [BATCH KPM 20251106122941905369] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.43 ms
-2025-11-06 12:29:42,906 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:42,907 INFO [BATCH KPM 20251106122942906605] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.44 ms
-2025-11-06 12:29:43,907 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:43,907 INFO [BATCH KPM 20251106122943907604] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.37 ms
-2025-11-06 12:29:44,909 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:44,909 INFO [BATCH KPM 20251106122944908762] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.39 ms
-2025-11-06 12:29:45,910 INFO [UE=1.0] queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:45,910 INFO [BATCH KPM 20251106122945909960] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.31 ms
-2025-11-06 12:29:46,911 INFO [UE=1.0] queue_wait=0.07 ms | normalize=0.05 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:46,911 INFO [BATCH KPM 20251106122946911083] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.28 ms
-2025-11-06 12:29:47,912 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:47,912 INFO [BATCH KPM 20251106122947912489] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.38 ms
-2025-11-06 12:29:48,913 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:48,914 INFO [BATCH KPM 20251106122948913665] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
-2025-11-06 12:29:49,915 INFO [UE=1.0] queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:49,915 INFO [BATCH KPM 20251106122949914906] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.31 ms
-2025-11-06 12:29:50,916 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:50,916 INFO [BATCH KPM 20251106122950916300] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.45 ms
-2025-11-06 12:29:51,917 INFO [UE=1.0] queue_wait=0.17 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
-2025-11-06 12:29:51,918 INFO [BATCH KPM 20251106122951917551] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.45 ms
-2025-11-06 12:29:52,922 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=3.61 ms
-2025-11-06 12:29:52,922 INFO [BATCH KPM 20251106122952918730] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=3.61 ms | total_stage=3.80 ms | end2end=4.09 ms
-2025-11-06 12:29:53,922 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.94 ms
-2025-11-06 12:29:53,922 INFO [BATCH KPM 20251106122953920404] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.94 ms | total_stage=2.14 ms | end2end=2.34 ms
-2025-11-06 12:29:54,924 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.19 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:29:54,924 INFO [BATCH KPM 20251106122954921575] Completed 1 UEs | queue_wait=0.19 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.37 ms | end2end=2.59 ms
-2025-11-06 12:29:55,925 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.99 ms
-2025-11-06 12:29:55,925 INFO [BATCH KPM 20251106122955922814] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.99 ms | total_stage=2.14 ms | end2end=2.32 ms
-2025-11-06 12:29:56,927 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.58 ms
-2025-11-06 12:29:56,927 INFO [BATCH KPM 20251106122956924195] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.58 ms | total_stage=2.73 ms | end2end=2.99 ms
-2025-11-06 12:29:57,927 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.36 ms
-2025-11-06 12:29:57,928 INFO [BATCH KPM 20251106122957925263] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.60 ms | end2end=2.79 ms
-2025-11-06 12:29:58,928 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.02 ms | predict=2.03 ms
-2025-11-06 12:29:58,928 INFO [BATCH KPM 20251106122958926438] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.02 ms | predict=2.03 ms | total_stage=2.25 ms | end2end=2.42 ms
-2025-11-06 12:29:59,929 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=1.97 ms
-2025-11-06 12:29:59,929 INFO [BATCH KPM 20251106122959927494] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=1.97 ms | total_stage=2.19 ms | end2end=2.39 ms
-2025-11-06 12:30:00,931 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.03 ms | predict=2.15 ms
-2025-11-06 12:30:00,931 INFO [BATCH KPM 20251106123000928594] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.03 ms | predict=2.15 ms | total_stage=2.38 ms | end2end=2.57 ms
-2025-11-06 12:30:01,932 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.01 ms | predict=1.92 ms
-2025-11-06 12:30:01,932 INFO [BATCH KPM 20251106123001929668] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.01 ms | predict=1.92 ms | total_stage=2.16 ms | end2end=2.46 ms
-2025-11-06 12:30:02,933 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.20 ms
-2025-11-06 12:30:02,933 INFO [BATCH KPM 20251106123002930847] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.20 ms | total_stage=2.41 ms | end2end=2.61 ms
-2025-11-06 12:30:03,934 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms
-2025-11-06 12:30:03,934 INFO [BATCH KPM 20251106123003932065] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.32 ms | end2end=2.53 ms
-2025-11-06 12:30:04,935 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.99 ms
-2025-11-06 12:30:04,935 INFO [BATCH KPM 20251106123004933318] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.99 ms | total_stage=2.14 ms | end2end=2.30 ms
-2025-11-06 12:30:05,936 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.09 ms
-2025-11-06 12:30:05,937 INFO [BATCH KPM 20251106123005934481] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.26 ms | end2end=2.52 ms
-2025-11-06 12:30:06,938 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms
-2025-11-06 12:30:06,938 INFO [BATCH KPM 20251106123006935791] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms | total_stage=2.29 ms | end2end=2.48 ms
-2025-11-06 12:30:07,939 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.09 ms
-2025-11-06 12:30:07,939 INFO [BATCH KPM 20251106123007936744] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.28 ms | end2end=2.51 ms
-2025-11-06 12:30:08,940 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.16 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.25 ms
-2025-11-06 12:30:08,940 INFO [BATCH KPM 20251106123008937791] Completed 1 UEs | queue_wait=0.16 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.49 ms | end2end=2.69 ms
-2025-11-06 12:30:09,941 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:30:09,941 INFO [BATCH KPM 20251106123009938911] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.21 ms | end2end=2.40 ms
-2025-11-06 12:30:10,942 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.03 ms
-2025-11-06 12:30:10,942 INFO [BATCH KPM 20251106123010940010] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.03 ms | total_stage=2.20 ms | end2end=2.37 ms
-2025-11-06 12:30:11,943 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.15 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:30:11,943 INFO [BATCH KPM 20251106123011941320] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.15 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.26 ms | end2end=2.47 ms
-2025-11-06 12:30:12,944 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.90 ms
-2025-11-06 12:30:12,944 INFO [BATCH KPM 20251106123012942366] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.90 ms | total_stage=2.07 ms | end2end=2.30 ms
-2025-11-06 12:30:13,946 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.70 ms
-2025-11-06 12:30:13,946 INFO [BATCH KPM 20251106123013943551] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.70 ms | total_stage=2.87 ms | end2end=3.10 ms
-2025-11-06 12:30:14,947 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.16 ms
-2025-11-06 12:30:14,947 INFO [BATCH KPM 20251106123014944839] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.31 ms | end2end=2.48 ms
-2025-11-06 12:30:15,949 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms
-2025-11-06 12:30:15,949 INFO [BATCH KPM 20251106123015946309] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms | total_stage=2.66 ms | end2end=2.86 ms
-2025-11-06 12:30:16,949 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.00 ms
-2025-11-06 12:30:16,949 INFO [BATCH KPM 20251106123016947496] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.00 ms | total_stage=2.19 ms | end2end=2.40 ms
-2025-11-06 12:30:17,951 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms
-2025-11-06 12:30:17,951 INFO [BATCH KPM 20251106123017948913] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.36 ms | end2end=2.57 ms
-2025-11-06 12:30:18,952 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:30:18,952 INFO [BATCH KPM 20251106123018950022] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.18 ms | end2end=2.37 ms
-2025-11-06 12:30:19,953 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.13 ms
-2025-11-06 12:30:19,953 INFO [BATCH KPM 20251106123019951301] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.13 ms | total_stage=2.31 ms | end2end=2.50 ms
-2025-11-06 12:30:20,954 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.02 ms | predict=2.24 ms
-2025-11-06 12:30:20,955 INFO [BATCH KPM 20251106123020952331] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.02 ms | predict=2.24 ms | total_stage=2.43 ms | end2end=2.66 ms
-2025-11-06 12:30:21,956 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.16 ms
-2025-11-06 12:30:21,956 INFO [BATCH KPM 20251106123021953841] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.33 ms | end2end=2.53 ms
-2025-11-06 12:30:22,957 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.14 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:30:22,957 INFO [BATCH KPM 20251106123022955098] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.14 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.22 ms | end2end=2.48 ms
-2025-11-06 12:30:23,959 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms
-2025-11-06 12:30:23,959 INFO [BATCH KPM 20251106123023956387] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms | total_stage=2.50 ms | end2end=2.72 ms
-2025-11-06 12:30:24,959 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.08 ms
-2025-11-06 12:30:24,960 INFO [BATCH KPM 20251106123024957634] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.08 ms | total_stage=2.27 ms | end2end=2.45 ms
-2025-11-06 12:30:25,961 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.07 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.38 ms
-2025-11-06 12:30:25,962 INFO [BATCH KPM 20251106123025959378] Completed 1 UEs | queue_wait=0.07 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.53 ms | end2end=2.72 ms
-2025-11-06 12:30:26,962 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.04 ms
-2025-11-06 12:30:26,963 INFO [BATCH KPM 20251106123026960544] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.04 ms | total_stage=2.25 ms | end2end=2.47 ms
-2025-11-06 12:30:27,964 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.53 ms
-2025-11-06 12:30:27,964 INFO [BATCH KPM 20251106123027961894] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.53 ms | total_stage=2.70 ms | end2end=2.96 ms
-2025-11-06 12:30:28,965 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms
-2025-11-06 12:30:28,965 INFO [BATCH KPM 20251106123028963004] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms | total_stage=2.03 ms | end2end=2.22 ms
-2025-11-06 12:30:29,966 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.15 ms
-2025-11-06 12:30:29,966 INFO [BATCH KPM 20251106123029964257] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.15 ms | total_stage=2.28 ms | end2end=2.47 ms
-2025-11-06 12:30:30,967 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.30 ms
-2025-11-06 12:30:30,968 INFO [BATCH KPM 20251106123030965371] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.30 ms | total_stage=2.48 ms | end2end=2.76 ms
-2025-11-06 12:30:31,968 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.08 ms
-2025-11-06 12:30:31,969 INFO [BATCH KPM 20251106123031966504] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.08 ms | total_stage=2.27 ms | end2end=2.57 ms
-2025-11-06 12:30:32,970 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.13 ms | buffer=0.02 ms | predict=1.99 ms
-2025-11-06 12:30:32,970 INFO [BATCH KPM 20251106123032967713] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.13 ms | buffer=0.02 ms | predict=1.99 ms | total_stage=2.25 ms | end2end=2.44 ms
-2025-11-06 12:30:33,971 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.20 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
-2025-11-06 12:30:33,971 INFO [BATCH KPM 20251106123033969078] Completed 1 UEs | queue_wait=0.20 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.52 ms | end2end=2.72 ms
-2025-11-06 12:30:34,972 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.03 ms
-2025-11-06 12:30:34,972 INFO [BATCH KPM 20251106123034970478] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.03 ms | total_stage=2.24 ms | end2end=2.42 ms
-2025-11-06 12:30:35,975 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.84 ms
-2025-11-06 12:30:35,975 INFO [BATCH KPM 20251106123035972078] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.84 ms | total_stage=2.97 ms | end2end=3.18 ms
-2025-11-06 12:30:36,975 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.09 ms
-2025-11-06 12:30:36,975 INFO [BATCH KPM 20251106123036973343] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.09 ms | total_stage=2.25 ms | end2end=2.45 ms
-2025-11-06 12:30:37,977 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.16 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.08 ms
-2025-11-06 12:30:37,977 INFO [BATCH KPM 20251106123037974637] Completed 1 UEs | queue_wait=0.16 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.08 ms | total_stage=2.33 ms | end2end=2.52 ms
-2025-11-06 12:30:38,978 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.16 ms
-2025-11-06 12:30:38,978 INFO [BATCH KPM 20251106123038976151] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.33 ms | end2end=2.56 ms
-2025-11-06 12:30:39,979 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms
-2025-11-06 12:30:39,979 INFO [BATCH KPM 20251106123039977270] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms | total_stage=2.28 ms | end2end=2.51 ms
-2025-11-06 12:30:40,981 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.07 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:30:40,981 INFO [BATCH KPM 20251106123040978683] Completed 1 UEs | queue_wait=0.07 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.26 ms | end2end=2.44 ms
-2025-11-06 12:30:41,982 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.21 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:30:41,982 INFO [BATCH KPM 20251106123041979769] Completed 1 UEs | queue_wait=0.21 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.29 ms | end2end=2.46 ms
-2025-11-06 12:30:42,983 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.03 ms | predict=1.98 ms
-2025-11-06 12:30:42,983 INFO [BATCH KPM 20251106123042980827] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.03 ms | predict=1.98 ms | total_stage=2.19 ms | end2end=2.37 ms
-2025-11-06 12:30:43,984 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:30:43,984 INFO [BATCH KPM 20251106123043982195] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.23 ms | end2end=2.44 ms
-2025-11-06 12:30:44,985 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.23 ms
-2025-11-06 12:30:44,986 INFO [BATCH KPM 20251106123044983414] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.23 ms | total_stage=2.42 ms | end2end=2.65 ms
-2025-11-06 12:30:45,988 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.78 ms
-2025-11-06 12:30:45,988 INFO [BATCH KPM 20251106123045984797] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.78 ms | total_stage=2.97 ms | end2end=3.40 ms
-2025-11-06 12:30:46,988 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms
-2025-11-06 12:30:46,988 INFO [BATCH KPM 20251106123046985988] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.22 ms | end2end=2.40 ms
-2025-11-06 12:30:47,989 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.91 ms
-2025-11-06 12:30:47,989 INFO [BATCH KPM 20251106123047987061] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.91 ms | total_stage=2.06 ms | end2end=2.23 ms
-2025-11-06 12:30:48,990 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:30:48,990 INFO [BATCH KPM 20251106123048988213] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.19 ms | end2end=2.39 ms
-2025-11-06 12:30:49,991 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.96 ms
-2025-11-06 12:30:49,991 INFO [BATCH KPM 20251106123049989339] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.96 ms | total_stage=2.10 ms | end2end=2.28 ms
-2025-11-06 12:30:50,992 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=1.93 ms
-2025-11-06 12:30:50,992 INFO [BATCH KPM 20251106123050990427] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=1.93 ms | total_stage=2.14 ms | end2end=2.39 ms
-2025-11-06 12:30:51,993 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms
-2025-11-06 12:30:51,993 INFO [BATCH KPM 20251106123051991730] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms | total_stage=2.04 ms | end2end=2.21 ms
-2025-11-06 12:30:52,994 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.92 ms
-2025-11-06 12:30:52,995 INFO [BATCH KPM 20251106123052992811] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.92 ms | total_stage=2.05 ms | end2end=2.30 ms
-2025-11-06 12:30:53,996 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:30:53,996 INFO [BATCH KPM 20251106123053993942] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.17 ms | end2end=2.42 ms
-2025-11-06 12:30:54,997 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:30:54,997 INFO [BATCH KPM 20251106123054995127] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.25 ms | end2end=2.47 ms
-2025-11-06 12:30:55,998 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.80 ms
-2025-11-06 12:30:55,998 INFO [BATCH KPM 20251106123055996455] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.80 ms | total_stage=1.94 ms | end2end=2.12 ms
-2025-11-06 12:30:56,999 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.91 ms
-2025-11-06 12:30:57,000 INFO [BATCH KPM 20251106123056997807] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.91 ms | total_stage=2.06 ms | end2end=2.26 ms
-2025-11-06 12:30:58,001 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:30:58,001 INFO [BATCH KPM 20251106123057999063] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.15 ms | end2end=2.32 ms
-2025-11-06 12:30:59,002 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.97 ms
-2025-11-06 12:30:59,002 INFO [BATCH KPM 20251106123059000233] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.97 ms | total_stage=2.12 ms | end2end=2.34 ms
-2025-11-06 12:31:00,004 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.50 ms
-2025-11-06 12:31:00,004 INFO [BATCH KPM 20251106123100001388] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.67 ms | end2end=2.92 ms
-2025-11-06 12:31:01,004 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:31:01,005 INFO [BATCH KPM 20251106123101002663] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.17 ms | end2end=2.38 ms
-2025-11-06 12:31:02,005 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms
-2025-11-06 12:31:02,005 INFO [BATCH KPM 20251106123102003730] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms | total_stage=1.99 ms | end2end=2.17 ms
-2025-11-06 12:31:03,007 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:31:03,007 INFO [BATCH KPM 20251106123103005014] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.16 ms | end2end=2.34 ms
-2025-11-06 12:31:04,010 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.11 ms | buffer=0.01 ms | predict=3.07 ms
-2025-11-06 12:31:04,010 INFO [BATCH KPM 20251106123104006734] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.11 ms | buffer=0.01 ms | predict=3.07 ms | total_stage=3.27 ms | end2end=3.71 ms
-2025-11-06 12:31:05,010 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.04 ms
-2025-11-06 12:31:05,010 INFO [BATCH KPM 20251106123105008181] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.04 ms | total_stage=2.20 ms | end2end=2.41 ms
-2025-11-06 12:31:06,011 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.86 ms
-2025-11-06 12:31:06,011 INFO [BATCH KPM 20251106123106009196] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.86 ms | total_stage=2.04 ms | end2end=2.22 ms
-2025-11-06 12:31:07,012 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:31:07,013 INFO [BATCH KPM 20251106123107010620] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.15 ms | end2end=2.38 ms
-2025-11-06 12:31:08,014 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.19 ms
-2025-11-06 12:31:08,014 INFO [BATCH KPM 20251106123108011732] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.19 ms | total_stage=2.35 ms | end2end=2.51 ms
-2025-11-06 12:31:09,015 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.37 ms
-2025-11-06 12:31:09,015 INFO [BATCH KPM 20251106123109013011] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.37 ms | total_stage=2.54 ms | end2end=2.77 ms
-2025-11-06 12:31:10,017 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.37 ms
-2025-11-06 12:31:10,017 INFO [BATCH KPM 20251106123110014457] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.37 ms | total_stage=2.59 ms | end2end=2.87 ms
-2025-11-06 12:31:11,018 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:31:11,018 INFO [BATCH KPM 20251106123111015728] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.27 ms | end2end=2.47 ms
-2025-11-06 12:31:12,019 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.07 ms
-2025-11-06 12:31:12,019 INFO [BATCH KPM 20251106123112017170] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.21 ms | end2end=2.42 ms
-2025-11-06 12:31:13,022 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=3.38 ms
-2025-11-06 12:31:13,022 INFO [BATCH KPM 20251106123113018389] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=3.38 ms | total_stage=3.54 ms | end2end=3.80 ms
-2025-11-06 12:31:14,022 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:31:14,022 INFO [BATCH KPM 20251106123114019693] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.26 ms | end2end=2.44 ms
-2025-11-06 12:31:15,023 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.10 ms
-2025-11-06 12:31:15,023 INFO [BATCH KPM 20251106123115020828] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.10 ms | total_stage=2.30 ms | end2end=2.50 ms
-2025-11-06 12:31:16,024 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.02 ms | predict=1.82 ms
-2025-11-06 12:31:16,024 INFO [BATCH KPM 20251106123116022307] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.02 ms | predict=1.82 ms | total_stage=2.01 ms | end2end=2.21 ms
-2025-11-06 12:31:17,026 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.29 ms
-2025-11-06 12:31:17,026 INFO [BATCH KPM 20251106123117023606] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.44 ms | end2end=2.77 ms
-2025-11-06 12:31:18,027 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.03 ms | predict=2.00 ms
-2025-11-06 12:31:18,027 INFO [BATCH KPM 20251106123118024819] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.03 ms | predict=2.00 ms | total_stage=2.19 ms | end2end=2.40 ms
-2025-11-06 12:31:19,028 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.78 ms
-2025-11-06 12:31:19,028 INFO [BATCH KPM 20251106123119026205] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.78 ms | total_stage=1.94 ms | end2end=2.11 ms
-2025-11-06 12:31:20,029 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.04 ms
-2025-11-06 12:31:20,029 INFO [BATCH KPM 20251106123120027428] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.04 ms | total_stage=2.19 ms | end2end=2.41 ms
-2025-11-06 12:31:21,031 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:31:21,031 INFO [BATCH KPM 20251106123121028795] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.16 ms | end2end=2.35 ms
-2025-11-06 12:31:22,032 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:31:22,032 INFO [BATCH KPM 20251106123122029995] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.25 ms | end2end=2.44 ms
-2025-11-06 12:31:23,033 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.03 ms
-2025-11-06 12:31:23,033 INFO [BATCH KPM 20251106123123031365] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.03 ms | total_stage=2.19 ms | end2end=2.38 ms
-2025-11-06 12:31:24,035 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.21 ms
-2025-11-06 12:31:24,035 INFO [BATCH KPM 20251106123124032861] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.21 ms | total_stage=2.40 ms | end2end=2.66 ms
-2025-11-06 12:31:25,036 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms
-2025-11-06 12:31:25,036 INFO [BATCH KPM 20251106123125034038] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.26 ms | end2end=2.43 ms
-2025-11-06 12:31:26,037 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.81 ms
-2025-11-06 12:31:26,037 INFO [BATCH KPM 20251106123126035140] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.81 ms | total_stage=2.02 ms | end2end=2.19 ms
-2025-11-06 12:31:27,039 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.55 ms
-2025-11-06 12:31:27,039 INFO [BATCH KPM 20251106123127036431] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.71 ms | end2end=2.91 ms
-2025-11-06 12:31:28,040 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms
-2025-11-06 12:31:28,040 INFO [BATCH KPM 20251106123128037827] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.49 ms | end2end=2.69 ms
-2025-11-06 12:31:29,041 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.12 ms | buffer=0.01 ms | predict=1.89 ms
-2025-11-06 12:31:29,041 INFO [BATCH KPM 20251106123129039448] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.12 ms | buffer=0.01 ms | predict=1.89 ms | total_stage=2.10 ms | end2end=2.30 ms
-2025-11-06 12:31:30,043 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:31:30,043 INFO [BATCH KPM 20251106123130040732] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.27 ms | end2end=2.47 ms
-2025-11-06 12:31:31,044 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.04 ms
-2025-11-06 12:31:31,044 INFO [BATCH KPM 20251106123131042030] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.04 ms | total_stage=2.29 ms | end2end=2.62 ms
-2025-11-06 12:31:32,046 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.48 ms
-2025-11-06 12:31:32,046 INFO [BATCH KPM 20251106123132043254] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.48 ms | total_stage=2.68 ms | end2end=2.95 ms
-2025-11-06 12:31:33,046 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.09 ms
-2025-11-06 12:31:33,047 INFO [BATCH KPM 20251106123133044568] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.27 ms | end2end=2.48 ms
-2025-11-06 12:31:34,048 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms
-2025-11-06 12:31:34,048 INFO [BATCH KPM 20251106123134045930] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.56 ms | end2end=2.78 ms
-2025-11-06 12:31:35,049 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms
-2025-11-06 12:31:35,050 INFO [BATCH KPM 20251106123135047399] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.40 ms | end2end=2.59 ms
-2025-11-06 12:31:36,051 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.92 ms
-2025-11-06 12:31:36,051 INFO [BATCH KPM 20251106123136048906] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.92 ms | total_stage=2.07 ms | end2end=2.24 ms
-2025-11-06 12:31:37,052 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.00 ms
-2025-11-06 12:31:37,052 INFO [BATCH KPM 20251106123137050238] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.00 ms | total_stage=2.16 ms | end2end=2.35 ms
-2025-11-06 12:31:38,053 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms
-2025-11-06 12:31:38,054 INFO [BATCH KPM 20251106123138051513] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.28 ms | end2end=2.52 ms
-2025-11-06 12:31:39,054 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.86 ms
-2025-11-06 12:31:39,054 INFO [BATCH KPM 20251106123139052667] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.86 ms | total_stage=2.05 ms | end2end=2.28 ms
-2025-11-06 12:31:40,056 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.89 ms
-2025-11-06 12:31:40,056 INFO [BATCH KPM 20251106123140053899] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.89 ms | total_stage=2.12 ms | end2end=2.28 ms
-2025-11-06 12:31:41,057 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms
-2025-11-06 12:31:41,058 INFO [BATCH KPM 20251106123141055548] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.33 ms | end2end=2.54 ms
-2025-11-06 12:31:42,059 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms
-2025-11-06 12:31:42,059 INFO [BATCH KPM 20251106123142056895] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.25 ms | end2end=2.45 ms
-2025-11-06 12:31:43,060 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.86 ms
-2025-11-06 12:31:43,060 INFO [BATCH KPM 20251106123143058326] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.86 ms | total_stage=2.01 ms | end2end=2.19 ms
-2025-11-06 12:31:44,061 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:31:44,061 INFO [BATCH KPM 20251106123144059548] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.21 ms | end2end=2.42 ms
-2025-11-06 12:31:45,063 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:31:45,063 INFO [BATCH KPM 20251106123145060690] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.22 ms | end2end=2.48 ms
-2025-11-06 12:31:46,064 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.78 ms
-2025-11-06 12:31:46,064 INFO [BATCH KPM 20251106123146062150] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.78 ms | total_stage=1.93 ms | end2end=2.11 ms
-2025-11-06 12:31:47,065 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.78 ms
-2025-11-06 12:31:47,065 INFO [BATCH KPM 20251106123147063493] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.78 ms | total_stage=1.95 ms | end2end=2.11 ms
-2025-11-06 12:31:48,067 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.90 ms
-2025-11-06 12:31:48,067 INFO [BATCH KPM 20251106123148065085] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.90 ms | total_stage=2.05 ms | end2end=2.22 ms
-2025-11-06 12:31:49,069 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.90 ms
-2025-11-06 12:31:49,069 INFO [BATCH KPM 20251106123149066841] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.90 ms | total_stage=2.10 ms | end2end=2.26 ms
-2025-11-06 12:31:50,070 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms
-2025-11-06 12:31:50,070 INFO [BATCH KPM 20251106123150068364] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.20 ms | end2end=2.41 ms
-2025-11-06 12:31:51,071 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.82 ms
-2025-11-06 12:31:51,071 INFO [BATCH KPM 20251106123151069601] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.82 ms | total_stage=1.99 ms | end2end=2.21 ms
-2025-11-06 12:31:52,073 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms
-2025-11-06 12:31:52,073 INFO [BATCH KPM 20251106123152070937] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms | total_stage=2.47 ms | end2end=2.68 ms
-2025-11-06 12:31:53,074 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.81 ms
-2025-11-06 12:31:53,074 INFO [BATCH KPM 20251106123153072129] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.81 ms | total_stage=1.95 ms | end2end=2.15 ms
-2025-11-06 12:31:54,075 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.74 ms
-2025-11-06 12:31:54,075 INFO [BATCH KPM 20251106123154073592] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.74 ms | total_stage=1.90 ms | end2end=2.06 ms
-2025-11-06 12:31:55,077 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.96 ms
-2025-11-06 12:31:55,077 INFO [BATCH KPM 20251106123155075040] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.96 ms | total_stage=2.11 ms | end2end=2.29 ms
-2025-11-06 12:31:56,078 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.15 ms
-2025-11-06 12:31:56,078 INFO [BATCH KPM 20251106123156076268] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.15 ms | total_stage=2.29 ms | end2end=2.52 ms
-2025-11-06 12:31:57,079 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.07 ms | normalize=0.09 ms | buffer=0.02 ms | predict=1.87 ms
-2025-11-06 12:31:57,079 INFO [BATCH KPM 20251106123157077425] Completed 1 UEs | queue_wait=0.07 ms | normalize=0.09 ms | buffer=0.02 ms | predict=1.87 ms | total_stage=2.05 ms | end2end=2.24 ms
-2025-11-06 12:31:58,080 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms
-2025-11-06 12:31:58,080 INFO [BATCH KPM 20251106123158078581] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms | total_stage=2.02 ms | end2end=2.21 ms
-2025-11-06 12:31:59,082 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:31:59,082 INFO [BATCH KPM 20251106123159079952] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.15 ms | end2end=2.31 ms
-2025-11-06 12:32:00,083 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms
-2025-11-06 12:32:00,084 INFO [BATCH KPM 20251106123200081227] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.55 ms | end2end=2.77 ms
-2025-11-06 12:32:01,084 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.83 ms
-2025-11-06 12:32:01,084 INFO [BATCH KPM 20251106123201082565] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.83 ms | total_stage=1.98 ms | end2end=2.22 ms
-2025-11-06 12:32:02,086 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.97 ms
-2025-11-06 12:32:02,086 INFO [BATCH KPM 20251106123202083980] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.97 ms | total_stage=2.11 ms | end2end=2.30 ms
-2025-11-06 12:32:03,087 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.96 ms
-2025-11-06 12:32:03,087 INFO [BATCH KPM 20251106123203085260] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.96 ms | total_stage=2.12 ms | end2end=2.32 ms
-2025-11-06 12:32:04,088 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.08 ms
-2025-11-06 12:32:04,089 INFO [BATCH KPM 20251106123204086646] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.08 ms | total_stage=2.23 ms | end2end=2.43 ms
-2025-11-06 12:32:05,090 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.92 ms
-2025-11-06 12:32:05,090 INFO [BATCH KPM 20251106123205087946] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.92 ms | total_stage=2.06 ms | end2end=2.23 ms
-2025-11-06 12:32:06,091 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.07 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.75 ms
-2025-11-06 12:32:06,091 INFO [BATCH KPM 20251106123206089466] Completed 1 UEs | queue_wait=0.07 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.75 ms | total_stage=1.88 ms | end2end=2.05 ms
-2025-11-06 12:32:07,093 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.83 ms
-2025-11-06 12:32:07,093 INFO [BATCH KPM 20251106123207090972] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.83 ms | total_stage=2.00 ms | end2end=2.17 ms
-2025-11-06 12:32:08,095 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms
-2025-11-06 12:32:08,095 INFO [BATCH KPM 20251106123208092287] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms | total_stage=2.79 ms | end2end=3.11 ms
-2025-11-06 12:32:09,095 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms
-2025-11-06 12:32:09,095 INFO [BATCH KPM 20251106123209093551] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.84 ms | total_stage=1.98 ms | end2end=2.21 ms
-2025-11-06 12:32:10,097 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms
-2025-11-06 12:32:10,097 INFO [BATCH KPM 20251106123210094789] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms | total_stage=2.30 ms | end2end=2.50 ms
-2025-11-06 12:32:11,098 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.85 ms
-2025-11-06 12:32:11,098 INFO [BATCH KPM 20251106123211096024] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.85 ms | total_stage=2.01 ms | end2end=2.22 ms
-2025-11-06 12:32:12,100 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.56 ms
-2025-11-06 12:32:12,100 INFO [BATCH KPM 20251106123212097776] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.56 ms | total_stage=2.70 ms | end2end=2.92 ms
-2025-11-06 12:32:13,101 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.80 ms
-2025-11-06 12:32:13,101 INFO [BATCH KPM 20251106123213099446] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.80 ms | total_stage=1.95 ms | end2end=2.12 ms
-2025-11-06 12:32:14,103 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms
-2025-11-06 12:32:14,103 INFO [BATCH KPM 20251106123214100983] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.14 ms | total_stage=2.31 ms | end2end=2.52 ms
-2025-11-06 12:32:15,104 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.87 ms
-2025-11-06 12:32:15,104 INFO [BATCH KPM 20251106123215102255] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.87 ms | total_stage=2.02 ms | end2end=2.21 ms
-2025-11-06 12:32:16,106 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.78 ms
-2025-11-06 12:32:16,106 INFO [BATCH KPM 20251106123216104101] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.78 ms | total_stage=1.95 ms | end2end=2.17 ms
-2025-11-06 12:32:17,107 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.09 ms
-2025-11-06 12:32:17,107 INFO [BATCH KPM 20251106123217105363] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.24 ms | end2end=2.45 ms
-2025-11-06 12:32:18,109 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms
-2025-11-06 12:32:18,109 INFO [BATCH KPM 20251106123218106744] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.27 ms | end2end=2.49 ms
-2025-11-06 12:32:19,110 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.03 ms
-2025-11-06 12:32:19,110 INFO [BATCH KPM 20251106123219108097] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.03 ms | total_stage=2.18 ms | end2end=2.38 ms
-2025-11-06 12:32:20,111 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.18 ms
-2025-11-06 12:32:20,111 INFO [BATCH KPM 20251106123220109331] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.18 ms | total_stage=2.37 ms | end2end=2.62 ms
-2025-11-06 12:32:21,112 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.83 ms
-2025-11-06 12:32:21,112 INFO [BATCH KPM 20251106123221110560] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.83 ms | total_stage=1.98 ms | end2end=2.20 ms
-2025-11-06 12:32:22,114 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.17 ms
-2025-11-06 12:32:22,114 INFO [BATCH KPM 20251106123222111971] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.33 ms | end2end=2.57 ms
-2025-11-06 12:32:23,115 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.17 ms
-2025-11-06 12:32:23,115 INFO [BATCH KPM 20251106123223113334] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.33 ms | end2end=2.53 ms
-2025-11-06 12:32:24,117 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.25 ms
-2025-11-06 12:32:24,117 INFO [BATCH KPM 20251106123224115051] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.39 ms | end2end=2.57 ms
-2025-11-06 12:32:25,119 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms
-2025-11-06 12:32:25,119 INFO [BATCH KPM 20251106123225116644] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.39 ms | end2end=2.60 ms
-2025-11-06 12:32:26,120 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.05 ms
-2025-11-06 12:32:26,120 INFO [BATCH KPM 20251106123226118376] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.22 ms | end2end=2.40 ms
-2025-11-06 12:32:27,122 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.19 ms
-2025-11-06 12:32:27,122 INFO [BATCH KPM 20251106123227119835] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.19 ms | total_stage=2.36 ms | end2end=2.54 ms
-2025-11-06 12:32:28,124 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.33 ms
-2025-11-06 12:32:28,124 INFO [BATCH KPM 20251106123228121457] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.52 ms | end2end=2.73 ms
-2025-11-06 12:32:29,125 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
-2025-11-06 12:32:29,125 INFO [BATCH KPM 20251106123229123064] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.44 ms | end2end=2.71 ms
-2025-11-06 12:32:30,126 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms
-2025-11-06 12:32:30,127 INFO [BATCH KPM 20251106123230124599] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.26 ms | end2end=2.47 ms
-2025-11-06 12:32:31,127 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.51 ms
-2025-11-06 12:32:31,128 INFO [BATCH KPM 20251106123231126230] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.51 ms | total_stage=1.66 ms | end2end=1.81 ms
-2025-11-06 12:32:32,129 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.87 ms
-2025-11-06 12:32:32,129 INFO [BATCH KPM 20251106123232127618] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.87 ms | total_stage=2.02 ms | end2end=2.20 ms
-2025-11-06 12:32:33,131 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms
-2025-11-06 12:32:33,131 INFO [BATCH KPM 20251106123233128882] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.45 ms | end2end=2.64 ms
-2025-11-06 12:32:34,133 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=3.28 ms
-2025-11-06 12:32:34,133 INFO [BATCH KPM 20251106123234130145] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=3.28 ms | total_stage=3.45 ms | end2end=3.79 ms
-2025-11-06 12:32:35,134 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.91 ms
-2025-11-06 12:32:35,134 INFO [BATCH KPM 20251106123235131935] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.91 ms | total_stage=2.06 ms | end2end=2.28 ms
-2025-11-06 12:32:36,135 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:32:36,135 INFO [BATCH KPM 20251106123236133291] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.20 ms | end2end=2.37 ms
-2025-11-06 12:32:37,136 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.72 ms
-2025-11-06 12:32:37,136 INFO [BATCH KPM 20251106123237134818] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.72 ms | total_stage=1.88 ms | end2end=2.06 ms
-2025-11-06 12:32:38,138 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.71 ms
-2025-11-06 12:32:38,138 INFO [BATCH KPM 20251106123238136340] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.71 ms | total_stage=1.85 ms | end2end=2.03 ms
-2025-11-06 12:32:39,140 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.92 ms
-2025-11-06 12:32:39,140 INFO [BATCH KPM 20251106123239138156] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.92 ms | total_stage=2.10 ms | end2end=2.34 ms
-2025-11-06 12:32:40,141 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.86 ms
-2025-11-06 12:32:40,142 INFO [BATCH KPM 20251106123240139859] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.86 ms | total_stage=2.01 ms | end2end=2.20 ms
-2025-11-06 12:32:41,143 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.08 ms
-2025-11-06 12:32:41,143 INFO [BATCH KPM 20251106123241141481] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.08 ms | total_stage=2.28 ms | end2end=2.45 ms
-2025-11-06 12:32:42,145 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.20 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms
-2025-11-06 12:32:42,145 INFO [BATCH KPM 20251106123242143054] Completed 1 UEs | queue_wait=0.20 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.55 ms | end2end=2.81 ms
-2025-11-06 12:32:43,147 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:32:43,147 INFO [BATCH KPM 20251106123243144739] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.31 ms | end2end=2.50 ms
-2025-11-06 12:32:44,148 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.03 ms | predict=1.96 ms
-2025-11-06 12:32:44,148 INFO [BATCH KPM 20251106123244146398] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.03 ms | predict=1.96 ms | total_stage=2.14 ms | end2end=2.34 ms
-2025-11-06 12:32:45,150 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.94 ms
-2025-11-06 12:32:45,150 INFO [BATCH KPM 20251106123245148100] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.94 ms | total_stage=2.11 ms | end2end=2.30 ms
-2025-11-06 12:32:46,151 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.95 ms
-2025-11-06 12:32:46,151 INFO [BATCH KPM 20251106123246149491] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.95 ms | total_stage=2.10 ms | end2end=2.29 ms
-2025-11-06 12:32:47,153 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:32:47,153 INFO [BATCH KPM 20251106123247151087] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.28 ms | end2end=2.49 ms
-2025-11-06 12:32:48,155 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.33 ms
-2025-11-06 12:32:48,155 INFO [BATCH KPM 20251106123248152519] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.54 ms | end2end=3.22 ms
-2025-11-06 12:32:49,156 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.06 ms | predict=2.16 ms
-2025-11-06 12:32:49,156 INFO [BATCH KPM 20251106123249153910] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.06 ms | predict=2.16 ms | total_stage=2.36 ms | end2end=2.55 ms
-2025-11-06 12:32:50,157 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.21 ms
-2025-11-06 12:32:50,157 INFO [BATCH KPM 20251106123250155205] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.21 ms | total_stage=2.38 ms | end2end=2.59 ms
-2025-11-06 12:32:51,159 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.22 ms
-2025-11-06 12:32:51,159 INFO [BATCH KPM 20251106123251156928] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.38 ms | end2end=2.59 ms
-2025-11-06 12:32:52,160 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.87 ms
-2025-11-06 12:32:52,160 INFO [BATCH KPM 20251106123252158639] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.87 ms | total_stage=2.07 ms | end2end=2.26 ms
-2025-11-06 12:32:53,162 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.11 ms
-2025-11-06 12:32:53,162 INFO [BATCH KPM 20251106123253160474] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.11 ms | total_stage=2.31 ms | end2end=2.51 ms
-2025-11-06 12:32:54,164 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.22 ms
-2025-11-06 12:32:54,164 INFO [BATCH KPM 20251106123254162038] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.46 ms | end2end=2.67 ms
-2025-11-06 12:32:55,167 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=3.06 ms
-2025-11-06 12:32:55,167 INFO [BATCH KPM 20251106123255163690] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=3.06 ms | total_stage=3.25 ms | end2end=3.46 ms
-2025-11-06 12:32:56,167 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.04 ms | predict=1.92 ms
-2025-11-06 12:32:56,167 INFO [BATCH KPM 20251106123256165209] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.04 ms | predict=1.92 ms | total_stage=2.12 ms | end2end=2.33 ms
-2025-11-06 12:32:57,169 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.16 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.40 ms
-2025-11-06 12:32:57,169 INFO [BATCH KPM 20251106123257166692] Completed 1 UEs | queue_wait=0.16 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.62 ms | end2end=2.83 ms
-2025-11-06 12:32:58,170 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms
-2025-11-06 12:32:58,170 INFO [BATCH KPM 20251106123258168058] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms | total_stage=2.65 ms | end2end=2.90 ms
-2025-11-06 12:32:59,172 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.28 ms
-2025-11-06 12:32:59,172 INFO [BATCH KPM 20251106123259169678] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.28 ms | total_stage=2.49 ms | end2end=2.73 ms
-2025-11-06 12:33:00,174 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms
-2025-11-06 12:33:00,174 INFO [BATCH KPM 20251106123300171694] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms | total_stage=2.58 ms | end2end=2.80 ms
-2025-11-06 12:33:01,175 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.19 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms
-2025-11-06 12:33:01,175 INFO [BATCH KPM 20251106123301173190] Completed 1 UEs | queue_wait=0.19 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.98 ms | total_stage=2.22 ms | end2end=2.45 ms
-2025-11-06 12:33:02,176 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:33:02,176 INFO [BATCH KPM 20251106123302174462] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.22 ms | end2end=2.43 ms
-2025-11-06 12:33:03,177 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.86 ms
-2025-11-06 12:33:03,177 INFO [BATCH KPM 20251106123303175752] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=1.86 ms | total_stage=2.05 ms | end2end=2.21 ms
-2025-11-06 12:33:04,178 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.60 ms
-2025-11-06 12:33:04,179 INFO [BATCH KPM 20251106123304177155] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.60 ms | total_stage=1.75 ms | end2end=1.91 ms
-2025-11-06 12:33:05,181 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.34 ms
-2025-11-06 12:33:05,181 INFO [BATCH KPM 20251106123305178481] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.48 ms | end2end=2.79 ms
-2025-11-06 12:33:06,182 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.31 ms
-2025-11-06 12:33:06,182 INFO [BATCH KPM 20251106123306180070] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.31 ms | total_stage=2.48 ms | end2end=2.69 ms
-2025-11-06 12:33:07,184 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:33:07,184 INFO [BATCH KPM 20251106123307181888] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.16 ms | end2end=2.34 ms
-2025-11-06 12:33:08,185 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.77 ms
-2025-11-06 12:33:08,185 INFO [BATCH KPM 20251106123308183504] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.77 ms | total_stage=1.94 ms | end2end=2.13 ms
-2025-11-06 12:33:09,187 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.05 ms
-2025-11-06 12:33:09,187 INFO [BATCH KPM 20251106123309184915] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.23 ms | end2end=2.43 ms
-2025-11-06 12:33:10,188 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.24 ms
-2025-11-06 12:33:10,188 INFO [BATCH KPM 20251106123310186264] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.40 ms | end2end=2.61 ms
-2025-11-06 12:33:11,190 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms
-2025-11-06 12:33:11,190 INFO [BATCH KPM 20251106123311187841] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.32 ms | end2end=2.50 ms
-2025-11-06 12:33:12,195 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.02 ms | predict=5.55 ms
-2025-11-06 12:33:12,195 INFO [BATCH KPM 20251106123312189198] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.02 ms | predict=5.55 ms | total_stage=5.72 ms | end2end=5.93 ms
-2025-11-06 12:33:13,192 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.06 ms
-2025-11-06 12:33:13,193 INFO [BATCH KPM 20251106123313190590] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.21 ms | end2end=2.43 ms
-2025-11-06 12:33:14,194 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.02 ms
-2025-11-06 12:33:14,194 INFO [BATCH KPM 20251106123314191955] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.20 ms | end2end=2.39 ms
-2025-11-06 12:33:15,196 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.64 ms
-2025-11-06 12:33:15,196 INFO [BATCH KPM 20251106123315193542] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.64 ms | total_stage=2.83 ms | end2end=3.06 ms
-2025-11-06 12:33:16,197 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.82 ms
-2025-11-06 12:33:16,197 INFO [BATCH KPM 20251106123316195031] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.82 ms | total_stage=2.03 ms | end2end=2.20 ms
-2025-11-06 12:33:17,198 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms
-2025-11-06 12:33:17,199 INFO [BATCH KPM 20251106123317196659] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.22 ms | end2end=2.40 ms
-2025-11-06 12:33:18,200 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.18 ms
-2025-11-06 12:33:18,200 INFO [BATCH KPM 20251106123318198282] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.18 ms | total_stage=2.36 ms | end2end=2.59 ms
-2025-11-06 12:33:19,202 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms
-2025-11-06 12:33:19,202 INFO [BATCH KPM 20251106123319199757] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.20 ms | end2end=2.38 ms
-2025-11-06 12:33:20,203 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms
-2025-11-06 12:33:20,203 INFO [BATCH KPM 20251106123320201115] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.36 ms | end2end=2.58 ms
-2025-11-06 12:33:21,205 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms
-2025-11-06 12:33:21,205 INFO [BATCH KPM 20251106123321202702] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.22 ms | end2end=2.44 ms
-2025-11-06 12:33:22,206 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.93 ms
-2025-11-06 12:33:22,206 INFO [BATCH KPM 20251106123322204227] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.93 ms | total_stage=2.10 ms | end2end=2.28 ms
-2025-11-06 12:33:23,207 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.89 ms
-2025-11-06 12:33:23,207 INFO [BATCH KPM 20251106123323205631] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=1.89 ms | total_stage=2.05 ms | end2end=2.24 ms
-2025-11-06 12:33:24,209 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.82 ms
-2025-11-06 12:33:24,209 INFO [BATCH KPM 20251106123324207041] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.82 ms | total_stage=1.96 ms | end2end=2.14 ms
-2025-11-06 12:33:25,210 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.02 ms | predict=1.80 ms
-2025-11-06 12:33:25,210 INFO [BATCH KPM 20251106123325208383] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.02 ms | predict=1.80 ms | total_stage=1.95 ms | end2end=2.12 ms
-2025-11-06 12:33:26,211 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.00 ms
-2025-11-06 12:33:26,212 INFO [BATCH KPM 20251106123326209746] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.00 ms | total_stage=2.16 ms | end2end=2.33 ms
-2025-11-06 12:33:27,213 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.93 ms
-2025-11-06 12:33:27,213 INFO [BATCH KPM 20251106123327211082] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.93 ms | total_stage=2.10 ms | end2end=2.27 ms
-2025-11-06 12:33:28,215 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
-2025-11-06 12:33:28,215 INFO [BATCH KPM 20251106123328212649] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.45 ms | end2end=2.64 ms
-2025-11-06 12:33:29,216 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.89 ms
-2025-11-06 12:33:29,216 INFO [BATCH KPM 20251106123329214223] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.89 ms | total_stage=2.04 ms | end2end=2.22 ms
-2025-11-06 12:33:30,217 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms
-2025-11-06 12:33:30,217 INFO [BATCH KPM 20251106123330215708] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=1.88 ms | total_stage=2.02 ms | end2end=2.21 ms
-2025-11-06 12:33:31,219 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.13 ms
-2025-11-06 12:33:31,219 INFO [BATCH KPM 20251106123331217136] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.13 ms | total_stage=2.31 ms | end2end=2.57 ms
-2025-11-06 12:33:32,221 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.09 ms
-2025-11-06 12:33:32,221 INFO [BATCH KPM 20251106123332218848] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.27 ms | end2end=2.53 ms
-2025-11-06 12:33:33,223 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.93 ms
-2025-11-06 12:33:33,223 INFO [BATCH KPM 20251106123333220856] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=1.93 ms | total_stage=2.11 ms | end2end=2.28 ms
+ * Running on http://10.244.0.227:5000
+2025-11-07 13:15:45,287 INFO [33mPress CTRL+C to quit[0m
+2025-11-07 13:15:45,361 INFO Model loaded: {'device': 'cpu', 'status': 'ok'}
+2025-11-07 13:59:32,588 INFO Listening on port 4200
+2025-11-07 13:59:32,589 INFO Socket listener started...
+2025-11-07 13:59:32,589 INFO Processing worker started...
+2025-11-07 13:59:32,596 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:32,596 INFO [BATCH KPM 20251107135932596039] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.44 ms
+2025-11-07 13:59:33,602 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.17 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:33,602 INFO [BATCH KPM 20251107135933602385] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.46 ms
+2025-11-07 13:59:34,609 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:34,609 INFO [BATCH KPM 20251107135934608978] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.37 ms
+2025-11-07 13:59:35,616 INFO [UE=1.0] queue_wait=0.25 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:35,616 INFO [BATCH KPM 20251107135935615979] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.47 ms
+2025-11-07 13:59:36,622 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:36,622 INFO [BATCH KPM 20251107135936621926] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.41 ms
+2025-11-07 13:59:37,628 INFO [UE=1.0] queue_wait=0.19 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:37,628 INFO [BATCH KPM 20251107135937628194] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.51 ms
+2025-11-07 13:59:38,631 INFO [BATCH KPM 20251107135938631582] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.21 ms
+2025-11-07 13:59:39,638 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:39,638 INFO [BATCH KPM 20251107135939638179] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.35 ms
+2025-11-07 13:59:40,646 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.11 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:40,646 INFO [BATCH KPM 20251107135940645689] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.41 ms
+2025-11-07 13:59:41,652 INFO [UE=1.0] queue_wait=0.18 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:41,652 INFO [BATCH KPM 20251107135941651965] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.43 ms
+2025-11-07 13:59:42,658 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:42,658 INFO [BATCH KPM 20251107135942657837] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.35 ms
+2025-11-07 13:59:43,664 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:43,664 INFO [BATCH KPM 20251107135943664002] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.35 ms
+2025-11-07 13:59:44,670 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:44,670 INFO [BATCH KPM 20251107135944670312] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
+2025-11-07 13:59:45,676 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:45,676 INFO [BATCH KPM 20251107135945676058] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
+2025-11-07 13:59:46,684 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:46,684 INFO [BATCH KPM 20251107135946683736] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.43 ms
+2025-11-07 13:59:47,690 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:47,690 INFO [BATCH KPM 20251107135947690265] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.37 ms
+2025-11-07 13:59:48,698 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:48,698 INFO [BATCH KPM 20251107135948697795] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.36 ms
+2025-11-07 13:59:49,705 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:49,705 INFO [BATCH KPM 20251107135949704787] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.36 ms
+2025-11-07 13:59:50,712 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:50,712 INFO [BATCH KPM 20251107135950712488] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.39 ms
+2025-11-07 13:59:51,719 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:51,719 INFO [BATCH KPM 20251107135951719510] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.41 ms
+2025-11-07 13:59:52,725 INFO [UE=1.0] queue_wait=0.13 ms | normalize=0.12 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:52,726 INFO [BATCH KPM 20251107135952725561] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.51 ms
+2025-11-07 13:59:53,731 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:53,732 INFO [BATCH KPM 20251107135953731560] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.44 ms
+2025-11-07 13:59:54,739 INFO [UE=1.0] queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.00 ms | predict=--
+2025-11-07 13:59:54,739 INFO [BATCH KPM 20251107135954739295] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.46 ms
+2025-11-07 13:59:55,745 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:55,745 INFO [BATCH KPM 20251107135955745493] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.43 ms
+2025-11-07 13:59:56,751 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:56,751 INFO [BATCH KPM 20251107135956751254] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
+2025-11-07 13:59:57,757 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:57,757 INFO [BATCH KPM 20251107135957756836] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.37 ms
+2025-11-07 13:59:58,763 INFO [UE=1.0] queue_wait=0.12 ms | normalize=0.16 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:58,763 INFO [BATCH KPM 20251107135958762713] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.46 ms
+2025-11-07 13:59:59,769 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 13:59:59,769 INFO [BATCH KPM 20251107135959769011] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.34 ms
+2025-11-07 14:00:00,775 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=--
+2025-11-07 14:00:00,775 INFO [BATCH KPM 20251107140000775624] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.36 ms
+2025-11-07 14:00:01,782 INFO [UE=1.0] queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-07 14:00:01,782 INFO [BATCH KPM 20251107140001782220] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.37 ms
+2025-11-07 14:00:02,789 INFO [UE=1.0] queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=--
+2025-11-07 14:00:02,789 INFO [BATCH KPM 20251107140002789254] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.41 ms
+2025-11-07 14:00:03,796 INFO [UE=1.0] queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.00 ms | predict=--
+2025-11-07 14:00:03,796 INFO [BATCH KPM 20251107140003795739] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.36 ms
+2025-11-07 14:00:04,805 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=3.62 ms
+2025-11-07 14:00:04,805 INFO [BATCH KPM 20251107140004801963] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=3.62 ms | total_stage=3.79 ms | end2end=4.01 ms
+2025-11-07 14:00:05,811 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.64 ms
+2025-11-07 14:00:05,811 INFO [BATCH KPM 20251107140005808734] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.64 ms | total_stage=2.81 ms | end2end=3.05 ms
+2025-11-07 14:00:06,818 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.61 ms
+2025-11-07 14:00:06,818 INFO [BATCH KPM 20251107140006815177] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.61 ms | total_stage=2.78 ms | end2end=3.10 ms
+2025-11-07 14:00:07,824 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.85 ms
+2025-11-07 14:00:07,824 INFO [BATCH KPM 20251107140007821574] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.85 ms | total_stage=3.04 ms | end2end=3.41 ms
+2025-11-07 14:00:08,830 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.52 ms
+2025-11-07 14:00:08,830 INFO [BATCH KPM 20251107140008827743] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.52 ms | total_stage=2.79 ms | end2end=3.01 ms
+2025-11-07 14:00:09,836 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.56 ms
+2025-11-07 14:00:09,836 INFO [BATCH KPM 20251107140009833908] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.56 ms | total_stage=2.77 ms | end2end=3.00 ms
+2025-11-07 14:00:10,842 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.44 ms
+2025-11-07 14:00:10,842 INFO [BATCH KPM 20251107140010840011] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.44 ms | total_stage=2.63 ms | end2end=2.88 ms
+2025-11-07 14:00:11,848 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.02 ms | predict=2.43 ms
+2025-11-07 14:00:11,848 INFO [BATCH KPM 20251107140011845966] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.02 ms | predict=2.43 ms | total_stage=2.60 ms | end2end=2.82 ms
+2025-11-07 14:00:12,855 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.65 ms
+2025-11-07 14:00:12,855 INFO [BATCH KPM 20251107140012852141] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.65 ms | total_stage=2.82 ms | end2end=3.03 ms
+2025-11-07 14:00:13,861 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:00:13,861 INFO [BATCH KPM 20251107140013858586] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.75 ms | end2end=2.96 ms
+2025-11-07 14:00:14,868 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.49 ms
+2025-11-07 14:00:14,868 INFO [BATCH KPM 20251107140014865703] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.49 ms | total_stage=2.66 ms | end2end=2.88 ms
+2025-11-07 14:00:15,875 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.45 ms
+2025-11-07 14:00:15,875 INFO [BATCH KPM 20251107140015872540] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.45 ms | total_stage=2.63 ms | end2end=2.84 ms
+2025-11-07 14:00:16,883 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:00:16,883 INFO [BATCH KPM 20251107140016880510] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.59 ms | end2end=2.80 ms
+2025-11-07 14:00:17,892 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.11 ms | buffer=0.01 ms | predict=3.47 ms
+2025-11-07 14:00:17,892 INFO [BATCH KPM 20251107140017888436] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.11 ms | buffer=0.01 ms | predict=3.47 ms | total_stage=3.74 ms | end2end=3.95 ms
+2025-11-07 14:00:18,898 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.06 ms
+2025-11-07 14:00:18,898 INFO [BATCH KPM 20251107140018895928] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.24 ms | end2end=2.47 ms
+2025-11-07 14:00:19,906 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.74 ms
+2025-11-07 14:00:19,906 INFO [BATCH KPM 20251107140019903021] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.74 ms | total_stage=2.92 ms | end2end=3.13 ms
+2025-11-07 14:00:20,916 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=3.18 ms
+2025-11-07 14:00:20,916 INFO [BATCH KPM 20251107140020912679] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=3.18 ms | total_stage=3.35 ms | end2end=3.55 ms
+2025-11-07 14:00:21,921 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms
+2025-11-07 14:00:21,922 INFO [BATCH KPM 20251107140021918991] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms | total_stage=2.77 ms | end2end=3.09 ms
+2025-11-07 14:00:22,928 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.28 ms
+2025-11-07 14:00:22,928 INFO [BATCH KPM 20251107140022925531] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.28 ms | total_stage=2.47 ms | end2end=2.73 ms
+2025-11-07 14:00:23,934 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms
+2025-11-07 14:00:23,934 INFO [BATCH KPM 20251107140023931733] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.66 ms | end2end=2.90 ms
+2025-11-07 14:00:24,940 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.10 ms
+2025-11-07 14:00:24,941 INFO [BATCH KPM 20251107140024938564] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.10 ms | total_stage=2.26 ms | end2end=2.50 ms
+2025-11-07 14:00:25,947 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.59 ms
+2025-11-07 14:00:25,947 INFO [BATCH KPM 20251107140025944715] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.59 ms | total_stage=2.75 ms | end2end=2.98 ms
+2025-11-07 14:00:26,955 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.83 ms
+2025-11-07 14:00:26,955 INFO [BATCH KPM 20251107140026952025] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.83 ms | total_stage=3.00 ms | end2end=3.19 ms
+2025-11-07 14:00:27,962 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.61 ms
+2025-11-07 14:00:27,963 INFO [BATCH KPM 20251107140027960092] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.61 ms | total_stage=2.77 ms | end2end=3.01 ms
+2025-11-07 14:00:28,970 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.66 ms
+2025-11-07 14:00:28,970 INFO [BATCH KPM 20251107140028967087] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.66 ms | total_stage=2.85 ms | end2end=3.06 ms
+2025-11-07 14:00:29,977 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.59 ms
+2025-11-07 14:00:29,977 INFO [BATCH KPM 20251107140029974840] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.59 ms | total_stage=2.76 ms | end2end=3.08 ms
+2025-11-07 14:00:30,982 INFO [BATCH KPM 20251107140030982576] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:00:31,984 INFO [BATCH KPM 20251107140031984729] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:00:32,987 INFO [BATCH KPM 20251107140032986926] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.17 ms
+2025-11-07 14:00:33,990 INFO [BATCH KPM 20251107140033989922] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.19 ms
+2025-11-07 14:00:34,992 INFO [BATCH KPM 20251107140034992697] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:00:35,995 INFO [BATCH KPM 20251107140035995719] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:00:36,997 INFO [BATCH KPM 20251107140036997350] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:00:39,000 INFO [BATCH KPM 20251107140039000158] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.23 ms
+2025-11-07 14:00:40,002 INFO [BATCH KPM 20251107140040002595] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.29 ms
+2025-11-07 14:00:41,005 INFO [BATCH KPM 20251107140041005662] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.19 ms
+2025-11-07 14:00:42,009 INFO [BATCH KPM 20251107140042009696] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:00:43,013 INFO [BATCH KPM 20251107140043012883] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:00:44,018 INFO [BATCH KPM 20251107140044018464] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.23 ms
+2025-11-07 14:00:45,020 INFO [BATCH KPM 20251107140045020654] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.20 ms
+2025-11-07 14:00:46,060 INFO [BATCH KPM 20251107140046060465] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:00:47,066 INFO [BATCH KPM 20251107140047066447] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:00:48,075 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.20 ms
+2025-11-07 14:00:48,076 INFO [BATCH KPM 20251107140048073429] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.20 ms | total_stage=2.37 ms | end2end=2.60 ms
+2025-11-07 14:00:49,083 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.02 ms | predict=2.62 ms
+2025-11-07 14:00:49,083 INFO [BATCH KPM 20251107140049080268] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.02 ms | predict=2.62 ms | total_stage=2.79 ms | end2end=2.99 ms
+2025-11-07 14:00:50,090 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.69 ms
+2025-11-07 14:00:50,091 INFO [BATCH KPM 20251107140050087936] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.69 ms | total_stage=2.86 ms | end2end=3.08 ms
+2025-11-07 14:00:51,097 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.48 ms
+2025-11-07 14:00:51,098 INFO [BATCH KPM 20251107140051095186] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.48 ms | total_stage=2.66 ms | end2end=2.88 ms
+2025-11-07 14:00:52,104 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.69 ms
+2025-11-07 14:00:52,104 INFO [BATCH KPM 20251107140052101788] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.69 ms | total_stage=2.86 ms | end2end=3.09 ms
+2025-11-07 14:00:53,113 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.72 ms
+2025-11-07 14:00:53,113 INFO [BATCH KPM 20251107140053109990] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.72 ms | total_stage=2.91 ms | end2end=3.14 ms
+2025-11-07 14:00:54,118 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:00:54,118 INFO [BATCH KPM 20251107140054115659] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.52 ms | end2end=2.74 ms
+2025-11-07 14:00:55,124 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.52 ms
+2025-11-07 14:00:55,124 INFO [BATCH KPM 20251107140055121503] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.52 ms | total_stage=2.72 ms | end2end=2.97 ms
+2025-11-07 14:00:56,131 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:00:56,131 INFO [BATCH KPM 20251107140056128263] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.58 ms | end2end=2.87 ms
+2025-11-07 14:00:57,138 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.91 ms
+2025-11-07 14:00:57,138 INFO [BATCH KPM 20251107140057135316] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.91 ms | total_stage=3.09 ms | end2end=3.30 ms
+2025-11-07 14:00:58,146 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.95 ms
+2025-11-07 14:00:58,146 INFO [BATCH KPM 20251107140058143417] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.95 ms | total_stage=3.11 ms | end2end=3.34 ms
+2025-11-07 14:00:59,152 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:00:59,152 INFO [BATCH KPM 20251107140059149388] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.61 ms | end2end=2.80 ms
+2025-11-07 14:01:00,159 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.21 ms
+2025-11-07 14:01:00,159 INFO [BATCH KPM 20251107140100156704] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.21 ms | total_stage=2.42 ms | end2end=2.65 ms
+2025-11-07 14:01:01,166 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:01,166 INFO [BATCH KPM 20251107140101163425] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.50 ms | end2end=2.72 ms
+2025-11-07 14:01:02,173 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.66 ms
+2025-11-07 14:01:02,173 INFO [BATCH KPM 20251107140102170142] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.66 ms | total_stage=2.87 ms | end2end=3.09 ms
+2025-11-07 14:01:03,174 INFO [BATCH KPM 20251107140103173998] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:01:04,180 INFO [BATCH KPM 20251107140104180377] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:01:05,190 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:01:05,190 INFO [BATCH KPM 20251107140105187737] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.38 ms | end2end=2.57 ms
+2025-11-07 14:01:06,197 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.37 ms
+2025-11-07 14:01:06,197 INFO [BATCH KPM 20251107140106194363] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.37 ms | total_stage=2.61 ms | end2end=2.85 ms
+2025-11-07 14:01:07,203 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:01:07,204 INFO [BATCH KPM 20251107140107201065] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.73 ms | end2end=2.98 ms
+2025-11-07 14:01:08,207 INFO [BATCH KPM 20251107140108207298] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.26 ms
+2025-11-07 14:01:09,215 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:01:09,215 INFO [BATCH KPM 20251107140109213249] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.40 ms | end2end=2.61 ms
+2025-11-07 14:01:10,222 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:01:10,222 INFO [BATCH KPM 20251107140110219564] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.56 ms | end2end=2.78 ms
+2025-11-07 14:01:11,227 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.16 ms
+2025-11-07 14:01:11,227 INFO [BATCH KPM 20251107140111225267] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.33 ms | end2end=2.56 ms
+2025-11-07 14:01:12,233 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:01:12,233 INFO [BATCH KPM 20251107140112230843] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.60 ms | end2end=2.82 ms
+2025-11-07 14:01:13,239 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:13,239 INFO [BATCH KPM 20251107140113236584] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.47 ms | end2end=2.69 ms
+2025-11-07 14:01:14,245 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:01:14,245 INFO [BATCH KPM 20251107140114242953] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.54 ms | end2end=2.79 ms
+2025-11-07 14:01:15,251 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:01:15,251 INFO [BATCH KPM 20251107140115248885] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.43 ms | end2end=2.66 ms
+2025-11-07 14:01:16,258 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.46 ms
+2025-11-07 14:01:16,259 INFO [BATCH KPM 20251107140116256262] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.46 ms | total_stage=2.62 ms | end2end=2.83 ms
+2025-11-07 14:01:17,266 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.16 ms
+2025-11-07 14:01:17,266 INFO [BATCH KPM 20251107140117264364] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.33 ms | end2end=2.59 ms
+2025-11-07 14:01:18,272 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:18,272 INFO [BATCH KPM 20251107140118269968] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.46 ms | end2end=2.66 ms
+2025-11-07 14:01:19,278 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:01:19,278 INFO [BATCH KPM 20251107140119275782] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.71 ms | end2end=2.97 ms
+2025-11-07 14:01:20,283 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.44 ms
+2025-11-07 14:01:20,284 INFO [BATCH KPM 20251107140120281249] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.44 ms | total_stage=2.60 ms | end2end=2.83 ms
+2025-11-07 14:01:21,289 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms
+2025-11-07 14:01:21,289 INFO [BATCH KPM 20251107140121286870] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.27 ms | end2end=2.46 ms
+2025-11-07 14:01:22,295 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.14 ms | buffer=0.01 ms | predict=2.22 ms
+2025-11-07 14:01:22,295 INFO [BATCH KPM 20251107140122293018] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.14 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.45 ms | end2end=2.67 ms
+2025-11-07 14:01:23,301 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:01:23,301 INFO [BATCH KPM 20251107140123298930] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.53 ms | end2end=2.74 ms
+2025-11-07 14:01:24,307 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.03 ms | predict=2.33 ms
+2025-11-07 14:01:24,307 INFO [BATCH KPM 20251107140124305253] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.03 ms | predict=2.33 ms | total_stage=2.53 ms | end2end=2.75 ms
+2025-11-07 14:01:25,313 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:01:25,313 INFO [BATCH KPM 20251107140125310871] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.40 ms | end2end=2.64 ms
+2025-11-07 14:01:26,318 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.40 ms
+2025-11-07 14:01:26,319 INFO [BATCH KPM 20251107140126316316] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.58 ms | end2end=2.77 ms
+2025-11-07 14:01:27,325 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.56 ms
+2025-11-07 14:01:27,325 INFO [BATCH KPM 20251107140127322145] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.56 ms | total_stage=2.76 ms | end2end=2.99 ms
+2025-11-07 14:01:28,331 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.44 ms
+2025-11-07 14:01:28,331 INFO [BATCH KPM 20251107140128328394] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.44 ms | total_stage=2.66 ms | end2end=2.87 ms
+2025-11-07 14:01:29,338 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.60 ms
+2025-11-07 14:01:29,338 INFO [BATCH KPM 20251107140129335751] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.60 ms | total_stage=2.80 ms | end2end=3.02 ms
+2025-11-07 14:01:30,344 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms
+2025-11-07 14:01:30,344 INFO [BATCH KPM 20251107140130341617] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.29 ms | end2end=2.53 ms
+2025-11-07 14:01:31,350 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:01:31,350 INFO [BATCH KPM 20251107140131348010] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.50 ms | end2end=2.72 ms
+2025-11-07 14:01:32,357 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.66 ms
+2025-11-07 14:01:32,357 INFO [BATCH KPM 20251107140132354464] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.66 ms | total_stage=2.86 ms | end2end=3.13 ms
+2025-11-07 14:01:33,365 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:01:33,365 INFO [BATCH KPM 20251107140133362424] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.47 ms | end2end=2.69 ms
+2025-11-07 14:01:34,371 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.03 ms | predict=2.55 ms
+2025-11-07 14:01:34,371 INFO [BATCH KPM 20251107140134368203] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.03 ms | predict=2.55 ms | total_stage=2.75 ms | end2end=2.96 ms
+2025-11-07 14:01:35,377 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:01:35,377 INFO [BATCH KPM 20251107140135374431] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.50 ms | end2end=2.73 ms
+2025-11-07 14:01:36,384 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.73 ms
+2025-11-07 14:01:36,384 INFO [BATCH KPM 20251107140136380868] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.73 ms | total_stage=2.91 ms | end2end=3.28 ms
+2025-11-07 14:01:37,392 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.83 ms
+2025-11-07 14:01:37,392 INFO [BATCH KPM 20251107140137388953] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.83 ms | total_stage=3.02 ms | end2end=3.29 ms
+2025-11-07 14:01:38,397 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.35 ms
+2025-11-07 14:01:38,397 INFO [BATCH KPM 20251107140138394818] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.35 ms | total_stage=2.52 ms | end2end=2.72 ms
+2025-11-07 14:01:39,404 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.25 ms
+2025-11-07 14:01:39,404 INFO [BATCH KPM 20251107140139401665] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.44 ms | end2end=2.65 ms
+2025-11-07 14:01:40,409 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.17 ms
+2025-11-07 14:01:40,409 INFO [BATCH KPM 20251107140140407162] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.17 ms | total_stage=2.35 ms | end2end=2.58 ms
+2025-11-07 14:01:41,415 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.33 ms
+2025-11-07 14:01:41,415 INFO [BATCH KPM 20251107140141412948] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.48 ms | end2end=2.69 ms
+2025-11-07 14:01:42,421 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.21 ms
+2025-11-07 14:01:42,421 INFO [BATCH KPM 20251107140142419050] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.21 ms | total_stage=2.38 ms | end2end=2.57 ms
+2025-11-07 14:01:43,427 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:43,427 INFO [BATCH KPM 20251107140143425114] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.47 ms | end2end=2.70 ms
+2025-11-07 14:01:44,433 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:44,433 INFO [BATCH KPM 20251107140144430713] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.48 ms | end2end=2.71 ms
+2025-11-07 14:01:45,439 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.20 ms
+2025-11-07 14:01:45,439 INFO [BATCH KPM 20251107140145436944] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.20 ms | total_stage=2.37 ms | end2end=2.60 ms
+2025-11-07 14:01:46,447 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms
+2025-11-07 14:01:46,447 INFO [BATCH KPM 20251107140146444600] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.43 ms | end2end=2.65 ms
+2025-11-07 14:01:47,455 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms
+2025-11-07 14:01:47,455 INFO [BATCH KPM 20251107140147452897] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.21 ms | end2end=2.40 ms
+2025-11-07 14:01:48,461 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:01:48,461 INFO [BATCH KPM 20251107140148458842] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.53 ms | end2end=2.77 ms
+2025-11-07 14:01:49,467 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:01:49,467 INFO [BATCH KPM 20251107140149464522] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.60 ms | end2end=2.81 ms
+2025-11-07 14:01:50,475 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:01:50,475 INFO [BATCH KPM 20251107140150473062] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.42 ms | end2end=2.63 ms
+2025-11-07 14:01:51,482 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.02 ms | predict=2.54 ms
+2025-11-07 14:01:51,482 INFO [BATCH KPM 20251107140151479440] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.02 ms | predict=2.54 ms | total_stage=2.77 ms | end2end=3.01 ms
+2025-11-07 14:01:52,488 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:01:52,488 INFO [BATCH KPM 20251107140152485979] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.69 ms | end2end=2.90 ms
+2025-11-07 14:01:53,496 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:01:53,496 INFO [BATCH KPM 20251107140153493640] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.56 ms | end2end=2.78 ms
+2025-11-07 14:01:54,503 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms
+2025-11-07 14:01:54,504 INFO [BATCH KPM 20251107140154501205] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.66 ms | end2end=2.88 ms
+2025-11-07 14:01:55,510 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.40 ms
+2025-11-07 14:01:55,510 INFO [BATCH KPM 20251107140155507624] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.57 ms | end2end=2.78 ms
+2025-11-07 14:01:56,516 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.01 ms
+2025-11-07 14:01:56,516 INFO [BATCH KPM 20251107140156514560] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.01 ms | total_stage=2.16 ms | end2end=2.37 ms
+2025-11-07 14:01:57,522 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:01:57,522 INFO [BATCH KPM 20251107140157520057] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.51 ms | end2end=2.72 ms
+2025-11-07 14:01:58,529 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.41 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.46 ms
+2025-11-07 14:01:58,529 INFO [BATCH KPM 20251107140158526470] Completed 1 UEs | queue_wait=0.41 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.46 ms | total_stage=2.94 ms | end2end=3.14 ms
+2025-11-07 14:01:59,536 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms
+2025-11-07 14:01:59,536 INFO [BATCH KPM 20251107140159533801] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms | total_stage=2.66 ms | end2end=2.87 ms
+2025-11-07 14:02:00,542 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.18 ms
+2025-11-07 14:02:00,543 INFO [BATCH KPM 20251107140200540487] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.18 ms | total_stage=2.34 ms | end2end=2.58 ms
+2025-11-07 14:02:01,549 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.00 ms
+2025-11-07 14:02:01,549 INFO [BATCH KPM 20251107140201546777] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.00 ms | total_stage=2.22 ms | end2end=2.42 ms
+2025-11-07 14:02:02,555 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms
+2025-11-07 14:02:02,555 INFO [BATCH KPM 20251107140202552877] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.45 ms | end2end=2.66 ms
+2025-11-07 14:02:03,561 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:02:03,561 INFO [BATCH KPM 20251107140203558746] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.71 ms | end2end=2.91 ms
+2025-11-07 14:02:04,567 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.75 ms
+2025-11-07 14:02:04,567 INFO [BATCH KPM 20251107140204564581] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.75 ms | total_stage=2.96 ms | end2end=3.23 ms
+2025-11-07 14:02:05,574 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.66 ms
+2025-11-07 14:02:05,574 INFO [BATCH KPM 20251107140205571102] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.66 ms | total_stage=2.83 ms | end2end=3.04 ms
+2025-11-07 14:02:06,579 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.21 ms
+2025-11-07 14:02:06,579 INFO [BATCH KPM 20251107140206576892] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.21 ms | total_stage=2.36 ms | end2end=2.58 ms
+2025-11-07 14:02:07,585 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.39 ms
+2025-11-07 14:02:07,585 INFO [BATCH KPM 20251107140207582787] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.39 ms | total_stage=2.56 ms | end2end=2.79 ms
+2025-11-07 14:02:08,592 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.90 ms
+2025-11-07 14:02:08,592 INFO [BATCH KPM 20251107140208588919] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.90 ms | total_stage=3.09 ms | end2end=3.40 ms
+2025-11-07 14:02:09,598 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.47 ms
+2025-11-07 14:02:09,598 INFO [BATCH KPM 20251107140209595375] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.47 ms | total_stage=2.74 ms | end2end=2.94 ms
+2025-11-07 14:02:10,603 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.21 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:02:10,603 INFO [BATCH KPM 20251107140210601015] Completed 1 UEs | queue_wait=0.21 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.54 ms | end2end=2.81 ms
+2025-11-07 14:02:11,609 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.48 ms
+2025-11-07 14:02:11,609 INFO [BATCH KPM 20251107140211606859] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.48 ms | total_stage=2.62 ms | end2end=2.90 ms
+2025-11-07 14:02:12,615 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.72 ms
+2025-11-07 14:02:12,615 INFO [BATCH KPM 20251107140212612557] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.72 ms | total_stage=2.87 ms | end2end=3.30 ms
+2025-11-07 14:02:13,620 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms
+2025-11-07 14:02:13,620 INFO [BATCH KPM 20251107140213618498] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.27 ms | end2end=2.46 ms
+2025-11-07 14:02:14,628 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:02:14,628 INFO [BATCH KPM 20251107140214625628] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.57 ms | end2end=2.82 ms
+2025-11-07 14:02:15,633 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.05 ms
+2025-11-07 14:02:15,633 INFO [BATCH KPM 20251107140215631464] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.05 ms | total_stage=2.25 ms | end2end=2.45 ms
+2025-11-07 14:02:16,640 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.86 ms
+2025-11-07 14:02:16,640 INFO [BATCH KPM 20251107140216637297] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.86 ms | total_stage=3.03 ms | end2end=3.28 ms
+2025-11-07 14:02:17,646 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.06 ms
+2025-11-07 14:02:17,646 INFO [BATCH KPM 20251107140217643883] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.31 ms | end2end=2.50 ms
+2025-11-07 14:02:18,653 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.50 ms
+2025-11-07 14:02:18,653 INFO [BATCH KPM 20251107140218650426] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.69 ms | end2end=2.90 ms
+2025-11-07 14:02:19,660 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:02:19,660 INFO [BATCH KPM 20251107140219657729] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.49 ms | end2end=2.73 ms
+2025-11-07 14:02:20,668 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=3.46 ms
+2025-11-07 14:02:20,668 INFO [BATCH KPM 20251107140220664621] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=3.46 ms | total_stage=3.65 ms | end2end=3.84 ms
+2025-11-07 14:02:21,673 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.77 ms
+2025-11-07 14:02:21,673 INFO [BATCH KPM 20251107140221670559] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.77 ms | total_stage=2.92 ms | end2end=3.22 ms
+2025-11-07 14:02:22,679 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.10 ms
+2025-11-07 14:02:22,679 INFO [BATCH KPM 20251107140222676808] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.10 ms | total_stage=2.25 ms | end2end=2.46 ms
+2025-11-07 14:02:23,686 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.46 ms
+2025-11-07 14:02:23,686 INFO [BATCH KPM 20251107140223683539] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.46 ms | total_stage=2.65 ms | end2end=2.91 ms
+2025-11-07 14:02:24,692 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:02:24,692 INFO [BATCH KPM 20251107140224689334] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.60 ms | end2end=2.82 ms
+2025-11-07 14:02:25,698 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:02:25,699 INFO [BATCH KPM 20251107140225696219] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.61 ms | end2end=2.89 ms
+2025-11-07 14:02:26,704 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.33 ms
+2025-11-07 14:02:26,704 INFO [BATCH KPM 20251107140226702210] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.48 ms | end2end=2.71 ms
+2025-11-07 14:02:27,710 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.23 ms
+2025-11-07 14:02:27,710 INFO [BATCH KPM 20251107140227708218] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.23 ms | total_stage=2.43 ms | end2end=2.64 ms
+2025-11-07 14:02:28,716 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.02 ms | predict=2.53 ms
+2025-11-07 14:02:28,717 INFO [BATCH KPM 20251107140228713968] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.02 ms | predict=2.53 ms | total_stage=2.78 ms | end2end=3.03 ms
+2025-11-07 14:02:29,724 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.30 ms
+2025-11-07 14:02:29,724 INFO [BATCH KPM 20251107140229722206] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.30 ms | total_stage=2.52 ms | end2end=2.76 ms
+2025-11-07 14:02:30,733 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:02:30,733 INFO [BATCH KPM 20251107140230730325] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.61 ms | end2end=2.88 ms
+2025-11-07 14:02:31,740 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms
+2025-11-07 14:02:31,740 INFO [BATCH KPM 20251107140231737727] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.41 ms | end2end=2.64 ms
+2025-11-07 14:02:32,746 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:02:32,746 INFO [BATCH KPM 20251107140232744186] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.41 ms | end2end=2.64 ms
+2025-11-07 14:02:33,752 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:02:33,752 INFO [BATCH KPM 20251107140233750180] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.52 ms | end2end=2.73 ms
+2025-11-07 14:02:34,758 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:02:34,758 INFO [BATCH KPM 20251107140234755946] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.73 ms | end2end=3.02 ms
+2025-11-07 14:02:35,764 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.06 ms
+2025-11-07 14:02:35,764 INFO [BATCH KPM 20251107140235761759] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.25 ms | end2end=2.46 ms
+2025-11-07 14:02:36,770 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:02:36,770 INFO [BATCH KPM 20251107140236767763] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.48 ms | end2end=2.68 ms
+2025-11-07 14:02:37,777 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.97 ms
+2025-11-07 14:02:37,777 INFO [BATCH KPM 20251107140237774160] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.97 ms | total_stage=3.15 ms | end2end=3.37 ms
+2025-11-07 14:02:38,783 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.68 ms
+2025-11-07 14:02:38,783 INFO [BATCH KPM 20251107140238780233] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.68 ms | total_stage=2.86 ms | end2end=3.09 ms
+2025-11-07 14:02:39,789 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms
+2025-11-07 14:02:39,789 INFO [BATCH KPM 20251107140239787055] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms | total_stage=2.50 ms | end2end=2.74 ms
+2025-11-07 14:02:40,795 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:02:40,795 INFO [BATCH KPM 20251107140240792911] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.70 ms | end2end=2.93 ms
+2025-11-07 14:02:41,803 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:02:41,803 INFO [BATCH KPM 20251107140241800907] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.41 ms | end2end=2.62 ms
+2025-11-07 14:02:42,810 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.19 ms
+2025-11-07 14:02:42,810 INFO [BATCH KPM 20251107140242807791] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.19 ms | total_stage=2.36 ms | end2end=2.56 ms
+2025-11-07 14:02:43,815 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.40 ms
+2025-11-07 14:02:43,816 INFO [BATCH KPM 20251107140243813285] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.56 ms | end2end=2.78 ms
+2025-11-07 14:02:44,822 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.15 ms | buffer=0.01 ms | predict=3.05 ms
+2025-11-07 14:02:44,823 INFO [BATCH KPM 20251107140244819508] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.15 ms | buffer=0.01 ms | predict=3.05 ms | total_stage=3.29 ms | end2end=3.51 ms
+2025-11-07 14:02:45,828 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:02:45,828 INFO [BATCH KPM 20251107140245825538] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.50 ms | end2end=2.70 ms
+2025-11-07 14:02:46,835 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.02 ms | predict=2.62 ms
+2025-11-07 14:02:46,835 INFO [BATCH KPM 20251107140246832539] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.02 ms | predict=2.62 ms | total_stage=2.85 ms | end2end=3.10 ms
+2025-11-07 14:02:47,841 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.18 ms
+2025-11-07 14:02:47,841 INFO [BATCH KPM 20251107140247839248] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.18 ms | total_stage=2.32 ms | end2end=2.55 ms
+2025-11-07 14:02:48,847 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.50 ms
+2025-11-07 14:02:48,848 INFO [BATCH KPM 20251107140248845229] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.65 ms | end2end=2.85 ms
+2025-11-07 14:02:49,853 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.20 ms
+2025-11-07 14:02:49,854 INFO [BATCH KPM 20251107140249851456] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.20 ms | total_stage=2.42 ms | end2end=2.62 ms
+2025-11-07 14:02:50,860 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.46 ms
+2025-11-07 14:02:50,860 INFO [BATCH KPM 20251107140250857823] Completed 1 UEs | queue_wait=0.17 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.46 ms | total_stage=2.69 ms | end2end=2.92 ms
+2025-11-07 14:02:51,866 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.48 ms
+2025-11-07 14:02:51,866 INFO [BATCH KPM 20251107140251863875] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.48 ms | total_stage=2.70 ms | end2end=2.95 ms
+2025-11-07 14:02:52,874 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.62 ms
+2025-11-07 14:02:52,874 INFO [BATCH KPM 20251107140252871706] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.62 ms | total_stage=2.79 ms | end2end=3.01 ms
+2025-11-07 14:02:53,887 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=8.24 ms
+2025-11-07 14:02:53,887 INFO [BATCH KPM 20251107140253878738] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=8.24 ms | total_stage=8.44 ms | end2end=8.69 ms
+2025-11-07 14:02:54,888 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:02:54,888 INFO [BATCH KPM 20251107140254886000] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.68 ms | end2end=2.92 ms
+2025-11-07 14:02:55,895 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:02:55,895 INFO [BATCH KPM 20251107140255892320] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.59 ms | end2end=2.83 ms
+2025-11-07 14:02:56,913 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.22 ms | normalize=0.07 ms | buffer=0.01 ms | predict=9.41 ms
+2025-11-07 14:02:56,913 INFO [BATCH KPM 20251107140256903690] Completed 1 UEs | queue_wait=0.22 ms | normalize=0.07 ms | buffer=0.01 ms | predict=9.41 ms | total_stage=9.71 ms | end2end=10.12 ms
+2025-11-07 14:02:57,913 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:02:57,913 INFO [BATCH KPM 20251107140257910836] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.69 ms | end2end=2.98 ms
+2025-11-07 14:02:58,921 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:02:58,921 INFO [BATCH KPM 20251107140258918917] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.41 ms | end2end=2.65 ms
+2025-11-07 14:02:59,930 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.03 ms | predict=2.86 ms
+2025-11-07 14:02:59,931 INFO [BATCH KPM 20251107140259927737] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.08 ms | buffer=0.03 ms | predict=2.86 ms | total_stage=3.09 ms | end2end=3.31 ms
+2025-11-07 14:03:00,938 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.61 ms
+2025-11-07 14:03:00,938 INFO [BATCH KPM 20251107140300935223] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.61 ms | total_stage=2.81 ms | end2end=3.04 ms
+2025-11-07 14:03:01,944 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:03:01,944 INFO [BATCH KPM 20251107140301941742] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.56 ms | end2end=2.77 ms
+2025-11-07 14:03:02,949 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.10 ms
+2025-11-07 14:03:02,949 INFO [BATCH KPM 20251107140302947528] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.10 ms | total_stage=2.26 ms | end2end=2.45 ms
+2025-11-07 14:03:03,956 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.28 ms
+2025-11-07 14:03:03,956 INFO [BATCH KPM 20251107140303953863] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.28 ms | total_stage=2.47 ms | end2end=2.71 ms
+2025-11-07 14:03:04,963 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.71 ms
+2025-11-07 14:03:04,963 INFO [BATCH KPM 20251107140304960061] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.02 ms | predict=2.71 ms | total_stage=2.87 ms | end2end=3.09 ms
+2025-11-07 14:03:05,969 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms
+2025-11-07 14:03:05,969 INFO [BATCH KPM 20251107140305966864] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms | total_stage=2.58 ms | end2end=2.78 ms
+2025-11-07 14:03:06,973 INFO [BATCH KPM 20251107140306973336] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:03:07,983 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.25 ms
+2025-11-07 14:03:07,983 INFO [BATCH KPM 20251107140307980772] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.25 ms | total_stage=2.44 ms | end2end=2.66 ms
+2025-11-07 14:03:08,982 INFO [BATCH KPM 20251107140308981855] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:03:10,983 INFO [BATCH KPM 20251107140310983189] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.25 ms
+2025-11-07 14:03:11,984 INFO [BATCH KPM 20251107140311984601] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:03:12,988 INFO [BATCH KPM 20251107140312987894] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.22 ms
+2025-11-07 14:03:14,990 INFO [BATCH KPM 20251107140314989902] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:03:15,993 INFO [BATCH KPM 20251107140315993766] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:03:16,995 INFO [BATCH KPM 20251107140316994900] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:03:18,004 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.16 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.27 ms
+2025-11-07 14:03:18,004 INFO [BATCH KPM 20251107140318001471] Completed 1 UEs | queue_wait=0.16 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.27 ms | total_stage=2.51 ms | end2end=2.73 ms
+2025-11-07 14:03:19,005 INFO [BATCH KPM 20251107140319005274] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.21 ms
+2025-11-07 14:03:20,006 INFO [BATCH KPM 20251107140320006723] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:03:21,010 INFO [BATCH KPM 20251107140321009909] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.21 ms
+2025-11-07 14:03:22,014 INFO [BATCH KPM 20251107140322013885] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:03:23,019 INFO [BATCH KPM 20251107140323018945] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:03:24,021 INFO [BATCH KPM 20251107140324021811] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:03:25,030 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.20 ms
+2025-11-07 14:03:25,030 INFO [BATCH KPM 20251107140325027767] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.20 ms | total_stage=2.40 ms | end2end=2.60 ms
+2025-11-07 14:03:26,036 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.31 ms
+2025-11-07 14:03:26,036 INFO [BATCH KPM 20251107140326033649] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.31 ms | total_stage=2.49 ms | end2end=2.69 ms
+2025-11-07 14:03:27,036 INFO [BATCH KPM 20251107140327036288] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:03:28,045 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:03:28,046 INFO [BATCH KPM 20251107140328043312] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.54 ms | end2end=2.78 ms
+2025-11-07 14:03:29,052 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.30 ms
+2025-11-07 14:03:29,052 INFO [BATCH KPM 20251107140329050317] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.30 ms | total_stage=2.47 ms | end2end=2.67 ms
+2025-11-07 14:03:30,060 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:03:30,060 INFO [BATCH KPM 20251107140330057294] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.73 ms | end2end=2.95 ms
+2025-11-07 14:03:31,059 INFO [BATCH KPM 20251107140331059586] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:03:32,068 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.31 ms
+2025-11-07 14:03:32,068 INFO [BATCH KPM 20251107140332066291] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.31 ms | total_stage=2.50 ms | end2end=2.69 ms
+2025-11-07 14:03:33,075 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:03:33,075 INFO [BATCH KPM 20251107140333072779] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.54 ms | end2end=2.76 ms
+2025-11-07 14:03:34,081 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.63 ms
+2025-11-07 14:03:34,081 INFO [BATCH KPM 20251107140334078829] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.63 ms | total_stage=2.82 ms | end2end=3.01 ms
+2025-11-07 14:03:35,088 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.16 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.99 ms
+2025-11-07 14:03:35,089 INFO [BATCH KPM 20251107140335085535] Completed 1 UEs | queue_wait=0.16 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.99 ms | total_stage=3.21 ms | end2end=3.54 ms
+2025-11-07 14:03:36,094 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms
+2025-11-07 14:03:36,094 INFO [BATCH KPM 20251107140336091979] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.51 ms | total_stage=2.66 ms | end2end=2.88 ms
+2025-11-07 14:03:37,100 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:03:37,101 INFO [BATCH KPM 20251107140337098414] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.42 ms | end2end=2.65 ms
+2025-11-07 14:03:38,107 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.63 ms
+2025-11-07 14:03:38,107 INFO [BATCH KPM 20251107140338104218] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.63 ms | total_stage=2.78 ms | end2end=2.98 ms
+2025-11-07 14:03:39,113 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:03:39,113 INFO [BATCH KPM 20251107140339110337] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.55 ms | end2end=2.78 ms
+2025-11-07 14:03:40,118 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms
+2025-11-07 14:03:40,118 INFO [BATCH KPM 20251107140340116213] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.26 ms | total_stage=2.41 ms | end2end=2.63 ms
+2025-11-07 14:03:41,125 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.68 ms
+2025-11-07 14:03:41,125 INFO [BATCH KPM 20251107140341122787] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.68 ms | total_stage=2.83 ms | end2end=3.07 ms
+2025-11-07 14:03:42,132 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.45 ms
+2025-11-07 14:03:42,132 INFO [BATCH KPM 20251107140342130067] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.45 ms | total_stage=2.61 ms | end2end=2.86 ms
+2025-11-07 14:03:43,140 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.40 ms
+2025-11-07 14:03:43,140 INFO [BATCH KPM 20251107140343137355] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.55 ms | end2end=2.77 ms
+2025-11-07 14:03:44,145 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:03:44,145 INFO [BATCH KPM 20251107140344143205] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.55 ms | end2end=2.78 ms
+2025-11-07 14:03:45,152 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:03:45,152 INFO [BATCH KPM 20251107140345149545] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.46 ms | end2end=2.68 ms
+2025-11-07 14:03:46,158 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms
+2025-11-07 14:03:46,158 INFO [BATCH KPM 20251107140346155885] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.35 ms | total_stage=2.56 ms | end2end=2.78 ms
+2025-11-07 14:03:47,165 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.73 ms
+2025-11-07 14:03:47,166 INFO [BATCH KPM 20251107140347162922] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.73 ms | total_stage=2.89 ms | end2end=3.12 ms
+2025-11-07 14:03:48,172 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:03:48,172 INFO [BATCH KPM 20251107140348169766] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.60 ms | end2end=2.83 ms
+2025-11-07 14:03:49,173 INFO [BATCH KPM 20251107140349173799] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:03:50,183 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.14 ms
+2025-11-07 14:03:50,184 INFO [BATCH KPM 20251107140350181510] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.12 ms | buffer=0.01 ms | predict=2.14 ms | total_stage=2.36 ms | end2end=2.57 ms
+2025-11-07 14:03:51,190 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms
+2025-11-07 14:03:51,190 INFO [BATCH KPM 20251107140351187961] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms | total_stage=2.45 ms | end2end=2.67 ms
+2025-11-07 14:03:52,195 INFO [BATCH KPM 20251107140352195635] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.17 ms
+2025-11-07 14:03:53,205 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.22 ms
+2025-11-07 14:03:53,205 INFO [BATCH KPM 20251107140353203263] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.22 ms | total_stage=2.38 ms | end2end=2.57 ms
+2025-11-07 14:03:54,208 INFO [BATCH KPM 20251107140354208596] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.21 ms
+2025-11-07 14:03:55,217 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.70 ms
+2025-11-07 14:03:55,218 INFO [BATCH KPM 20251107140355214916] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.70 ms | total_stage=2.89 ms | end2end=3.16 ms
+2025-11-07 14:03:56,224 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.76 ms
+2025-11-07 14:03:56,224 INFO [BATCH KPM 20251107140356221507] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.76 ms | total_stage=2.97 ms | end2end=3.20 ms
+2025-11-07 14:03:57,230 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.02 ms
+2025-11-07 14:03:57,230 INFO [BATCH KPM 20251107140357227825] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.02 ms | total_stage=2.21 ms | end2end=2.41 ms
+2025-11-07 14:03:58,236 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.02 ms | predict=2.28 ms
+2025-11-07 14:03:58,236 INFO [BATCH KPM 20251107140358233859] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.02 ms | predict=2.28 ms | total_stage=2.48 ms | end2end=2.68 ms
+2025-11-07 14:03:59,242 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.27 ms
+2025-11-07 14:03:59,242 INFO [BATCH KPM 20251107140359239876] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.27 ms | total_stage=2.45 ms | end2end=2.66 ms
+2025-11-07 14:04:00,248 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms
+2025-11-07 14:04:00,248 INFO [BATCH KPM 20251107140400245757] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.50 ms | total_stage=2.69 ms | end2end=2.90 ms
+2025-11-07 14:04:01,254 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:04:01,254 INFO [BATCH KPM 20251107140401251502] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.59 ms | end2end=2.80 ms
+2025-11-07 14:04:02,257 INFO [BATCH KPM 20251107140402256878] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.20 ms
+2025-11-07 14:04:03,266 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms
+2025-11-07 14:04:03,266 INFO [BATCH KPM 20251107140403264266] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.46 ms | end2end=2.67 ms
+2025-11-07 14:04:04,274 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms
+2025-11-07 14:04:04,274 INFO [BATCH KPM 20251107140404271211] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms | total_stage=2.69 ms | end2end=2.91 ms
+2025-11-07 14:04:05,280 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.59 ms
+2025-11-07 14:04:05,280 INFO [BATCH KPM 20251107140405277205] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.59 ms | total_stage=2.81 ms | end2end=3.07 ms
+2025-11-07 14:04:06,285 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.28 ms
+2025-11-07 14:04:06,285 INFO [BATCH KPM 20251107140406283014] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.28 ms | total_stage=2.42 ms | end2end=2.64 ms
+2025-11-07 14:04:07,291 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:04:07,291 INFO [BATCH KPM 20251107140407288847] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.47 ms | end2end=2.66 ms
+2025-11-07 14:04:08,297 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.59 ms
+2025-11-07 14:04:08,297 INFO [BATCH KPM 20251107140408294845] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.59 ms | total_stage=2.76 ms | end2end=3.00 ms
+2025-11-07 14:04:09,304 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.47 ms
+2025-11-07 14:04:09,305 INFO [BATCH KPM 20251107140409302172] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.47 ms | total_stage=2.66 ms | end2end=2.87 ms
+2025-11-07 14:04:10,310 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.44 ms
+2025-11-07 14:04:10,311 INFO [BATCH KPM 20251107140410308241] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.44 ms | total_stage=2.63 ms | end2end=2.85 ms
+2025-11-07 14:04:11,317 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.67 ms
+2025-11-07 14:04:11,317 INFO [BATCH KPM 20251107140411314264] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.67 ms | total_stage=2.84 ms | end2end=3.06 ms
+2025-11-07 14:04:12,324 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.53 ms
+2025-11-07 14:04:12,325 INFO [BATCH KPM 20251107140412322069] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.53 ms | total_stage=2.71 ms | end2end=2.93 ms
+2025-11-07 14:04:13,331 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:04:13,331 INFO [BATCH KPM 20251107140413328649] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.63 ms | end2end=2.83 ms
+2025-11-07 14:04:14,337 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.31 ms
+2025-11-07 14:04:14,337 INFO [BATCH KPM 20251107140414335111] Completed 1 UEs | queue_wait=0.12 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.31 ms | total_stage=2.51 ms | end2end=2.73 ms
+2025-11-07 14:04:15,343 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.29 ms
+2025-11-07 14:04:15,344 INFO [BATCH KPM 20251107140415341417] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.45 ms | end2end=2.65 ms
+2025-11-07 14:04:16,350 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:04:16,350 INFO [BATCH KPM 20251107140416347645] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.54 ms | end2end=2.76 ms
+2025-11-07 14:04:17,357 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:04:17,357 INFO [BATCH KPM 20251107140417354439] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.58 ms | end2end=2.80 ms
+2025-11-07 14:04:18,363 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms
+2025-11-07 14:04:18,363 INFO [BATCH KPM 20251107140418361044] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms | total_stage=2.69 ms | end2end=2.91 ms
+2025-11-07 14:04:19,371 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=4.19 ms
+2025-11-07 14:04:19,371 INFO [BATCH KPM 20251107140419367023] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.09 ms | buffer=0.01 ms | predict=4.19 ms | total_stage=4.39 ms | end2end=4.59 ms
+2025-11-07 14:04:20,376 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms
+2025-11-07 14:04:20,376 INFO [BATCH KPM 20251107140420373347] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.38 ms | total_stage=2.56 ms | end2end=2.85 ms
+2025-11-07 14:04:21,383 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.03 ms | predict=2.17 ms
+2025-11-07 14:04:21,383 INFO [BATCH KPM 20251107140421380729] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.03 ms | predict=2.17 ms | total_stage=2.35 ms | end2end=2.53 ms
+2025-11-07 14:04:22,391 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.18 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.23 ms
+2025-11-07 14:04:22,391 INFO [BATCH KPM 20251107140422389101] Completed 1 UEs | queue_wait=0.18 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.23 ms | total_stage=2.47 ms | end2end=2.70 ms
+2025-11-07 14:04:23,398 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.42 ms
+2025-11-07 14:04:23,398 INFO [BATCH KPM 20251107140423395620] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.42 ms | total_stage=2.61 ms | end2end=2.84 ms
+2025-11-07 14:04:24,404 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.18 ms
+2025-11-07 14:04:24,404 INFO [BATCH KPM 20251107140424401900] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.18 ms | total_stage=2.34 ms | end2end=2.55 ms
+2025-11-07 14:04:25,410 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.07 ms
+2025-11-07 14:04:25,411 INFO [BATCH KPM 20251107140425408601] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.07 ms | total_stage=2.24 ms | end2end=2.46 ms
+2025-11-07 14:04:26,417 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.40 ms
+2025-11-07 14:04:26,417 INFO [BATCH KPM 20251107140426414663] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.40 ms | total_stage=2.61 ms | end2end=2.84 ms
+2025-11-07 14:04:27,423 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms
+2025-11-07 14:04:27,423 INFO [BATCH KPM 20251107140427420792] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms | total_stage=2.31 ms | end2end=2.53 ms
+2025-11-07 14:04:28,429 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.20 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms
+2025-11-07 14:04:28,429 INFO [BATCH KPM 20251107140428427078] Completed 1 UEs | queue_wait=0.20 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.24 ms | total_stage=2.51 ms | end2end=2.76 ms
+2025-11-07 14:04:29,436 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms
+2025-11-07 14:04:29,437 INFO [BATCH KPM 20251107140429434200] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.42 ms | total_stage=2.59 ms | end2end=2.84 ms
+2025-11-07 14:04:30,443 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.23 ms
+2025-11-07 14:04:30,443 INFO [BATCH KPM 20251107140430440654] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.23 ms | total_stage=2.41 ms | end2end=2.65 ms
+2025-11-07 14:04:31,450 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms
+2025-11-07 14:04:31,450 INFO [BATCH KPM 20251107140431447135] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.60 ms | total_stage=2.78 ms | end2end=3.00 ms
+2025-11-07 14:04:32,456 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:04:32,456 INFO [BATCH KPM 20251107140432453579] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.56 ms | end2end=2.82 ms
+2025-11-07 14:04:33,463 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.43 ms
+2025-11-07 14:04:33,463 INFO [BATCH KPM 20251107140433461065] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.43 ms | total_stage=2.62 ms | end2end=2.85 ms
+2025-11-07 14:04:34,471 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms
+2025-11-07 14:04:34,471 INFO [BATCH KPM 20251107140434468292] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.52 ms | total_stage=2.70 ms | end2end=2.91 ms
+2025-11-07 14:04:35,477 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.20 ms
+2025-11-07 14:04:35,477 INFO [BATCH KPM 20251107140435474966] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.20 ms | total_stage=2.37 ms | end2end=2.58 ms
+2025-11-07 14:04:36,484 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.06 ms
+2025-11-07 14:04:36,484 INFO [BATCH KPM 20251107140436482227] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.06 ms | total_stage=2.22 ms | end2end=2.42 ms
+2025-11-07 14:04:37,491 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.33 ms
+2025-11-07 14:04:37,491 INFO [BATCH KPM 20251107140437488486] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.52 ms | end2end=2.74 ms
+2025-11-07 14:04:38,496 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms
+2025-11-07 14:04:38,497 INFO [BATCH KPM 20251107140438494531] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.13 ms | total_stage=2.29 ms | end2end=2.50 ms
+2025-11-07 14:04:39,505 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.47 ms
+2025-11-07 14:04:39,505 INFO [BATCH KPM 20251107140439502689] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.47 ms | total_stage=2.63 ms | end2end=2.87 ms
+2025-11-07 14:04:40,512 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.41 ms
+2025-11-07 14:04:40,512 INFO [BATCH KPM 20251107140440509667] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.41 ms | total_stage=2.64 ms | end2end=3.11 ms
+2025-11-07 14:04:41,518 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms
+2025-11-07 14:04:41,518 INFO [BATCH KPM 20251107140441515945] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.29 ms | total_stage=2.44 ms | end2end=2.66 ms
+2025-11-07 14:04:42,524 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms
+2025-11-07 14:04:42,524 INFO [BATCH KPM 20251107140442521974] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.25 ms | total_stage=2.39 ms | end2end=2.63 ms
+2025-11-07 14:04:43,530 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.58 ms
+2025-11-07 14:04:43,530 INFO [BATCH KPM 20251107140443527874] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.58 ms | total_stage=2.74 ms | end2end=2.95 ms
+2025-11-07 14:04:44,536 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.32 ms
+2025-11-07 14:04:44,536 INFO [BATCH KPM 20251107140444533884] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.32 ms | total_stage=2.54 ms | end2end=2.81 ms
+2025-11-07 14:04:45,542 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms
+2025-11-07 14:04:45,543 INFO [BATCH KPM 20251107140445540224] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.45 ms | total_stage=2.62 ms | end2end=2.82 ms
+2025-11-07 14:04:46,549 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms
+2025-11-07 14:04:46,549 INFO [BATCH KPM 20251107140446546421] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms | total_stage=2.59 ms | end2end=2.82 ms
+2025-11-07 14:04:47,555 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.54 ms
+2025-11-07 14:04:47,555 INFO [BATCH KPM 20251107140447552543] Completed 1 UEs | queue_wait=0.14 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.54 ms | total_stage=2.74 ms | end2end=2.97 ms
+2025-11-07 14:04:48,561 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.39 ms
+2025-11-07 14:04:48,561 INFO [BATCH KPM 20251107140448558782] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.11 ms | buffer=0.01 ms | predict=2.39 ms | total_stage=2.62 ms | end2end=2.82 ms
+2025-11-07 14:04:49,567 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.44 ms
+2025-11-07 14:04:49,568 INFO [BATCH KPM 20251107140449565211] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.44 ms | total_stage=2.59 ms | end2end=2.80 ms
+2025-11-07 14:04:50,574 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.37 ms
+2025-11-07 14:04:50,574 INFO [BATCH KPM 20251107140450571789] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.37 ms | total_stage=2.52 ms | end2end=2.76 ms
+2025-11-07 14:04:51,580 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.12 ms
+2025-11-07 14:04:51,580 INFO [BATCH KPM 20251107140451577708] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.12 ms | total_stage=2.28 ms | end2end=2.52 ms
+2025-11-07 14:04:52,586 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.14 ms | buffer=0.01 ms | predict=2.47 ms
+2025-11-07 14:04:52,586 INFO [BATCH KPM 20251107140452583709] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.14 ms | buffer=0.01 ms | predict=2.47 ms | total_stage=2.70 ms | end2end=2.95 ms
+2025-11-07 14:04:53,592 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.33 ms
+2025-11-07 14:04:53,592 INFO [BATCH KPM 20251107140453589933] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.33 ms | total_stage=2.48 ms | end2end=2.68 ms
+2025-11-07 14:04:54,599 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.31 ms
+2025-11-07 14:04:54,599 INFO [BATCH KPM 20251107140454596858] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.31 ms | total_stage=2.48 ms | end2end=2.71 ms
+2025-11-07 14:04:55,606 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.82 ms
+2025-11-07 14:04:55,606 INFO [BATCH KPM 20251107140455603367] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.13 ms | buffer=0.01 ms | predict=2.82 ms | total_stage=3.05 ms | end2end=3.25 ms
+2025-11-07 14:04:56,613 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:04:56,613 INFO [BATCH KPM 20251107140456610483] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.10 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.54 ms | end2end=2.77 ms
+2025-11-07 14:04:57,619 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.23 ms
+2025-11-07 14:04:57,620 INFO [BATCH KPM 20251107140457617489] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.23 ms | total_stage=2.41 ms | end2end=2.62 ms
+2025-11-07 14:04:58,626 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.42 ms
+2025-11-07 14:04:58,626 INFO [BATCH KPM 20251107140458623802] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.07 ms | buffer=0.01 ms | predict=2.42 ms | total_stage=2.61 ms | end2end=2.86 ms
+2025-11-07 14:04:59,633 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms
+2025-11-07 14:04:59,633 INFO [BATCH KPM 20251107140459630369] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.43 ms | total_stage=2.61 ms | end2end=2.85 ms
+2025-11-07 14:05:00,639 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.20 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.35 ms
+2025-11-07 14:05:00,639 INFO [BATCH KPM 20251107140500636690] Completed 1 UEs | queue_wait=0.20 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.35 ms | total_stage=2.61 ms | end2end=2.82 ms
+2025-11-07 14:05:01,646 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-07 14:05:01,646 INFO [BATCH KPM 20251107140501644011] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.36 ms | total_stage=2.52 ms | end2end=2.76 ms
+2025-11-07 14:05:02,654 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.19 ms
+2025-11-07 14:05:02,654 INFO [BATCH KPM 20251107140502651727] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.19 ms | total_stage=2.38 ms | end2end=2.58 ms
+2025-11-07 14:05:03,661 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.55 ms
+2025-11-07 14:05:03,661 INFO [BATCH KPM 20251107140503658242] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.55 ms | total_stage=2.72 ms | end2end=2.90 ms
+2025-11-07 14:05:04,668 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.09 ms
+2025-11-07 14:05:04,668 INFO [BATCH KPM 20251107140504665767] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.09 ms | total_stage=2.27 ms | end2end=2.47 ms
+2025-11-07 14:05:05,675 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.34 ms
+2025-11-07 14:05:05,676 INFO [BATCH KPM 20251107140505673307] Completed 1 UEs | queue_wait=0.08 ms | normalize=0.05 ms | buffer=0.01 ms | predict=2.34 ms | total_stage=2.48 ms | end2end=2.70 ms
+2025-11-07 14:05:06,683 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.03 ms
+2025-11-07 14:05:06,683 INFO [BATCH KPM 20251107140506681226] Completed 1 UEs | queue_wait=0.15 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.03 ms | total_stage=2.26 ms | end2end=2.49 ms
+2025-11-07 14:05:07,691 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.57 ms
+2025-11-07 14:05:07,692 INFO [BATCH KPM 20251107140507689136] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.57 ms | total_stage=2.75 ms | end2end=2.96 ms
+2025-11-07 14:05:08,699 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.35 ms
+2025-11-07 14:05:08,699 INFO [BATCH KPM 20251107140508696901] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.02 ms | predict=2.35 ms | total_stage=2.53 ms | end2end=2.72 ms
+2025-11-07 14:05:09,706 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.25 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms
+2025-11-07 14:05:09,706 INFO [BATCH KPM 20251107140509704089] Completed 1 UEs | queue_wait=0.25 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.30 ms | total_stage=2.61 ms | end2end=2.84 ms
+2025-11-07 14:05:10,712 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.19 ms
+2025-11-07 14:05:10,712 INFO [BATCH KPM 20251107140510710003] Completed 1 UEs | queue_wait=0.09 ms | normalize=0.06 ms | buffer=0.01 ms | predict=2.19 ms | total_stage=2.35 ms | end2end=2.55 ms
+2025-11-07 14:05:11,718 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.21 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.15 ms
+2025-11-07 14:05:11,719 INFO [BATCH KPM 20251107140511716419] Completed 1 UEs | queue_wait=0.21 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.15 ms | total_stage=2.44 ms | end2end=2.65 ms
+2025-11-07 14:05:12,725 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.16 ms
+2025-11-07 14:05:12,726 INFO [BATCH KPM 20251107140512723473] Completed 1 UEs | queue_wait=0.13 ms | normalize=0.09 ms | buffer=0.01 ms | predict=2.16 ms | total_stage=2.39 ms | end2end=2.64 ms
+2025-11-07 14:05:13,732 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.04 ms
+2025-11-07 14:05:13,732 INFO [BATCH KPM 20251107140513729698] Completed 1 UEs | queue_wait=0.11 ms | normalize=0.08 ms | buffer=0.01 ms | predict=2.04 ms | total_stage=2.24 ms | end2end=2.45 ms
+2025-11-07 14:05:14,736 INFO [UE=1.0] Predicted class: 1 | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.59 ms
+2025-11-07 14:05:14,737 INFO [BATCH KPM 20251107140514735151] Completed 1 UEs | queue_wait=0.10 ms | normalize=0.05 ms | buffer=0.01 ms | predict=1.59 ms | total_stage=1.75 ms | end2end=1.91 ms
+2025-11-07 14:05:15,740 INFO [BATCH KPM 20251107140515740430] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:05:16,746 INFO [BATCH KPM 20251107140516746583] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:17,752 INFO [BATCH KPM 20251107140517752098] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:05:18,758 INFO [BATCH KPM 20251107140518758767] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.12 ms
+2025-11-07 14:05:19,764 INFO [BATCH KPM 20251107140519764554] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:05:20,770 INFO [BATCH KPM 20251107140520770636] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.17 ms
+2025-11-07 14:05:21,776 INFO [BATCH KPM 20251107140521776001] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:05:22,781 INFO [BATCH KPM 20251107140522781129] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:23,787 INFO [BATCH KPM 20251107140523787610] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:05:24,793 INFO [BATCH KPM 20251107140524792971] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:25,798 INFO [BATCH KPM 20251107140525798471] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:26,804 INFO [BATCH KPM 20251107140526803936] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:27,809 INFO [BATCH KPM 20251107140527809639] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.12 ms
+2025-11-07 14:05:28,816 INFO [BATCH KPM 20251107140528816391] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:05:29,822 INFO [BATCH KPM 20251107140529822285] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:05:30,828 INFO [BATCH KPM 20251107140530827995] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:05:31,834 INFO [BATCH KPM 20251107140531834631] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:05:32,840 INFO [BATCH KPM 20251107140532840553] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.11 ms
+2025-11-07 14:05:33,846 INFO [BATCH KPM 20251107140533846413] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:05:34,851 INFO [BATCH KPM 20251107140534851771] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.11 ms
+2025-11-07 14:05:35,857 INFO [BATCH KPM 20251107140535857561] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms
+2025-11-07 14:05:36,863 INFO [BATCH KPM 20251107140536862924] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.15 ms
+2025-11-07 14:05:37,869 INFO [BATCH KPM 20251107140537868899] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.19 ms
+2025-11-07 14:05:38,874 INFO [BATCH KPM 20251107140538874427] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:39,880 INFO [BATCH KPM 20251107140539879873] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.18 ms
+2025-11-07 14:05:40,885 INFO [BATCH KPM 20251107140540885434] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.26 ms
+2025-11-07 14:05:41,891 INFO [BATCH KPM 20251107140541890945] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.13 ms
+2025-11-07 14:05:42,897 INFO [BATCH KPM 20251107140542896884] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.14 ms
+2025-11-07 14:05:43,902 INFO [BATCH KPM 20251107140543902362] Completed 1 UEs | queue_wait=0.00 ms | normalize=0.00 ms | buffer=0.00 ms | predict=0.00 ms | total_stage=0.00 ms | end2end=0.16 ms

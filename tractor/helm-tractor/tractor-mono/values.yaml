@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ddocker122/tractor-xapp-mono
-  tag: kpmsimu
+  tag: dev
   pullPolicy: IfNotPresent
 
 fullnameOverride: "tractor-mono"
