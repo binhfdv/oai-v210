@@ -38,7 +38,7 @@ spec:
           volumeMounts:
             - name: kpis-csv
               mountPath: {{ .Values.volumeMounts.kpisCsv.mountPath }}
-              subPath: embb1010123456002_metrics.csv
+              subPath: embb_1010123456010_metrics.csv
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:

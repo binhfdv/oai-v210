@@ -1,5 +1,5 @@
 tractor-kpm-oai:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-kpm-oai"
   nodeSelector:
     node-role: core
@@ -7,7 +7,7 @@ tractor-kpm-oai:
     ORCH_HOST: tractor-mono
 
 tractor-kpm-simu:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-kpm-simu"
   nodeSelector:
     node-role: core

@@ -1,0 +1,225 @@
+2025-11-06 15:17:41,176 INFO Loading normalizer parameters (internal)
+ * Serving Flask app 'app_server'
+ * Debug mode: off
+2025-11-06 15:17:41,179 INFO Normalizer ready: num_feats=17, slice_len=32
+2025-11-06 15:17:41,179 INFO Resetting buffer
+2025-11-06 15:17:41,179 INFO Buffer reset for stream default
+2025-11-06 15:17:41,179 INFO Loading model with slice_len & num_feats from normalizer
+2025-11-06 15:17:41,179 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.244.0.15:5000
+2025-11-06 15:17:41,179 INFO [33mPress CTRL+C to quit[0m
+2025-11-06 15:17:41,236 INFO Model loaded: {'device': 'cpu', 'status': 'ok'}
+2025-11-06 15:17:41,306 INFO Start listening on E2 interface...
+2025-11-06 15:17:41,306 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:17:46,308 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:17:51,062 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:17:51,312 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:17:56,566 INFO Processing times: normalize=0.05 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:01,567 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:06,572 INFO Processing times: normalize=0.06 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:11,577 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:16,581 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:21,586 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:26,842 INFO Processing times: normalize=0.13 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:32,092 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:18:32,343 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:17,884 INFO Processing times: normalize=0.12 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:18,135 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:18,386 INFO Processing times: normalize=0.12 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:18,636 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:20,888 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:21,139 INFO Processing times: normalize=0.13 ms | buffer=0.02 ms | predict=--
+2025-11-06 15:19:21,390 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:21,641 INFO Processing times: normalize=0.14 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:21,891 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:22,142 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:22,393 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:22,643 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:22,894 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:23,144 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:23,395 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:23,645 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:23,895 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:24,146 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=--
+2025-11-06 15:19:24,399 INFO Predicted class: 1
+2025-11-06 15:19:24,399 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=2.08 ms
+2025-11-06 15:19:24,649 INFO Predicted class: 1
+2025-11-06 15:19:24,649 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.70 ms
+2025-11-06 15:19:24,899 INFO Predicted class: 1
+2025-11-06 15:19:24,899 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.75 ms
+2025-11-06 15:19:25,149 INFO Predicted class: 1
+2025-11-06 15:19:25,149 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.71 ms
+2025-11-06 15:19:25,400 INFO Predicted class: 1
+2025-11-06 15:19:25,400 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.63 ms
+2025-11-06 15:19:25,650 INFO Predicted class: 1
+2025-11-06 15:19:25,651 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.83 ms
+2025-11-06 15:19:25,901 INFO Predicted class: 1
+2025-11-06 15:19:25,901 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.63 ms
+2025-11-06 15:19:26,152 INFO Predicted class: 1
+2025-11-06 15:19:26,152 INFO Processing times: normalize=0.13 ms | buffer=0.02 ms | predict=1.84 ms
+2025-11-06 15:19:27,402 INFO Predicted class: 1
+2025-11-06 15:19:27,403 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.85 ms
+2025-11-06 15:19:27,653 INFO Predicted class: 1
+2025-11-06 15:19:27,653 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.71 ms
+2025-11-06 15:19:27,903 INFO Predicted class: 1
+2025-11-06 15:19:27,903 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.66 ms
+2025-11-06 15:19:28,154 INFO Predicted class: 1
+2025-11-06 15:19:28,154 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.74 ms
+2025-11-06 15:19:31,658 INFO Predicted class: 1
+2025-11-06 15:19:31,658 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.90 ms
+2025-11-06 15:19:31,908 INFO Predicted class: 1
+2025-11-06 15:19:31,908 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.57 ms
+2025-11-06 15:19:32,158 INFO Predicted class: 1
+2025-11-06 15:19:32,158 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.52 ms
+2025-11-06 15:19:32,909 INFO Predicted class: 1
+2025-11-06 15:19:32,910 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.94 ms
+2025-11-06 15:19:33,160 INFO Predicted class: 1
+2025-11-06 15:19:33,160 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.66 ms
+2025-11-06 15:19:34,911 INFO Predicted class: 1
+2025-11-06 15:19:34,911 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.80 ms
+2025-11-06 15:19:35,662 INFO Predicted class: 1
+2025-11-06 15:19:35,663 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.80 ms
+2025-11-06 15:19:35,913 INFO Predicted class: 1
+2025-11-06 15:19:35,913 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.73 ms
+2025-11-06 15:19:36,163 INFO Predicted class: 1
+2025-11-06 15:19:36,163 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.78 ms
+2025-11-06 15:19:37,914 INFO Predicted class: 1
+2025-11-06 15:19:37,914 INFO Processing times: normalize=0.06 ms | buffer=0.01 ms | predict=1.67 ms
+2025-11-06 15:19:38,415 INFO Predicted class: 1
+2025-11-06 15:19:38,415 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=1.88 ms
+2025-11-06 15:19:38,665 INFO Predicted class: 1
+2025-11-06 15:19:38,665 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.71 ms
+2025-11-06 15:19:39,666 INFO Predicted class: 1
+2025-11-06 15:19:39,666 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.61 ms
+2025-11-06 15:19:39,917 INFO Predicted class: 1
+2025-11-06 15:19:39,917 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.67 ms
+2025-11-06 15:19:40,168 INFO Predicted class: 1
+2025-11-06 15:19:40,168 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.82 ms
+2025-11-06 15:19:41,669 INFO Predicted class: 1
+2025-11-06 15:19:41,669 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=1.65 ms
+2025-11-06 15:19:41,920 INFO Predicted class: 1
+2025-11-06 15:19:41,920 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=1.77 ms
+2025-11-06 15:19:42,920 INFO Predicted class: 1
+2025-11-06 15:19:42,920 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.85 ms
+2025-11-06 15:19:43,170 INFO Predicted class: 1
+2025-11-06 15:19:43,170 INFO Processing times: normalize=0.06 ms | buffer=0.01 ms | predict=1.44 ms
+2025-11-06 15:19:45,924 INFO Predicted class: 1
+2025-11-06 15:19:45,924 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.35 ms
+2025-11-06 15:19:46,174 INFO Predicted class: 1
+2025-11-06 15:19:46,174 INFO Processing times: normalize=0.12 ms | buffer=0.01 ms | predict=1.74 ms
+2025-11-06 15:19:46,425 INFO Predicted class: 1
+2025-11-06 15:19:46,425 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.48 ms
+2025-11-06 15:19:46,675 INFO Predicted class: 1
+2025-11-06 15:19:46,675 INFO Processing times: normalize=0.12 ms | buffer=0.02 ms | predict=1.77 ms
+2025-11-06 15:19:46,926 INFO Predicted class: 1
+2025-11-06 15:19:46,926 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.68 ms
+2025-11-06 15:19:47,176 INFO Predicted class: 1
+2025-11-06 15:19:47,176 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=1.80 ms
+2025-11-06 15:19:47,426 INFO Predicted class: 1
+2025-11-06 15:19:47,426 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.47 ms
+2025-11-06 15:19:47,677 INFO Predicted class: 1
+2025-11-06 15:19:47,677 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.69 ms
+2025-11-06 15:19:47,927 INFO Predicted class: 1
+2025-11-06 15:19:47,927 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.74 ms
+2025-11-06 15:19:48,178 INFO Predicted class: 2
+2025-11-06 15:19:48,178 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.91 ms
+2025-11-06 15:19:48,428 INFO Predicted class: 1
+2025-11-06 15:19:48,428 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.64 ms
+2025-11-06 15:19:48,679 INFO Predicted class: 1
+2025-11-06 15:19:48,679 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.74 ms
+2025-11-06 15:19:48,929 INFO Predicted class: 1
+2025-11-06 15:19:48,929 INFO Processing times: normalize=0.12 ms | buffer=0.02 ms | predict=1.84 ms
+2025-11-06 15:19:49,180 INFO Predicted class: 1
+2025-11-06 15:19:49,180 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.99 ms
+2025-11-06 15:19:53,181 INFO Predicted class: 1
+2025-11-06 15:19:53,181 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.70 ms
+2025-11-06 15:19:58,184 INFO Predicted class: 1
+2025-11-06 15:19:58,184 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.82 ms
+2025-11-06 15:19:58,684 INFO Predicted class: 1
+2025-11-06 15:19:58,684 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.81 ms
+2025-11-06 15:19:58,935 INFO Predicted class: 1
+2025-11-06 15:19:58,935 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.03 ms
+2025-11-06 15:19:59,185 INFO Predicted class: 1
+2025-11-06 15:19:59,185 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.60 ms
+2025-11-06 15:19:59,436 INFO Predicted class: 1
+2025-11-06 15:19:59,436 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.90 ms
+2025-11-06 15:19:59,687 INFO Predicted class: 1
+2025-11-06 15:19:59,687 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.97 ms
+2025-11-06 15:19:59,937 INFO Predicted class: 1
+2025-11-06 15:19:59,937 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=1.81 ms
+2025-11-06 15:20:00,187 INFO Predicted class: 1
+2025-11-06 15:20:00,187 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.84 ms
+2025-11-06 15:20:00,438 INFO Predicted class: 1
+2025-11-06 15:20:00,439 INFO Processing times: normalize=0.11 ms | buffer=0.02 ms | predict=2.33 ms
+2025-11-06 15:20:01,438 INFO Predicted class: 1
+2025-11-06 15:20:01,438 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.78 ms
+2025-11-06 15:20:01,689 INFO Predicted class: 1
+2025-11-06 15:20:01,689 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.05 ms
+2025-11-06 15:20:01,939 INFO Predicted class: 1
+2025-11-06 15:20:01,939 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.90 ms
+2025-11-06 15:20:03,191 INFO Predicted class: 1
+2025-11-06 15:20:03,191 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.95 ms
+2025-11-06 15:20:04,442 INFO Predicted class: 1
+2025-11-06 15:20:04,442 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.87 ms
+2025-11-06 15:20:04,693 INFO Predicted class: 1
+2025-11-06 15:20:04,693 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.89 ms
+2025-11-06 15:20:08,196 INFO Predicted class: 1
+2025-11-06 15:20:08,196 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.84 ms
+2025-11-06 15:20:09,947 INFO Predicted class: 1
+2025-11-06 15:20:09,947 INFO Processing times: normalize=0.05 ms | buffer=0.01 ms | predict=1.64 ms
+2025-11-06 15:20:10,197 INFO Predicted class: 1
+2025-11-06 15:20:10,198 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.57 ms
+2025-11-06 15:20:10,448 INFO Predicted class: 1
+2025-11-06 15:20:10,448 INFO Processing times: normalize=0.12 ms | buffer=0.02 ms | predict=1.67 ms
+2025-11-06 15:20:13,200 INFO Predicted class: 1
+2025-11-06 15:20:13,200 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.67 ms
+2025-11-06 15:20:18,205 INFO Predicted class: 1
+2025-11-06 15:20:18,205 INFO Processing times: normalize=0.10 ms | buffer=0.01 ms | predict=1.72 ms
+2025-11-06 15:20:18,456 INFO Predicted class: 1
+2025-11-06 15:20:18,456 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.78 ms
+2025-11-06 15:20:18,706 INFO Predicted class: 1
+2025-11-06 15:20:18,706 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.83 ms
+2025-11-06 15:20:49,738 INFO Predicted class: 1
+2025-11-06 15:20:49,738 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.87 ms
+2025-11-06 15:20:49,989 INFO Predicted class: 1
+2025-11-06 15:20:49,989 INFO Processing times: normalize=0.11 ms | buffer=0.01 ms | predict=2.29 ms
+2025-11-06 15:20:50,238 INFO Predicted class: 2
+2025-11-06 15:20:50,238 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.77 ms
+2025-11-06 15:20:50,489 INFO Predicted class: 0
+2025-11-06 15:20:50,490 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.36 ms
+2025-11-06 15:20:50,740 INFO Predicted class: 1
+2025-11-06 15:20:50,740 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.43 ms
+2025-11-06 15:20:50,990 INFO Predicted class: 1
+2025-11-06 15:20:50,990 INFO Processing times: normalize=0.09 ms | buffer=0.03 ms | predict=1.79 ms
+2025-11-06 15:20:51,240 INFO Predicted class: 1
+2025-11-06 15:20:51,240 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.61 ms
+2025-11-06 15:20:51,491 INFO Predicted class: 1
+2025-11-06 15:20:51,491 INFO Processing times: normalize=0.05 ms | buffer=0.01 ms | predict=1.64 ms
+2025-11-06 15:20:51,741 INFO Predicted class: 1
+2025-11-06 15:20:51,741 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.72 ms
+2025-11-06 15:20:51,992 INFO Predicted class: 1
+2025-11-06 15:20:51,992 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.90 ms
+2025-11-06 15:20:52,242 INFO Predicted class: 1
+2025-11-06 15:20:52,242 INFO Processing times: normalize=0.06 ms | buffer=0.01 ms | predict=1.66 ms
+2025-11-06 15:20:52,493 INFO Predicted class: 1
+2025-11-06 15:20:52,493 INFO Processing times: normalize=0.08 ms | buffer=0.01 ms | predict=1.72 ms
+2025-11-06 15:20:52,743 INFO Predicted class: 1
+2025-11-06 15:20:52,743 INFO Processing times: normalize=0.13 ms | buffer=0.02 ms | predict=1.84 ms
+2025-11-06 15:20:52,994 INFO Predicted class: 1
+2025-11-06 15:20:52,994 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.86 ms
+2025-11-06 15:20:53,245 INFO Predicted class: 1
+2025-11-06 15:20:53,245 INFO Processing times: normalize=0.10 ms | buffer=0.03 ms | predict=2.36 ms
+2025-11-06 15:20:53,495 INFO Predicted class: 1
+2025-11-06 15:20:53,495 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=1.74 ms
+2025-11-06 15:21:04,757 INFO Predicted class: 1
+2025-11-06 15:21:04,757 INFO Processing times: normalize=0.16 ms | buffer=0.02 ms | predict=1.58 ms
+2025-11-06 15:21:05,007 INFO Predicted class: 1
+2025-11-06 15:21:05,007 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.73 ms
+2025-11-06 15:21:05,258 INFO Predicted class: 1
+2025-11-06 15:21:05,258 INFO Processing times: normalize=0.09 ms | buffer=0.01 ms | predict=2.04 ms
+2025-11-06 15:21:05,508 INFO Predicted class: 1
+2025-11-06 15:21:05,508 INFO Processing times: normalize=0.07 ms | buffer=0.01 ms | predict=1.65 ms
+2025-11-06 15:21:06,010 INFO Predicted class: 1
+2025-11-06 15:21:06,010 INFO Processing times: normalize=0.12 ms | buffer=0.01 ms | predict=2.53 ms
