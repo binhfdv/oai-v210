@@ -60,7 +60,8 @@ def socket_listener(control_sck):
         try:
             data = receive_from_socket(control_sck)
             batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-            
+            logging.info(f"Received new batch with ID: {batch_id}")
+            logging.info(f"\n\nData received: {data}\n\n")
             if not data:
                 continue
 
