@@ -59,6 +59,8 @@ def socket_listener(control_sck):
     while True:
         try:
             data = receive_from_socket(control_sck)
+            batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+            
             if not data:
                 continue
 
@@ -74,7 +76,6 @@ def socket_listener(control_sck):
 
                 # Parse one complete row
                 recv_time = time.time()
-                batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
                 parts = line.split(",")
 
                 if len(parts) < ALL_FEATS + 1:
