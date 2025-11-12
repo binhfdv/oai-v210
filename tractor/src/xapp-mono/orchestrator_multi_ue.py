@@ -51,34 +51,43 @@ def init_system():
 
 
 def socket_listener(control_sck):
-    """Receive data from TCP and enqueue each UE row."""
+    """Receive data from TCP and enqueue each complete UE row."""
     logging.info("Socket listener started...")
+
+    buffer = ""  # holds leftover partial data between recv calls
+
     while True:
-        data = receive_from_socket(control_sck)
-        if not data:
-            continue
-
-        rows = [r.strip() for r in data.split("\n") if r.strip()]
-        recv_time = time.time()
-        batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-        valid_rows = []
-
-        for r in rows:
-            parts = r.split(",")
-            ue_id = parts[3] if len(parts) > ALL_FEATS else "?"
-            if len(parts) < ALL_FEATS + 1:
-                ue_id = 0
-                logging.info(f"[UE={ue_id}] Skipping malformed row: {r}")
+        try:
+            data = receive_from_socket(control_sck)
+            if not data:
                 continue
-            numeric_line = ",".join(parts[1:])  # remove readable timestamp
-            valid_rows.append((batch_id, numeric_line, recv_time))
 
-        batch_size = len(valid_rows)
-        if batch_size == 0:
-            continue
+            # Append new chunk to buffer
+            buffer += data
 
-        for batch_id, numeric_line, recv_time in valid_rows:
-            data_queue.put((batch_id, numeric_line, recv_time, batch_size))
+            # Process all complete rows (terminated by newline)
+            while '\n' in buffer:
+                line, buffer = buffer.split('\n', 1)
+                line = line.strip()
+                if not line:
+                    continue
+
+                # Parse one complete row
+                recv_time = time.time()
+                batch_id = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+                parts = line.split(",")
+
+                if len(parts) < ALL_FEATS + 1:
+                    ue_id = 0
+                    logging.info(f"[UE={ue_id}] Skipping malformed row: {line}")
+                    continue
+
+                numeric_line = ",".join(parts[1:])  # remove readable timestamp
+                data_queue.put((batch_id, numeric_line, recv_time, 1))
+
+        except Exception as e:
+            logging.exception(f"Socket listener error: {e}")
+            time.sleep(0.5)
 
 
 def processing_worker(num_feats, slice_len):

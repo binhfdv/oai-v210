@@ -27,23 +27,44 @@ def send_socket(socket, msg: str):
 
 
 # receive data from socker
-def receive_from_socket(socket) -> str:
+# def receive_from_socket(socket) -> str:
 
-    ack = 'Indication ACK\n'
+#     ack = 'Indication ACK\n'
 
-    data = socket.recv(4096)
+#     data = socket.recv(4096)
 
+#     try:
+#         data = data.decode('utf-8')
+#     except UnicodeDecodeError:
+#         return ''
+
+#     if ack in data:
+#         data = data[len(ack):]
+
+#     if len(data) > 0:
+#         # print("Received: ", str(data))
+
+#         return data.strip()
+#     else:
+#         return ''
+def receive_from_socket(sock) -> str:
+    """Read available bytes from socket and return decoded UTF-8 text."""
     try:
-        data = data.decode('utf-8')
-    except UnicodeDecodeError:
-        return ''
+        data = sock.recv(4096)
+        if not data:
+            return ""
+    except BlockingIOError:
+        return ""
+    except Exception as e:
+        logging.exception(f"Socket recv error: {e}")
+        return ""
 
-    if ack in data:
-        data = data[len(ack):]
+    # Decode safely: incomplete UTF-8 chars will be ignored, not dropped
+    text = data.decode('utf-8', errors='ignore')
 
-    if len(data) > 0:
-        # print("Received: ", str(data))
+    # If ACK is at the start, remove it
+    if text.startswith("Indication ACK\n"):
+        text = text[len("Indication ACK\n"):]
 
-        return data.strip()
-    else:
-        return ''
+    # 🚫 DO NOT strip newlines — they are delimiters!
+    return text

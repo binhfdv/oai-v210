@@ -8,6 +8,8 @@ import subprocess
 # Usage: python3 deploy_multi_ue.py <num_ues> <node_role>
 # Example: python3 deploy_multi_ue.py 20 core
 # Or: ./deploy_multi_ue.py 20 core
+# Notes: when you face the issue no IP addresses available in range set: <10.244.0.1-10.244.0.254> from multus
+# run this command: sudo rm -rf /var/lib/cni/networks/cbr0
 # ==============================
 
 # --- Validate input arguments ---
