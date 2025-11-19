@@ -117,7 +117,7 @@ def socket_listener(control_sck):
 
                 parts = line.split(",")
 
-                if len(parts) < 21:  # need at least index 20
+                if len(parts) < 31:  # need at least index 20
                     logging.warning(f"Skipping malformed row: {line}")
                     continue
 

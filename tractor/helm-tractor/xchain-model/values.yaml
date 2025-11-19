@@ -1,0 +1,37 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-model
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-model"
+
+serviceAccount:
+  create: true
+  name: "xchain-model-sa"
+  automount: true
+  annotations: {}
+
+service:
+  port: 5001
+  type: ClusterIP
+
+env:
+  MODEL_PATH: /mnt/model/xgb_model.json
+  XCHAIN_DATA_PORT: "4400"
+
+persistentVolume:
+  enabled: true
+  name: xchain-model-pv
+  claimName: xchain-model-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model/xgb_model.json
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp-fast
+  reclaimPolicy: Delete
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

@@ -61,3 +61,11 @@ xchain-smartgw:
     node-role: core
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
+
+xchain-model:
+  enabled: true
+  fullnameOverride: "xchain-model"
+  nodeSelector:
+    node-role: core
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp-fast

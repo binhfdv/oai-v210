@@ -45,3 +45,8 @@ dependencies:
     name: xchain-smartgw
     repository: "file://../xchain-smartgw"
     version: 0.1.0
+
+  - condition: xchain-model.enabled
+    name: xchain-model
+    repository: "file://../xchain-model"
+    version: 0.1.0

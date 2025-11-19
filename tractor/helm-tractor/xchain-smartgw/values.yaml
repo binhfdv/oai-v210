@@ -21,7 +21,7 @@ env:
   MODEL_PATH: /mnt/model/smartgw.pkl
   ORCH_HOST: orchestrator
   ORCH_PORT: "4300"
-  XCHAIN_HOST: xchain-orchestrator
+  XCHAIN_HOST: xchain-model
   XCHAIN_PORT: "4400"
   KPM_COL_THPDL: "13"
   KPM_COL_THPUL: "20"
