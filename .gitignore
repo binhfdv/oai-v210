@@ -29,5 +29,6 @@ swig/
 *.tar.gz
 *.ply
 *.lock
+.venv
 generated_values_ue_*.yaml
 rewrite.pcap

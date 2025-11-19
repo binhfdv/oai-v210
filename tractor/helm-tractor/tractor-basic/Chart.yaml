@@ -40,3 +40,8 @@ dependencies:
     name: tractor-mono
     repository: "file://../tractor-mono"
     version: 0.1.0
+
+  - condition: xchain-smartgw.enabled
+    name: xchain-smartgw
+    repository: "file://../xchain-smartgw"
+    version: 0.1.0

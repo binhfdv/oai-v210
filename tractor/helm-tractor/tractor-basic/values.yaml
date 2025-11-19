@@ -52,3 +52,11 @@ tractor-mono:
       hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
     norm:
       hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+
+xchain-smartgw:
+  enabled: true
+  fullnameOverride: "xchain-smartgw"
+  nodeSelector:
+    node-role: core
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW

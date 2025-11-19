@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/smartgw
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-smartgw"
+
+service:
+  port: 4200
+  type: ClusterIP
+
+env:
+  ORCH_HOST: orchestrator
+  ORCH_PORT: "4300"
+  XCHAIN_HOST: xchain-orchestrator
+  XCHAIN_PORT: "4400"
+  KPM_COL_THPDL: "13"
+  KPM_COL_THPUL: "20"
+
+persistentVolume:
+  enabled: true
+  name: smartgw-model-pv
+  claimName: smartgw-model-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model/smartgw.pkl
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
+  reclaimPolicy: Delete
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []
