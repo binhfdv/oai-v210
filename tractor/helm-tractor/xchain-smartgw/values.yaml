@@ -1,17 +1,24 @@
 replicaCount: 1
 
 image:
-  repository: ddocker122/smartgw
+  repository: ddocker122/xchain-smartgw
   tag: latest
   pullPolicy: IfNotPresent
 
 fullnameOverride: "xchain-smartgw"
+
+serviceAccount:
+  create: true
+  name: "smartgw-sa"
+  automount: true
+  annotations: {}
 
 service:
   port: 4200
   type: ClusterIP
 
 env:
+  MODEL_PATH: /mnt/model/smartgw.pkl
   ORCH_HOST: orchestrator
   ORCH_PORT: "4300"
   XCHAIN_HOST: xchain-orchestrator

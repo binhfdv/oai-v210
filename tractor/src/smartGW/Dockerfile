@@ -11,8 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies into a clean directory
-COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir --prefix=/install \
+        flask \
+        requests \
+        numpy \
+        scikit-learn==1.6.1
 
 
 # -------------------------------
@@ -30,7 +34,7 @@ USER smartgwuser
 COPY --from=builder /install /usr/local
 
 # Copy application code
-COPY smartgw_server.py .
+COPY smartGW/smartgw_server.py .
 COPY xapp/xapp_control.py /app/xapp_control.py
 
 # Expose SmartGW API port

@@ -10,10 +10,14 @@ from threading import Thread
 
 from xapp_control import open_control_socket, receive_from_socket
 
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 # ---------------------------
 # Load SmartGW model
 # ---------------------------
-with open("smartgw.pkl", "rb") as f:
+MODEL_PATH = os.getenv("MODEL_PATH", "/mnt/model/smartgw.pkl")
+
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
 feature_cols = model["feature_cols"]  # ['DRB.UEThpDl', 'DRB.UEThpUl']
@@ -27,6 +31,7 @@ ORCH_PORT = os.getenv("ORCH_PORT", "5000")
 XCHAIN_HOST = os.getenv("XCHAIN_HOST", "xchain-orchestrator")
 XCHAIN_PORT = os.getenv("XCHAIN_PORT", "5001")
 
+PORT       = int(os.getenv("PORT", "4200"))
 # ---------------------------------------------------------
 # Construct final URLs
 # ---------------------------------------------------------
@@ -49,7 +54,6 @@ logging.info(f"[CONFIG] KPM_COL_THPUL = {KPM_COL_THPUL}")
 data_queue = Queue()
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 # ======================================================
@@ -180,9 +184,9 @@ def test_predict():
 # ======================================================
 if __name__ == "__main__":
     # socket to KPM-OAI
-    control_sck = open_control_socket("0.0.0.0", 32000)
+    control_sck = open_control_socket(PORT)
 
     Thread(target=socket_listener, args=(control_sck,), daemon=True).start()
     Thread(target=classification_worker, daemon=True).start()
 
-    app.run(host="0.0.0.0", port=5002)
+    app.run(host="0.0.0.0", port=5004)

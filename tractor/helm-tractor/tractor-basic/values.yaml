@@ -4,7 +4,8 @@ tractor-kpm-oai:
   nodeSelector:
     node-role: core
   env:
-    ORCH_HOST: tractor-mono
+    ORCH_HOST: xchain-smartgw
+    ORCH_PORT: "4200"
 
 tractor-kpm-simu:
   enabled: false
@@ -43,7 +44,7 @@ tractor-model:
     hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
 
 tractor-mono:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-mono"
   nodeSelector:
     node-role: core
