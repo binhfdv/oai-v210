@@ -61,6 +61,11 @@ xchain-smartgw:
     node-role: core
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
+  env:
+    ORCH_HOST: tractor-orchestrator
+    ORCH_PORT: "4300"
+    XCHAIN_HOST: xchain-model
+    XCHAIN_PORT: "4400"
 
 xchain-model:
   enabled: true

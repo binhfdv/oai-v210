@@ -39,8 +39,10 @@ spec:
           {{- end }}
 
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+          {{- range .Values.service }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+          {{- end }}
 
           volumeMounts:
             - name: model

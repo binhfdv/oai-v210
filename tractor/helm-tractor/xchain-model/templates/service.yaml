@@ -5,11 +5,13 @@ metadata:
   labels:
     {{- include "xchain-model.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.serviceType | default "ClusterIP" }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    {{- range .Values.service }}
+    - name: {{ .name }}
+      port: {{ .containerPort }}
+      targetPort: {{ .containerPort }}
       protocol: TCP
-      name: http
+    {{- end }}
   selector:
     {{- include "xchain-model.selectorLabels" . | nindent 4 }}

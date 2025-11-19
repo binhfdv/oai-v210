@@ -1,7 +1,7 @@
 import pickle
 import time
 import logging
-import requests
+import socket
 import os
 from flask import Flask, request, jsonify
 import numpy as np
@@ -26,17 +26,15 @@ feature_cols = model["feature_cols"]  # ['DRB.UEThpDl', 'DRB.UEThpUl']
 # Read environment variables (with safe defaults)
 # ---------------------------------------------------------
 ORCH_HOST = os.getenv("ORCH_HOST", "orchestrator")
-ORCH_PORT = os.getenv("ORCH_PORT", "5000")
+ORCH_PORT = int(os.getenv("ORCH_PORT", "4300"))
 
 XCHAIN_HOST = os.getenv("XCHAIN_HOST", "xchain-orchestrator")
-XCHAIN_PORT = os.getenv("XCHAIN_PORT", "5001")
+XCHAIN_PORT = int(os.getenv("XCHAIN_PORT", "4400"))
 
-PORT       = int(os.getenv("PORT", "4200"))
+PORT = int(os.getenv("PORT", "4200"))
 # ---------------------------------------------------------
 # Construct final URLs
 # ---------------------------------------------------------
-ORCH_URL = f"http://{ORCH_HOST}:{ORCH_PORT}"
-XCHAIN_URL = f"http://{XCHAIN_HOST}:{XCHAIN_PORT}"
 
 logging.info(f"[CONFIG] ORCH_URL   = {ORCH_URL}")
 logging.info(f"[CONFIG] XCHAIN_URL = {XCHAIN_URL}")
@@ -142,29 +140,66 @@ def socket_listener(control_sck):
 # ======================================================
 # WORKER: classify + forward traffic
 # ======================================================
+def send_to_socket(sock, message: str):
+    try:
+        sock.sendall(message.encode("utf-8"))
+    except Exception as e:
+        logging.error(f"Socket send error: {e}")
+        raise
+
+
+def connect_socket(host, port, label):
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((host, port))
+            logging.info(f"[SmartGW] Connected to {label} at {host}:{port}")
+            return s
+        except Exception as e:
+            logging.warning(f"[SmartGW] Connection to {label} failed: {e}, retrying…")
+            time.sleep(2)
+
+
 def classification_worker():
     logging.info("Classifier worker running...")
+
+    orch_socket = connect_socket(ORCH_HOST, ORCH_PORT, "TRACTOR")
+    xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
 
     while True:
         x_raw, full_row, recv_time = data_queue.get()
 
+        # ---------------------------------------
+        # Run prediction
+        # ---------------------------------------
         start = time.perf_counter()
         prediction = smartgw_predict_ultrafast(x_raw, model)
         latency_ms = (time.perf_counter() - start) * 1000
 
         logging.info(
-            f"[SmartGW] Class={prediction}  Latency={latency_ms:.3f} ms  Features={x_raw}"
+            f"[SmartGW] Class={prediction}  Latency={latency_ms:.3f} ms  UE-Features={x_raw}"
         )
 
-        # forward traffic to the proper orchestrator
+        # ---------------------------------------
+        # Forward via SOCKET (not HTTP)
+        # ---------------------------------------
         try:
             if prediction == "eMBB":
-                requests.post(ORCH_URL, json={"row": full_row})
+                send_to_socket(orch_socket, full_row + "\n")
             else:
-                requests.post(XCHAIN_URL, json={"row": full_row})
+                send_to_socket(xchain_socket, full_row + "\n")
 
         except Exception as e:
-            logging.error(f"Forwarding error: {e}")
+            logging.error(f"[SmartGW] Forwarding socket error: {e}")
+
+            # attempt reconnect depending on failed target
+            if prediction == "eMBB":
+                orch_socket = connect_socket(ORCH_HOST, ORCH_PORT, "ORCH")
+            else:
+                xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
+
+        finally:
+            data_queue.task_done()
 
 
 # ======================================================

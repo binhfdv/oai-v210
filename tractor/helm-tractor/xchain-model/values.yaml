@@ -13,9 +13,13 @@ serviceAccount:
   automount: true
   annotations: {}
 
+serviceType: ClusterIP
+
 service:
-  port: 5001
-  type: ClusterIP
+  - name: kpm-http
+    containerPort: 4400
+  - name: model-http
+    containerPort: 5001
 
 env:
   MODEL_PATH: /mnt/model/xgb_model.json
