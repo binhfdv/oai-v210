@@ -1,0 +1,318 @@
+INFO:root:✔ XGBoost model loaded
+Waiting for xApp connection on port 4400
+xApp connected: 10.244.0.190:47694
+INFO:root:✔ XChain listening on socket 4400
+ * Serving Flask app 'xchain_model'
+ * Debug mode: off
+[12:09:46] WARNING: /workspace/src/learner.cc:790: 
+Parameters: { "approx_kernel", "predictor" } are not used.
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=6.220ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=6.222ms
+
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.244.0.191:5001
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.162ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.165ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.893ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.896ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.135ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.139ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.938ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.941ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.227ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.229ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.048ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.051ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.093ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.096ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.131ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.134ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.431ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.434ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.995ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.999ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.857ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.860ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.954ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.958ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.460ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.463ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.837ms | Probs=[0.23008814 0.28662732 0.4832845 ] | End2end=1.839ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.158ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.161ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.550ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.553ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.606ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.611ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=3.064ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=3.068ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=3.160ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=3.164ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.943ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.946ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.558ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.561ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=3.094ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=3.098ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.300ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.304ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.813ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.817ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.137ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.140ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.644ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.647ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.753ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.756ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.399ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.402ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.869ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.872ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.881ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.884ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.085ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.088ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.646ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.648ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.881ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.884ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.231ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.234ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.730ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.734ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.072ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.076ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.094ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.099ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.335ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.338ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.959ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.961ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.966ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.969ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.973ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.975ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.864ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.867ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.077ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.080ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.093ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.096ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.261ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.264ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.936ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.939ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.610ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.613ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.721ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.724ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.127ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.129ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.984ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.987ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.868ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.871ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.853ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.857ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.903ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.906ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.047ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.050ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.883ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.885ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.839ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.842ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.959ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.961ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.056ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.059ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.371ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.375ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.901ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.903ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.490ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.494ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.809ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.811ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.917ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.919ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.910ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.912ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.941ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.944ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.993ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.996ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.996ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.999ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.891ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.894ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.855ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.857ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.858ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.860ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.259ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.262ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.940ms | Probs=[0.22034375 0.15157853 0.62807775] | End2end=1.943ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.795ms | Probs=[0.23008814 0.28662732 0.4832845 ] | End2end=1.797ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.940ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.943ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.978ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.981ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.908ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.910ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.884ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.887ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.477ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.481ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.976ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.978ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.827ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.829ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.137ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.139ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.637ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.640ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.940ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.943ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.351ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.354ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.836ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.840ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.234ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.238ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.811ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.813ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.696ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.699ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.942ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.946ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.025ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.028ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.160ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.164ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.870ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.872ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.156ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.160ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.913ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.916ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.232ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.235ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.371ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.374ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.931ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.934ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.032ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.035ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.881ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.884ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.878ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.881ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.011ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.014ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.012ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.016ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.745ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.747ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.972ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.976ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.034ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.037ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.838ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.841ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.027ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.029ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.816ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.819ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.738ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.740ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.304ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.308ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.465ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.468ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.149ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.152ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.182ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.184ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.953ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.956ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.148ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.151ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.643ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.646ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.410ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.413ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.020ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.023ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.285ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.289ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.000ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.003ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.402ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.406ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.527ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.529ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.145ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.147ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.324ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.326ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.130ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.131ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.211ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.213ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=2.005ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=2.007ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.501ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.503ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.225ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.228ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.208ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.209ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.268ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.269ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.429ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.431ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.456ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.459ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.605ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.607ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.163ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.165ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.377ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.380ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.298ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.300ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.357ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.360ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.234ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.236ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.217ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.219ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.269ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.271ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.421ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.423ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.254ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.256ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.317ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.318ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.571ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.572ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.410ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.412ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.537ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.539ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.005ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.007ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.400ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.402ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.300ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.302ms
+
+INFO:root:UE=1.0 -> Predicted class: URLLC | Latency=1.431ms | Probs=[0.12250654 0.13143802 0.74605536] | End2end=1.433ms
+

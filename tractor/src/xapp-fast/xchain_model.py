@@ -1,5 +1,4 @@
 import os
-
 import time
 import logging
 import numpy as np
@@ -55,13 +54,14 @@ def parse_sample(row_data):
     parts = row_data.split(",")
 
     if len(parts) < 31:  # minimal length check
-        raise ValueError(f"Malformed row (len={len(parts)}): {row_data}")
-
+        # raise ValueError(f"Malformed row (len={len(parts)}): {row_data}")
+        logging.warning(f"Malformed row (len={len(parts)}): {row_data}")
+        return 0, np.zeros((1, 17), dtype=float)
     # Remove timestamp (index 0)
     parts = parts[1:]
 
     # UE ID at index 3
-    ue_id = int(float(parts[3]))
+    ue_id = float(parts[3])
 
     # Extract 17 features safely
     try:
@@ -120,22 +120,23 @@ def socket_listener(control_sck):
 
     while True:
         try:
-            start = time.perf_counter()
             msg = receive_from_socket(control_sck)
             if not msg:
                 continue
 
+            start = time.perf_counter()
             t0 = time.perf_counter()
             ue_id, features = parse_sample(msg)
             cls, probs = xgb_predict(features, model)
             latency = (time.perf_counter() - t0) * 1000
+            end = time.perf_counter()
 
             logging.info(
                 f"UE={ue_id} -> "
                 f"Predicted class: {['eMBB','mMTC','URLLC'][cls]} | "
                 f"Latency={latency:.3f}ms | "
                 f"Probs={probs} | "
-                f"End2end={(time.perf_counter() - start)*1000:.3f}ms\n"
+                f"End2end={(end - start)*1000:.3f}ms\n"
             )
 
         except Exception as e:

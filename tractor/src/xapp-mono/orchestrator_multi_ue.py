@@ -20,8 +20,8 @@ DATA_PORT  = int(os.getenv("DATA_PORT", "4300"))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-logging.info(f"Configuration: MODEL_PATH={MODEL_PATH}, NORM_PATH={NORM_PATH}, "
-             f"MODEL_TYPE={MODEL_TYPE}, NCLASS={NCLASS}, ALL_FEATS={ALL_FEATS}, "
+logging.info(f"Configuration: MODEL_PATH={MODEL_PATH}, NORM_PATH={NORM_PATH},\n"
+             f"MODEL_TYPE={MODEL_TYPE}, NCLASS={NCLASS}, ALL_FEATS={ALL_FEATS},\n"
              f"STREAM_ID={STREAM_ID}, PORT={PORT}, DATA_PORT={DATA_PORT}")
 
 data_queue = queue.Queue()
@@ -81,7 +81,7 @@ def socket_listener(control_sck):
                     continue
 
                 # Parse one complete row
-                recv_time = time.time()
+                recv_time = time.perf_counter()
                 parts = line.split(",")
 
                 if len(parts) < ALL_FEATS + 1:
@@ -114,7 +114,7 @@ def processing_worker(num_feats, slice_len):
     while True:
         try:
             batch_id, data_line, recv_time, batch_size = data_queue.get(block=True)
-            start_proc = time.time()
+            start_proc = time.perf_counter()
             queue_wait_ms = (start_proc - recv_time) * 1000.0
 
             stats = batch_stats[batch_id]
@@ -146,15 +146,15 @@ def processing_worker(num_feats, slice_len):
             last_timestamp_per_ue[ue_id] = ts_int
 
             # Normalize
-            t0 = time.time()
+            t0 = time.perf_counter()
             norm = _call_normalize(kpi_new.tolist())
-            t1 = time.time()
+            t1 = time.perf_counter()
             normalize_time_ms = (t1 - t0) * 1000.0
 
             # Buffer update
-            t0 = time.time()
+            t0 = time.perf_counter()
             buf = _call_buffer_update(STREAM_ID, norm["normalized"], slice_len, num_feats)
-            t1 = time.time()
+            t1 = time.perf_counter()
             buffer_time_ms = (t1 - t0) * 1000.0
 
             if not buf["ready"]:
@@ -170,9 +170,9 @@ def processing_worker(num_feats, slice_len):
                 continue
 
             # Predict
-            t0 = time.time()
+            t0 = time.perf_counter()
             pred = predict_internal({"window": buf["window"]})
-            t1 = time.time()
+            t1 = time.perf_counter()
             predict_time_ms = (t1 - t0) * 1000.0
             pred_class = pred["class"]
 
@@ -217,7 +217,7 @@ def log_batch_summary(batch_id, stats):
     total_stage = (
         stats["queue_wait"] + stats["normalize"] + stats["buffer"] + stats["predict"]
     )
-    end2end = (time.time() - stats["start_time"]) * 1000.0
+    end2end = (time.perf_counter() - stats["start_time"]) * 1000.0
     logging.info(
         f"[BATCH KPM {batch_id}] Completed {stats['count']} UEs | "
         f"queue_wait={stats['queue_wait']:.2f} ms | normalize={stats['normalize']:.2f} ms | "
