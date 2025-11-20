@@ -20,7 +20,7 @@ env:
 
 ports:
   - name: http
-    containerPort: 4200
+    containerPort: 4300
 
 serviceAccount:
   create: true

@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+SmartGW
+- SERVER: listens for KPM-OAI on PORT (accepts one client via open_control_socket)
+- CLIENT: connects to TRACTOR and XCHAIN and streams classified rows via TCP
+"""
 import pickle
 import time
 import logging
@@ -10,34 +16,33 @@ from threading import Thread
 
 from xapp_control import open_control_socket, receive_from_socket
 
-
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
 # ---------------------------
-# Load SmartGW model
+# Load SmartGW model (pickled dict)
 # ---------------------------
 MODEL_PATH = os.getenv("MODEL_PATH", "/mnt/model/smartgw.pkl")
-
 with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
-feature_cols = model["feature_cols"]  # ['DRB.UEThpDl', 'DRB.UEThpUl']
+# verify feature columns exist
+feature_cols = model["feature_cols"]
 
 # ---------------------------------------------------------
 # Read environment variables (with safe defaults)
 # ---------------------------------------------------------
-ORCH_HOST = os.getenv("ORCH_HOST", "orchestrator")
-ORCH_PORT = int(os.getenv("ORCH_PORT", "4300"))
+TRACTOR_HOST = os.getenv("TRACTOR_HOST", "tractor-orchestrator")
+TRACTOR_PORT = int(os.getenv("TRACTOR_PORT", "4300"))
 
-XCHAIN_HOST = os.getenv("XCHAIN_HOST", "xchain-orchestrator")
+XCHAIN_HOST = os.getenv("XCHAIN_HOST", "xchain-model")
 XCHAIN_PORT = int(os.getenv("XCHAIN_PORT", "4400"))
 
+# SmartGW listens for KPM-OAI on this port (server)
 PORT = int(os.getenv("PORT", "4200"))
-# ---------------------------------------------------------
-# Construct final URLs
-# ---------------------------------------------------------
 
-logging.info(f"[CONFIG] ORCH_URL   = {ORCH_URL}")
-logging.info(f"[CONFIG] XCHAIN_URL = {XCHAIN_URL}")
+logging.info(f"[CONFIG] TRACTOR_HOST = {TRACTOR_HOST}:{TRACTOR_PORT}")
+logging.info(f"[CONFIG] XCHAIN_HOST  = {XCHAIN_HOST}:{XCHAIN_PORT}")
+logging.info(f"[CONFIG] SMARTGW LISTEN PORT = {PORT}")
 
 # ---------------------------------------------------------
 # Read environment variables for column index selection
@@ -52,7 +57,6 @@ logging.info(f"[CONFIG] KPM_COL_THPUL = {KPM_COL_THPUL}")
 data_queue = Queue()
 
 app = Flask(__name__)
-
 
 # ======================================================
 # FAST SCALE + FAST KMEANS Prediction (your code)
@@ -93,10 +97,10 @@ def smartgw_predict_ultrafast(x_raw, model):
 
 
 # ======================================================
-# SOCKET LISTENER — receives traffic from KPM-OAI
+# SOCKET LISTENER — receives traffic from KPM-OAI (server side)
 # ======================================================
 def socket_listener(control_sck):
-    logging.info("Socket listener started...")
+    logging.info("Socket listener started (receiving KPM-OAI)...")
     buffer = ""
 
     while True:
@@ -114,21 +118,19 @@ def socket_listener(control_sck):
                     continue
 
                 parts = line.split(",")
-
-                if len(parts) < 31:  # need at least index 20
+                if len(parts) < 31:
                     logging.warning(f"Skipping malformed row: {line}")
                     continue
 
-                # extract raw features
+                # parse KPM features used by KMeans
                 try:
                     x_raw = {
                         "DRB.UEThpDl": float(parts[KPM_COL_THPDL]),
                         "DRB.UEThpUl": float(parts[KPM_COL_THPUL]),
                     }
-
                     recv_time = time.time()
-                    data_queue.put((x_raw, parts, recv_time))
-
+                    # enqueue full raw CSV line (string) so we can forward it unchanged
+                    data_queue.put((x_raw, line, recv_time))
                 except Exception as e:
                     logging.exception(f"Parsing error: {e}")
 
@@ -138,65 +140,86 @@ def socket_listener(control_sck):
 
 
 # ======================================================
-# WORKER: classify + forward traffic
+# WORKER: classify + forward traffic (client sockets)
 # ======================================================
 def send_to_socket(sock, message: str):
     try:
         sock.sendall(message.encode("utf-8"))
     except Exception as e:
         logging.error(f"Socket send error: {e}")
+        # close socket to force reconnect upstream
+        try:
+            sock.close()
+        except Exception:
+            pass
         raise
 
 
 def connect_socket(host, port, label):
+    """
+    Persistent connect with backoff. Returns a connected socket.
+    """
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(5)
             s.connect((host, port))
+            s.settimeout(None)
             logging.info(f"[SmartGW] Connected to {label} at {host}:{port}")
             return s
         except Exception as e:
-            logging.warning(f"[SmartGW] Connection to {label} failed: {e}, retrying…")
+            logging.warning(f"[SmartGW] Connection to {label} at {host}:{port} failed: {e}. Retrying in 2s.")
+            try:
+                s.close()
+            except Exception:
+                pass
             time.sleep(2)
 
 
 def classification_worker():
     logging.info("Classifier worker running...")
 
-    orch_socket = connect_socket(ORCH_HOST, ORCH_PORT, "TRACTOR")
+    # Establish long-lived connections to tractor & xchain
+    tractor_socket = connect_socket(TRACTOR_HOST, TRACTOR_PORT, "TRACTOR")
     xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
 
     while True:
         x_raw, full_row, recv_time = data_queue.get()
 
-        # ---------------------------------------
-        # Run prediction
-        # ---------------------------------------
+        # prediction
         start = time.perf_counter()
-        prediction = smartgw_predict_ultrafast(x_raw, model)
+        try:
+            prediction = smartgw_predict_ultrafast(x_raw, model)
+        except Exception as e:
+            logging.exception(f"Prediction failed: {e}")
+            # skip forwarding malformed
+            data_queue.task_done()
+            continue
         latency_ms = (time.perf_counter() - start) * 1000
 
         logging.info(
             f"[SmartGW] Class={prediction}  Latency={latency_ms:.3f} ms  UE-Features={x_raw}"
         )
 
-        # ---------------------------------------
-        # Forward via SOCKET (not HTTP)
-        # ---------------------------------------
+        # forward via socket, choosing target
         try:
             if prediction == "eMBB":
-                send_to_socket(orch_socket, full_row + "\n")
+                send_to_socket(tractor_socket, full_row + "\n")
             else:
                 send_to_socket(xchain_socket, full_row + "\n")
-
         except Exception as e:
-            logging.error(f"[SmartGW] Forwarding socket error: {e}")
+            logging.error(f"[SmartGW] Forwarding error: {e}")
 
-            # attempt reconnect depending on failed target
-            if prediction == "eMBB":
-                orch_socket = connect_socket(ORCH_HOST, ORCH_PORT, "ORCH")
-            else:
-                xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
+            # reconnect the appropriate socket and retry once
+            try:
+                if prediction == "eMBB":
+                    tractor_socket = connect_socket(TRACTOR_HOST, TRACTOR_PORT, "TRACTOR")
+                    send_to_socket(tractor_socket, full_row + "\n")
+                else:
+                    xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
+                    send_to_socket(xchain_socket, full_row + "\n")
+            except Exception as e2:
+                logging.error(f"[SmartGW] Retry forward failed: {e2}")
 
         finally:
             data_queue.task_done()
@@ -218,10 +241,14 @@ def test_predict():
 # MAIN
 # ======================================================
 if __name__ == "__main__":
-    # socket to KPM-OAI
+    # SmartGW acts as SERVER for KPM-OAI (one accept is fine here, your open_control_socket does exactly that)
     control_sck = open_control_socket(PORT)
 
+    # start listener for incoming KPM rows (this will read from the accepted socket)
     Thread(target=socket_listener, args=(control_sck,), daemon=True).start()
+
+    # start classifier worker (consumer + client sockets)
     Thread(target=classification_worker, daemon=True).start()
 
+    # small debug HTTP endpoint for manual testing
     app.run(host="0.0.0.0", port=5004)

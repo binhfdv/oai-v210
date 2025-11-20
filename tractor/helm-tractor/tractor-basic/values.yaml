@@ -44,7 +44,7 @@ tractor-model:
     hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
 
 tractor-mono:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-mono"
   nodeSelector:
     node-role: core
@@ -62,8 +62,8 @@ xchain-smartgw:
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
   env:
-    ORCH_HOST: tractor-orchestrator
-    ORCH_PORT: "4300"
+    TRACTOR_HOST: tractor-mono
+    TRACTOR_PORT: "4300"
     XCHAIN_HOST: xchain-model
     XCHAIN_PORT: "4400"
 

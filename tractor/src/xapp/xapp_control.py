@@ -56,7 +56,7 @@ def receive_from_socket(sock) -> str:
     except BlockingIOError:
         return ""
     except Exception as e:
-        logging.exception(f"Socket recv error: {e}")
+        print(f"Socket recv error: {e}")
         return ""
 
     # Decode safely: incomplete UTF-8 chars will be ignored, not dropped

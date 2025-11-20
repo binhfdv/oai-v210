@@ -15,9 +15,14 @@ MODEL_TYPE = os.getenv("MODEL_TYPE", "Tv1")
 NCLASS     = int(os.getenv("NCLASS", "4"))
 ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))
 STREAM_ID  = os.getenv("STREAM_ID", "default")
-PORT       = int(os.getenv("PORT", "4200"))
+PORT       = int(os.getenv("PORT", "5000"))
+DATA_PORT  = int(os.getenv("DATA_PORT", "4300"))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+logging.info(f"Configuration: MODEL_PATH={MODEL_PATH}, NORM_PATH={NORM_PATH}, "
+             f"MODEL_TYPE={MODEL_TYPE}, NCLASS={NCLASS}, ALL_FEATS={ALL_FEATS}, "
+             f"STREAM_ID={STREAM_ID}, PORT={PORT}, DATA_PORT={DATA_PORT}")
 
 data_queue = queue.Queue()
 last_timestamp_per_ue = {}
@@ -223,8 +228,8 @@ def log_batch_summary(batch_id, stats):
 
 def main():
     num_feats, slice_len = init_system()
-    control_sck = open_control_socket(PORT)
-    logging.info(f"Listening on port {PORT}")
+    control_sck = open_control_socket(DATA_PORT)
+    logging.info(f"Listening on port {DATA_PORT}")
 
     t_listener = threading.Thread(target=socket_listener, args=(control_sck,), daemon=True)
     t_worker = threading.Thread(target=processing_worker, args=(num_feats, slice_len), daemon=True)

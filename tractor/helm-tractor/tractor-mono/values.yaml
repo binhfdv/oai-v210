@@ -10,7 +10,7 @@ fullnameOverride: "tractor-mono"
 serviceType: ClusterIP
 service:
   - name: kpm-http
-    containerPort: 4200
+    containerPort: 4300
   - name: mono-http
     containerPort: 5000
 
