@@ -32,3 +32,4 @@ swig/
 .venv
 generated_values_ue_*.yaml
 rewrite.pcap
+unicorn/pcaps/
