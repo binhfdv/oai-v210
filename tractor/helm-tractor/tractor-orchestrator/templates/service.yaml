@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: {{ include "tractor-orchestrator.fullname" . }}
 spec:
-  selector:
-    {{- include "tractor-orchestrator.labels" . | nindent 4 }}
+  type: {{ .Values.serviceType | default "ClusterIP" }}
   ports:
-    - port: 4200
-      targetPort: 4200
+    {{- range .Values.service }}
+    - name: {{ .name }}
+      port: {{ .containerPort }}
+      targetPort: {{ .containerPort }}
       protocol: TCP
+    {{- end }}
   selector:
     {{- include "tractor-orchestrator.selectorLabels" . | nindent 4 }}

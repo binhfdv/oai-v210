@@ -18,8 +18,9 @@ env:
   MODEL_PATH: /mnt/model/model.pt
   NORM_PATH: /mnt/model/norm.pkl
 
-ports:
-  - name: http
+serviceType: ClusterIP
+service:
+  - name: kpm-http
     containerPort: 4300
 
 serviceAccount:

@@ -51,7 +51,7 @@ spec:
               value: "{{ $value }}"
           {{- end }}
           ports:
-          {{- range .Values.ports }}
+          {{- range .Values.service }}
             - name: {{ .name }}
               containerPort: {{ .containerPort }}
           {{- end }}

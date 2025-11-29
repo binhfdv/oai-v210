@@ -16,35 +16,37 @@ tractor-kpm-simu:
     ORCH_HOST: tractor-mono
 
 tractor-orchestrator:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-orchestrator"
   nodeSelector:
     node-role: core
+  image:
+    tag: dev
 
 tractor-normalizer:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-normalizer"
   nodeSelector:
     node-role: core
   persistentVolume:
-    hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+    hostPath:: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
 
 tractor-buffer:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-buffer"
   nodeSelector:
     node-role: core
 
 tractor-model:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-model"
   nodeSelector:
     node-role: core
   persistentVolume:
-    hostPath:: /home/ubuntu/binh/oai-v210/tractor/src/xapp/models
+    hostPath:: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
 
 tractor-mono:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-mono"
   nodeSelector:
     node-role: core
@@ -62,7 +64,7 @@ xchain-smartgw:
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
   env:
-    TRACTOR_HOST: tractor-mono
+    TRACTOR_HOST: tractor-orchestrator
     TRACTOR_PORT: "4300"
     XCHAIN_HOST: xchain-model
     XCHAIN_PORT: "4400"

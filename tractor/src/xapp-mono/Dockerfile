@@ -79,8 +79,5 @@ COPY xapp-mono/orchestrator_multi_ue.py /app/orchestrator.py
 COPY xapp/xapp_control.py /app/xapp_control.py
 COPY xapp/python /app/python
 
-# Expose ports
-EXPOSE 5000 4200
-
 # Run the app
 CMD ["python", "main.py"]

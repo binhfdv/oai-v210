@@ -1,16 +1,59 @@
-FROM python:3.10-slim
+# FROM python:3.10-slim
+
+# WORKDIR /app
+
+# COPY run_xapp.py /app/run_xapp.py
+
+# COPY xapp_control.py /app/xapp_control.py
+
+# RUN pip install --no-cache-dir flask requests numpy torch
+
+# # models mounted from volume
+# ENV MODEL_PATH=/mnt/model/model.pt
+# ENV NORM_PATH=/mnt/model/norm.pkl
+# ENV MODEL_TYPE=CNN
+
+# CMD ["python", "run_xapp.py"]
+
+# =========================
+# Stage 1: Build dependencies
+# =========================
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-COPY run_xapp.py /app/run_xapp.py
+# Install only what's needed to build Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY xapp_control.py /app/xapp_control.py
+# Pre-install Python packages in a temporary layer
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir \
+        flask \
+        numpy \
+        matplotlib \
+        requests \
+        pandas \
+        torch==2.3.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-RUN pip install --no-cache-dir flask requests numpy torch
+# =========================
+# Stage 2: Final runtime
+# =========================
+FROM python:3.11-slim
 
-# models mounted from volume
+# Default environment variables
 ENV MODEL_PATH=/mnt/model/model.pt
 ENV NORM_PATH=/mnt/model/norm.pkl
 ENV MODEL_TYPE=CNN
 
+WORKDIR /app
+
+# Copy pre-installed packages from builder
+COPY --from=builder /usr/local /usr/local
+
+COPY run_xapp.py /app/run_xapp.py
+COPY xapp_control.py /app/xapp_control.py
+
+# Run the app
 CMD ["python", "run_xapp.py"]

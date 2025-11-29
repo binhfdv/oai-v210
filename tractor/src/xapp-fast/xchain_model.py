@@ -10,7 +10,7 @@ from xgboost import Booster
 from xapp_control import open_control_socket, receive_from_socket
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 # -------------------------------------------------
 # Load XGBoost Model

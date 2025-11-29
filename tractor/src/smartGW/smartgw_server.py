@@ -93,7 +93,7 @@ def smartgw_predict_ultrafast(x_raw, model):
     c = int(np.argmin(dists))
 
     # 5. centroid -> class
-    return "eMBB" if centroid_to_class[c] == 0 else "mMTC-URLLC"
+    return "eMBB-URLLC" if centroid_to_class[c] == 0 else "mMTC-URLLC"
 
 
 # ======================================================
@@ -203,7 +203,7 @@ def classification_worker():
 
         # forward via socket, choosing target
         try:
-            if prediction == "eMBB":
+            if prediction == "eMBB-URLLC":
                 send_to_socket(tractor_socket, full_row + "\n")
             else:
                 send_to_socket(xchain_socket, full_row + "\n")
@@ -212,7 +212,7 @@ def classification_worker():
 
             # reconnect the appropriate socket and retry once
             try:
-                if prediction == "eMBB":
+                if prediction == "eMBB-URLLC":
                     tractor_socket = connect_socket(TRACTOR_HOST, TRACTOR_PORT, "TRACTOR")
                     send_to_socket(tractor_socket, full_row + "\n")
                 else:

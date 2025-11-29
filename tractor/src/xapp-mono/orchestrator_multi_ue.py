@@ -3,8 +3,7 @@ import numpy as np
 from datetime import datetime
 from collections import defaultdict
 from app_server import (
-    load_norm_internal, _call_buffer_update, predict_internal,
-    load_model, _call_normalize
+    load_norm_internal, _call_buffer_update, predict_internal, _call_normalize
 )
 from xapp_control import open_control_socket, receive_from_socket
 

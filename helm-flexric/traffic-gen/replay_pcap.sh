@@ -37,11 +37,12 @@ tcprewrite \
   --outfile="$OUT" \
   --enet-dmac="$GW_MAC" \
   --enet-smac="$SRC_MAC" \
-  --fixcsum
+  --fixcsum \
+  --mtu-trunc
 echo "✅ Rewrite complete."
 echo
 
 echo "=== Replay ==="
-tcpreplay -i "$IFACE" --timer=nano "$OUT"
+tcpreplay --preload-pcap -i "$IFACE" --timer=nano --stats=1 --loop=5000000 "$OUT"
 
 echo "✅ Replay complete."

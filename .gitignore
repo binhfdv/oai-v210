@@ -33,3 +33,8 @@ swig/
 generated_values_ue_*.yaml
 rewrite.pcap
 unicorn/pcaps/
+helm-flexric/traffic-gen/urllc_106_PCAPdroid_modified.pcap
+helm-flexric/traffic-gen/urllc_106_PCAPdroid.pcap
+helm-flexric/traffic-gen/URLLC_106.pcap
+helm-flexric/traffic-gen/urllc_109_PCAPdroid.pcap
+helm-flexric/traffic-gen/URLLC_109.pcap
