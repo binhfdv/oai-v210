@@ -105,13 +105,15 @@ spec:
           {{- end }}
           - name: scripts
             mountPath: /tmp/scripts
+        {{- if .Values.resources.define }}
         resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
           limits:
-            cpu: 200m
-            memory: 256Mi
+            cpu: {{ .Values.resources.limits.cpu | default "100m" }}
+            memory: {{ .Values.resources.limits.memory | default "128Mi" }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+        {{- end }}
       {{- end }}
       volumes:
       - name: scripts
