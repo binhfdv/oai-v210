@@ -43,6 +43,6 @@ echo "✅ Rewrite complete."
 echo
 
 echo "=== Replay ==="
-tcpreplay --preload-pcap -i "$IFACE" --timer=nano --stats=1 --loop=5000000 "$OUT"
+tcpreplay --preload-pcap -i "$IFACE" --timer=nano --stats=1 "$OUT"
 
 echo "✅ Replay complete."

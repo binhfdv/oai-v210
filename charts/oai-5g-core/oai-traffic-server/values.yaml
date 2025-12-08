@@ -54,6 +54,8 @@ persistentVolume:
 debug:
   enabled: false
   image: ubuntu:22.04
+  version: latest
+  pullPolicy: IfNotPresent
 
 ## NF is the network function and tcpdump is the tcpdump container. 
 ## To know more about request and limit it is better to understand that how Kubernetes QoS works. 

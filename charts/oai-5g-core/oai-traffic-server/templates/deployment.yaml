@@ -94,7 +94,7 @@ spec:
         {{- end}}
       {{- if .Values.debug.enabled }}
       - name: debug
-        image: {{ .Values.debug.image }}
+        image: "{{ .Values.debug.image }}:{{ .Values.debug.version }}"
         command: ["/bin/bash", "-c", "sleep infinity"]
         securityContext:
           privileged: true

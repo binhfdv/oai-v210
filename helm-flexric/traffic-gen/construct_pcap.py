@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # This will convert all CSV files in input_csv_folder to PCAP files in output_pcap_folder
-# python3 make_pcap_from_folder.py input_csv_folder output_pcap_folder
+# python3 construct_pcap.py input_csv_folder output_pcap_folder
 
 
 import os
@@ -129,6 +129,11 @@ def main():
 
         base = os.path.splitext(csv_file)[0]
         pcap_path = os.path.join(output_folder, base + ".pcap")
+
+        # --- CHECK EXISTING PCAP ---
+        if os.path.exists(pcap_path):
+            print(f"[SKIP] PCAP already exists for {csv_file} → {pcap_path}")
+            continue
 
         success = process_csv(csv_path, pcap_path)
         if not success:

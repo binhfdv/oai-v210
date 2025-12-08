@@ -29,8 +29,10 @@ swig/
 *.tar.gz
 *.ply
 *.lock
+*.log
 .venv
 generated_values_ue_*.yaml
 rewrite.pcap
 unicorn/pcaps/
 helm-flexric/traffic-gen/pcap
+helm-flexric/traffic-gen/replay_logs
