@@ -16,15 +16,17 @@ ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))
 STREAM_ID  = os.getenv("STREAM_ID", "default")
 PORT       = int(os.getenv("PORT", "5000"))
 DATA_PORT  = int(os.getenv("DATA_PORT", "4300"))
+T          = int(os.getenv("T", "1"))  # window size
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 logging.info(f"Configuration: MODEL_PATH={MODEL_PATH}, NORM_PATH={NORM_PATH},\n"
              f"MODEL_TYPE={MODEL_TYPE}, NCLASS={NCLASS}, ALL_FEATS={ALL_FEATS},\n"
-             f"STREAM_ID={STREAM_ID}, PORT={PORT}, DATA_PORT={DATA_PORT}")
+             f"STREAM_ID={STREAM_ID}, PORT={PORT}, DATA_PORT={DATA_PORT}, T window={T}")
 
 data_queue = queue.Queue()
 last_timestamp_per_ue = {}
+window_buffer_per_ue = defaultdict(list)
 
 def init_system():
     logging.info("Loading normalizer parameters")
@@ -167,10 +169,40 @@ def processing_worker(num_feats, slice_len):
                     log_batch_summary(batch_id, stats)
                     del batch_stats[batch_id]
                 continue
+            
+            # --- Update sliding window buffer for this UE ---
+            buffer_Twindow = window_buffer_per_ue[ue_id]
+            buffer_Twindow.append(buf["window"][-1])
+
+            # Keep only last T entries
+            if len(buffer_Twindow) > T:
+                buffer_Twindow.pop(0)
+
+            # Only predict if we have enough samples
+            if len(buffer_Twindow) < T:
+                logging.info(
+                    f"[UE={ue_id}] queue_wait={queue_wait_ms:.2f} ms | "
+                    f"normalize={normalize_time_ms:.2f} ms | buffer_len_with_T_{T}={len(buffer_Twindow)} | predict=--"
+                )
+                stats["count"] += 1
+                data_queue.task_done()
+                if stats["count"] >= stats["expected"]:
+                    log_batch_summary(batch_id, stats)
+                    del batch_stats[batch_id]
+                continue
+
+            # Flatten T×M window
+            logging.info(f"[UE={ue_id}] Preparing window for prediction")
+            # window_TxM = np.array(buffer_Twindow).flatten()  # shape: (T*M,)
+            window_TxM = np.array(buffer_Twindow)   # shape: (T, M)
+            logging.info(f"window_TxM shape: {window_TxM.shape}")
+            logging.info(f"---window_TxM data: {window_TxM}")
+            t1 = time.perf_counter()
+            buffer_time_ms = (t1 - t0) * 1000.0
 
             # Predict
             t0 = time.perf_counter()
-            pred = predict_internal({"window": buf["window"]})
+            pred = predict_internal({"window": window_TxM})
             t1 = time.perf_counter()
             predict_time_ms = (t1 - t0) * 1000.0
             pred_class = pred["class"]
@@ -194,7 +226,7 @@ def processing_worker(num_feats, slice_len):
             try:
                 pickle.dump(
                     {
-                        'input': np.array(buf["window"]),
+                        'input': np.array(window_TxM),
                         'label': pred_class,
                         'input_raw': kpi_new.copy(),
                         'ue_id': ue_id,

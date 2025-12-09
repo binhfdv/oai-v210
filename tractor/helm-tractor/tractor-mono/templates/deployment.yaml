@@ -45,10 +45,10 @@ spec:
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}
-              subPath: model.32.cnn.pt
+              subPath: {{ .Values.volumeMounts.model.subPath }}
             - name: norm
               mountPath: {{ .Values.volumeMounts.norm.mountPath }}
-              subPath: cols_maxmin.pkl
+              subPath: {{ .Values.volumeMounts.norm.subPath }}
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:

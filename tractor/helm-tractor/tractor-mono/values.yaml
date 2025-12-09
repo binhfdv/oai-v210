@@ -23,8 +23,10 @@ serviceAccount:
 volumeMounts:
   model:
     mountPath: /mnt/model/model.pt
+    subPath: model.16.cnn.pt
   norm:
     mountPath: /mnt/model/norm.pkl
+    subPath: cols_maxmin.pkl
 
 persistentVolume:
   model:
@@ -51,6 +53,7 @@ env:
   STREAM_ID: default
   MODEL_PATH: /mnt/model/model.pt
   NORM_PATH: /mnt/model/norm.pkl
+  T: "16"
 
 resources: {}
 nodeSelector: {}

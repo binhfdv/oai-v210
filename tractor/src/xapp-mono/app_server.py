@@ -1,10 +1,14 @@
 # app_server.py
+import os
 from flask import Flask, request, jsonify
 import numpy as np
 import pickle
 import torch
 from python.ORAN_models import TransformerNN, TransformerNN_v2, ConvNN
 from python.visual_xapp_inference import process_norm_params
+
+T = int(os.getenv("T", "1"))
+
 
 app = Flask(__name__)
 
@@ -37,7 +41,7 @@ colsparams = None
 indexes_to_keep = None
 map_feat2KPI = None
 num_feats = None
-slice_len = None
+slice_len = T
 
 @app.route("/load_norm", methods=["POST"])
 def load_norm():
@@ -48,8 +52,8 @@ def load_norm():
 
     all_feats_raw = int(request.json.get("all_feats_raw", 31))
     colsparam_dict = pickle.load(open(norm_param_path, "rb"))
-    colsparams, indexes_to_keep, map_feat2KPI, num_feats, slice_len, _ = process_norm_params(all_feats_raw, colsparam_dict)
-    return jsonify({"status": "ok", "num_feats": int(num_feats), "slice_len": int(slice_len)})
+    colsparams, indexes_to_keep, map_feat2KPI, num_feats, _, _ = process_norm_params(all_feats_raw, colsparam_dict)
+    return jsonify({"status": "ok", "num_feats": int(num_feats), "slice_len": int(T)})
 
 @app.route("/normalize", methods=["POST"])
 def normalize():
@@ -141,8 +145,8 @@ def load_norm_internal(req):
 
     all_feats_raw = int(req.get("all_feats_raw", 31))
     colsparam_dict = pickle.load(open(norm_param_path, "rb"))
-    colsparams, indexes_to_keep, map_feat2KPI, num_feats, slice_len, _ = process_norm_params(all_feats_raw, colsparam_dict)
-    return {"status": "ok", "num_feats": int(num_feats), "slice_len": int(slice_len)}
+    colsparams, indexes_to_keep, map_feat2KPI, num_feats, _, _ = process_norm_params(all_feats_raw, colsparam_dict)
+    return {"status": "ok", "num_feats": int(num_feats), "slice_len": int(T)}
 
 def _call_normalize(kpi_list):
     req = {"kpi": kpi_list}
