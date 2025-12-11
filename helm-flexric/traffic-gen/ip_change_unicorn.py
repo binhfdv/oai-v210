@@ -12,7 +12,7 @@ input_pcap = "mmtc.pcap"
 output_pcap = "mmtc_modified_UL.pcap"
 
 # IP lists to match (packets not matching will be deleted)
-old_src_list = ["172.30.1.1", "172.30.1.250", "3.122.49.24", "192.168.1.195", "192.168.1.152", "192.168.1.193", "52.88.71.233"]
+old_src_list = ["172.30.1.1", "172.30.1.250"]
 old_dst_list = ["172.30.1.250", "172.30.1.1"]
 
 # New IPs for rewriting

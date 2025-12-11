@@ -17,15 +17,17 @@ NCLASS     = int(os.getenv("NCLASS", "4"))
 ALL_FEATS  = int(os.getenv("ALL_FEATS", "31"))
 STREAM_ID  = os.getenv("STREAM_ID", "default")
 DATA_PORT  = int(os.getenv("DATA_PORT", "4300"))
+T          = int(os.getenv("T", "1"))  # window size
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 logging.info(f"Configuration: MODEL_PATH={MODEL_PATH}, NORM_PATH={NORM_PATH},\n"
              f"MODEL_TYPE={MODEL_TYPE}, NCLASS={NCLASS}, ALL_FEATS={ALL_FEATS},\n"
-             f"STREAM_ID={STREAM_ID}, DATA_PORT={DATA_PORT}")
+             f"STREAM_ID={STREAM_ID}, DATA_PORT={DATA_PORT}, T window={T}")
 
 data_queue = queue.Queue()
 last_timestamp_per_ue = {}
+window_buffer_per_ue = defaultdict(list)
 
 def post_json_retry(url, payload, retries=10, delay=2):
     for i in range(retries):
@@ -177,8 +179,8 @@ def processing_worker(num_feats, slice_len):
                 "slice_len": slice_len,
                 "num_feats": num_feats
             }).json()
-            t1 = time.perf_counter()
-            buffer_time_ms = (t1 - t0) * 1000.0
+            # t1 = time.perf_counter()
+            # buffer_time_ms = (t1 - t0) * 1000.0
 
             if not buf["ready"]:
                 logging.info(
@@ -191,6 +193,36 @@ def processing_worker(num_feats, slice_len):
                     log_batch_summary(batch_id, stats)
                     del batch_stats[batch_id]
                 continue
+            
+            # --- Update sliding window buffer for this UE ---
+            buffer_Twindow = window_buffer_per_ue[ue_id]
+            buffer_Twindow.append(buf["window"][-1])
+
+            # Keep only last T entries
+            if len(buffer_Twindow) > T:
+                buffer_Twindow.pop(0)
+
+            # Only predict if we have enough samples
+            if len(buffer_Twindow) < T:
+                logging.info(
+                    f"[UE={ue_id}] queue_wait={queue_wait_ms:.2f} ms | "
+                    f"normalize={normalize_time_ms:.2f} ms | buffer_len_with_T_{T}={len(buffer_Twindow)} | predict=--"
+                )
+                stats["count"] += 1
+                data_queue.task_done()
+                if stats["count"] >= stats["expected"]:
+                    log_batch_summary(batch_id, stats)
+                    del batch_stats[batch_id]
+                continue
+
+            # Flatten T×M window
+            logging.info(f"[UE={ue_id}] Preparing window for prediction")
+            # window_TxM = np.array(buffer_Twindow).flatten()  # shape: (T*M,)
+            window_TxM = np.array(buffer_Twindow)   # shape: (T, M)
+            logging.info(f"window_TxM shape: {window_TxM.shape}")
+            logging.info(f"---window_TxM data: {window_TxM}")
+            t1 = time.perf_counter()
+            buffer_time_ms = (t1 - t0) * 1000.0
 
             # Predict
             t0 = time.perf_counter()
@@ -199,10 +231,10 @@ def processing_worker(num_feats, slice_len):
             }).json()
             t1 = time.perf_counter()
             predict_time_ms = (t1 - t0) * 1000.0
-            pred_class = pred["class"]
+            pred_class = int(pred["class"])
 
             logging.info(
-                f"[UE={ue_id}] Predicted class: {pred_class} | "
+                f"[UE={ue_id}] Predicted class: {['eMBB','mMTC','URLLC'][pred_class]} | "
                 f"queue_wait={queue_wait_ms:.2f} ms | normalize={normalize_time_ms:.2f} ms | "
                 f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
             )
@@ -266,84 +298,6 @@ def main():
     t_listener.join()
     t_worker.join()
 
-    # last_timestamp = 0
-    # kpi_raw_window = []
-
-    # while True:
-    #     data_sck = receive_from_socket(control_sck)
-    #     if not data_sck:
-    #         continue
-
-    #     data_sck = data_sck.replace(',,', ',')
-    #     if data_sck[0] == 'm':
-    #         # (rare in sim) multi-part framing not used; just fall through
-    #         data_sck = data_sck[1:]
-
-    #     kpi_new = np.fromstring(data_sck, sep=',')
-    #     if kpi_new.shape[0] < ALL_FEATS:
-    #         logging.info('Discarding KPI: too short')
-    #         logging.info(f"Received data length: {kpi_new.shape[0]}, data: {data_sck}")
-    #         continue
-
-    #     ts = kpi_new[0]
-    #     if ts <= last_timestamp:
-    #         continue
-    #     last_timestamp = ts
-
-    #     # --- normalize step ---
-    #     t0 = time.time()
-    #     norm = requests.post(f"{NORMALIZER}/normalize", json={"kpi": kpi_new.tolist()}).json()
-    #     t1 = time.time()
-    #     normalize_time_ms = (t1 - t0) * 1000.0
-
-    #     kpi_norm_vec = norm["normalized"]  # shape: [num_feats]
-
-    #     # --- update buffer step ---
-    #     t0 = time.time()
-    #     buf = requests.post(f"{BUFFER}/update", json={
-    #         "stream": STREAM_ID,
-    #         "kpi": kpi_norm_vec,
-    #         "slice_len": slice_len,
-    #         "num_feats": num_feats
-    #     }).json()
-    #     t1 = time.time()
-    #     buffer_time_ms = (t1 - t0) * 1000.0
-
-    #     ready = buf["ready"]
-    #     if not ready:
-    #         logging.info(f"Processing times: normalize={normalize_time_ms:.2f} ms | buffer={buffer_time_ms:.2f} ms | predict=--")
-    #         continue
-
-    #     window = buf["window"]  # shape [slice_len, num_feats]
-
-    #     # --- predict step ---
-    #     t0 = time.time()
-    #     pred = requests.post(f"{MODEL}/predict", json={
-    #         "window": window
-    #     }).json()
-    #     t1 = time.time()
-    #     predict_time_ms = (t1 - t0) * 1000.0
-
-    #     this_class = pred["class"]
-    #     logging.info(f"Predicted class: {this_class}")
-    #     logging.info(
-    #         f"Processing times: normalize={normalize_time_ms:.2f} ms | "
-    #         f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
-    #     )
-
-    #     # optional: keep raw window for pickling
-    #     kpi_raw_window.append(kpi_new.copy())
-    #     if len(kpi_raw_window) > slice_len:
-    #         kpi_raw_window.pop(0)
-
-    #     try:
-    #         pickle.dump({
-    #             'input': np.array(window),
-    #             'label': this_class,
-    #             'input_raw': kpi_raw_window.copy()
-    #         }, open('/home/class_output__'+str(int(time.time()*1e3))+'.pkl', 'wb'))
-    #     except Exception as e:
-    #         logging.warning(f"Pickle dump failed: {e}")
 
 if __name__ == "__main__":
     main()

@@ -47,7 +47,7 @@ spec:
           volumeMounts:
             - name: model
               mountPath: "{{ .Values.persistentVolume.mountPath }}"
-              subPath: xgb_model.json
+              subPath: "{{ .Values.persistentVolume.subPath }}"
 
           resources:
 {{- toYaml .Values.resources | nindent 12 }}

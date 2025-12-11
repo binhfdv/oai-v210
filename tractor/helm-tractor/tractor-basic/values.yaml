@@ -4,8 +4,8 @@ tractor-kpm-oai:
   nodeSelector:
     node-role: core
   env:
-    ORCH_HOST: tractor-mono
-    ORCH_PORT: "4300"
+    ORCH_HOST: xchain-smartgw
+    ORCH_PORT: "4200"
 
 tractor-kpm-simu:
   enabled: false
@@ -55,24 +55,32 @@ tractor-mono:
       hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
     norm:
       hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp/models
+  env:
+    T: "4"
+  volumeMounts:
+    model:
+      subPath: model.4.cnn.pt
 
 xchain-smartgw:
-  enabled: false
+  enabled: true
   fullnameOverride: "xchain-smartgw"
   nodeSelector:
     node-role: core
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
   env:
-    TRACTOR_HOST: tractor-orchestrator
+    TRACTOR_HOST: tractor-mono
     TRACTOR_PORT: "4300"
     XCHAIN_HOST: xchain-model
     XCHAIN_PORT: "4400"
 
 xchain-model:
-  enabled: false
+  enabled: true
   fullnameOverride: "xchain-model"
   nodeSelector:
     node-role: core
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp-fast
+    subPath: xgb_model_T_4.json
+  env:
+    T: "4"

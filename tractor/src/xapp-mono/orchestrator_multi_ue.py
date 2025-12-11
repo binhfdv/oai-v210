@@ -155,8 +155,8 @@ def processing_worker(num_feats, slice_len):
             # Buffer update
             t0 = time.perf_counter()
             buf = _call_buffer_update(STREAM_ID, norm["normalized"], slice_len, num_feats)
-            t1 = time.perf_counter()
-            buffer_time_ms = (t1 - t0) * 1000.0
+            # t1 = time.perf_counter()
+            # buffer_time_ms = (t1 - t0) * 1000.0
 
             if not buf["ready"]:
                 logging.info(
@@ -205,10 +205,10 @@ def processing_worker(num_feats, slice_len):
             pred = predict_internal({"window": window_TxM})
             t1 = time.perf_counter()
             predict_time_ms = (t1 - t0) * 1000.0
-            pred_class = pred["class"]
+            pred_class = int(pred["class"])
 
             logging.info(
-                f"[UE={ue_id}] Predicted class: {pred_class} | "
+                f"[UE={ue_id}] Predicted class: {['eMBB','mMTC','URLLC'][pred_class]} | "
                 f"queue_wait={queue_wait_ms:.2f} ms | normalize={normalize_time_ms:.2f} ms | "
                 f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
             )

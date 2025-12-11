@@ -49,9 +49,11 @@ logging.info(f"[CONFIG] SMARTGW LISTEN PORT = {PORT}")
 # ---------------------------------------------------------
 KPM_COL_THPDL = int(os.getenv("KPM_COL_THPDL", "13"))
 KPM_COL_THPUL = int(os.getenv("KPM_COL_THPUL", "20"))
+KPM_COL_VOLUL = int(os.getenv("KPM_COL_VOLUL", "20"))
 
 logging.info(f"[CONFIG] KPM_COL_THPDL = {KPM_COL_THPDL}")
 logging.info(f"[CONFIG] KPM_COL_THPUL = {KPM_COL_THPUL}")
+logging.info(f"[CONFIG] KPM_COL_VOLUL = {KPM_COL_VOLUL}")
 
 # incoming queue from socket listener
 data_queue = Queue()

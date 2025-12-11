@@ -25,6 +25,7 @@ env:
   XCHAIN_PORT: "4400"
   KPM_COL_THPDL: "13"
   KPM_COL_THPUL: "20"
+  KPM_COL_VOLUL: "20"
 
 persistentVolume:
   enabled: true
@@ -35,6 +36,7 @@ persistentVolume:
   mountPath: /mnt/model/smartgw.pkl
   hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
   reclaimPolicy: Delete
+  subPath: smartgw_2c.pkl
 
 resources: {}
 nodeSelector: {}

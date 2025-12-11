@@ -1,0 +1,12 @@
+{
+  "eta": 0.02,
+  "max_depth": 24,
+  "min_child_weight": 5,
+  "gamma": 5,
+  "subsample": 0.7,
+  "colsample_bytree": 0.7,
+  "lambda": 2,
+  "alpha": 1,
+  "grow_policy": "depthwise",
+  "max_bin": 128
+}

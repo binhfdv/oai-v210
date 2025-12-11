@@ -44,7 +44,7 @@ spec:
           volumeMounts:
             - name: model
               mountPath: "{{ .Values.persistentVolume.mountPath }}"
-              subPath: smartgw.pkl
+              subPath: "{{ .Values.persistentVolume.subPath }}"
 
           resources:
 {{ toYaml .Values.resources | nindent 12 }}

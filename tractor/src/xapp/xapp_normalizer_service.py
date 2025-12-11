@@ -1,6 +1,9 @@
+import os
 from flask import Flask, request, jsonify
 import pickle, numpy as np
 from python.visual_xapp_inference import process_norm_params
+
+T = int(os.getenv("T", "1"))
 
 app = Flask(__name__)
 
@@ -20,9 +23,9 @@ def load_norm():
 
     all_feats_raw = int(request.json.get("all_feats_raw", 31))
     colsparam_dict = pickle.load(open(norm_param_path, "rb"))
-    colsparams, indexes_to_keep, map_feat2KPI, num_feats, slice_len, _ = process_norm_params(all_feats_raw, colsparam_dict)
+    colsparams, indexes_to_keep, map_feat2KPI, num_feats, _, _ = process_norm_params(all_feats_raw, colsparam_dict)
     # print("Loaded normalization parameters", colsparams, indexes_to_keep, map_feat2KPI, num_feats, slice_len)
-    return jsonify({"status": "ok", "num_feats": int(num_feats), "slice_len": int(slice_len)})
+    return jsonify({"status": "ok", "num_feats": int(num_feats), "slice_len": int(T)})
 
 @app.route("/normalize", methods=["POST"])
 def normalize():
