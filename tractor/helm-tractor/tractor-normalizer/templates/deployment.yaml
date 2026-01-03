@@ -30,6 +30,11 @@ spec:
         - name: tractor-normalizer
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -37,7 +42,7 @@ spec:
           volumeMounts:
             - name: norm
               mountPath: {{ .Values.volumeMounts.norm.mountPath }}
-              subPath: cols_maxmin.pkl
+              subPath: {{ .Values.volumeMounts.norm.subPath }}
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:

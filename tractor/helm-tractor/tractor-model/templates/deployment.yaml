@@ -37,7 +37,7 @@ spec:
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}
-              subPath: model.32.cnn.pt
+              subPath: {{ .Values.volumeMounts.model.subPath }}
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:

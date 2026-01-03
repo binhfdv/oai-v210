@@ -1,0 +1,503 @@
+Waiting for xApp connection on port 4400
+xApp connected: 10.244.0.181:34384
+2026-01-03 11:23:13,054 INFO ✔ XChain listening on socket 4400
+ * Serving Flask app 'xchain_model'
+ * Debug mode: off
+2026-01-03 11:23:13,061 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.244.0.179:5001
+2026-01-03 11:23:13,062 INFO [33mPress CTRL+C to quit[0m
+2026-01-03 11:23:21,053 INFO UE=1.0 -> Waiting for T window (1/32)
+2026-01-03 11:23:22,053 INFO UE=1.0 -> Waiting for T window (2/32)
+2026-01-03 11:23:23,054 INFO UE=1.0 -> Waiting for T window (3/32)
+2026-01-03 11:23:24,055 INFO UE=1.0 -> Waiting for T window (4/32)
+2026-01-03 11:23:25,056 INFO UE=1.0 -> Waiting for T window (5/32)
+2026-01-03 11:23:26,056 INFO UE=1.0 -> Waiting for T window (6/32)
+2026-01-03 11:23:27,057 INFO UE=1.0 -> Waiting for T window (7/32)
+2026-01-03 11:23:28,058 INFO UE=1.0 -> Waiting for T window (8/32)
+2026-01-03 11:23:29,059 INFO UE=1.0 -> Waiting for T window (9/32)
+2026-01-03 11:23:30,060 INFO UE=1.0 -> Waiting for T window (10/32)
+2026-01-03 11:23:31,061 INFO UE=1.0 -> Waiting for T window (11/32)
+2026-01-03 11:23:32,062 INFO UE=1.0 -> Waiting for T window (12/32)
+2026-01-03 11:23:33,063 INFO UE=1.0 -> Waiting for T window (13/32)
+2026-01-03 11:23:34,063 INFO UE=1.0 -> Waiting for T window (14/32)
+2026-01-03 11:23:35,064 INFO UE=1.0 -> Waiting for T window (15/32)
+2026-01-03 11:23:36,065 INFO UE=1.0 -> Waiting for T window (16/32)
+2026-01-03 11:23:37,066 INFO UE=1.0 -> Waiting for T window (17/32)
+2026-01-03 11:23:38,067 INFO UE=1.0 -> Waiting for T window (18/32)
+2026-01-03 11:23:39,068 INFO UE=1.0 -> Waiting for T window (19/32)
+2026-01-03 11:23:40,069 INFO UE=1.0 -> Waiting for T window (20/32)
+2026-01-03 11:23:49,076 INFO UE=1.0 -> Waiting for T window (21/32)
+2026-01-03 11:23:50,077 INFO UE=1.0 -> Waiting for T window (22/32)
+2026-01-03 11:23:52,079 INFO UE=1.0 -> Waiting for T window (23/32)
+2026-01-03 11:23:53,080 INFO UE=1.0 -> Waiting for T window (24/32)
+2026-01-03 11:23:54,081 INFO UE=1.0 -> Waiting for T window (25/32)
+2026-01-03 11:24:02,088 INFO UE=1.0 -> Waiting for T window (26/32)
+2026-01-03 11:24:04,090 INFO UE=1.0 -> Waiting for T window (27/32)
+2026-01-03 11:24:05,091 INFO UE=1.0 -> Waiting for T window (28/32)
+2026-01-03 11:24:06,092 INFO UE=1.0 -> Waiting for T window (29/32)
+2026-01-03 11:24:08,094 INFO UE=1.0 -> Waiting for T window (30/32)
+2026-01-03 11:24:09,095 INFO UE=1.0 -> Waiting for T window (31/32)
+2026-01-03 11:24:10,099 INFO UE=1.0 -> Predicted class: mMTC | Latency=2.867ms | End2end=2.871ms
+
+2026-01-03 11:24:11,098 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.088ms | End2end=1.091ms
+
+2026-01-03 11:24:37,124 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.150ms | End2end=1.153ms
+
+2026-01-03 11:24:38,125 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.068ms | End2end=1.070ms
+
+2026-01-03 11:24:39,126 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.105ms | End2end=1.108ms
+
+2026-01-03 11:24:41,127 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.126ms | End2end=1.128ms
+
+2026-01-03 11:24:43,129 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.251ms | End2end=1.254ms
+
+2026-01-03 11:24:44,130 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.149ms | End2end=1.152ms
+
+2026-01-03 11:24:46,132 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.993ms | End2end=0.996ms
+
+2026-01-03 11:24:47,133 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.170ms | End2end=1.173ms
+
+2026-01-03 11:24:48,134 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.238ms | End2end=1.241ms
+
+2026-01-03 11:24:50,136 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.126ms | End2end=1.130ms
+
+2026-01-03 11:24:52,138 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.124ms | End2end=1.126ms
+
+2026-01-03 11:24:53,139 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.129ms | End2end=1.147ms
+
+2026-01-03 11:24:54,140 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.183ms | End2end=1.186ms
+
+2026-01-03 11:24:55,141 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.234ms | End2end=1.236ms
+
+2026-01-03 11:24:56,142 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.039ms | End2end=1.042ms
+
+2026-01-03 11:24:57,144 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.541ms | End2end=1.545ms
+
+2026-01-03 11:24:58,144 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.101ms | End2end=1.104ms
+
+2026-01-03 11:24:59,145 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.088ms | End2end=1.091ms
+
+2026-01-03 11:25:00,146 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.123ms | End2end=1.126ms
+
+2026-01-03 11:25:01,147 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.115ms | End2end=1.118ms
+
+2026-01-03 11:25:02,148 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.170ms | End2end=1.174ms
+
+2026-01-03 11:25:03,150 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.696ms | End2end=1.699ms
+
+2026-01-03 11:25:04,150 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.192ms | End2end=1.195ms
+
+2026-01-03 11:25:05,151 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.191ms | End2end=1.194ms
+
+2026-01-03 11:25:06,152 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.086ms | End2end=1.089ms
+
+2026-01-03 11:25:07,153 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.289ms | End2end=1.293ms
+
+2026-01-03 11:25:08,155 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.368ms | End2end=1.370ms
+
+2026-01-03 11:25:09,156 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.552ms | End2end=1.555ms
+
+2026-01-03 11:25:10,157 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.990ms | End2end=0.993ms
+
+2026-01-03 11:25:11,158 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.018ms | End2end=1.020ms
+
+2026-01-03 11:25:12,159 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.192ms | End2end=1.196ms
+
+2026-01-03 11:25:13,160 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.308ms | End2end=1.312ms
+
+2026-01-03 11:25:14,161 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.212ms | End2end=1.218ms
+
+2026-01-03 11:25:15,163 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.173ms | End2end=1.176ms
+
+2026-01-03 11:25:16,164 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.042ms | End2end=1.045ms
+
+2026-01-03 11:25:17,165 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.117ms | End2end=1.120ms
+
+2026-01-03 11:25:18,166 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.216ms | End2end=1.220ms
+
+2026-01-03 11:25:19,168 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.175ms | End2end=1.178ms
+
+2026-01-03 11:25:20,169 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.107ms | End2end=1.109ms
+
+2026-01-03 11:25:21,170 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.046ms | End2end=1.048ms
+
+2026-01-03 11:25:22,171 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.243ms | End2end=1.246ms
+
+2026-01-03 11:25:23,172 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.168ms | End2end=1.171ms
+
+2026-01-03 11:25:24,173 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.126ms | End2end=1.130ms
+
+2026-01-03 11:25:25,174 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.174ms | End2end=1.177ms
+
+2026-01-03 11:25:26,175 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.004ms | End2end=1.007ms
+
+2026-01-03 11:25:27,176 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.054ms | End2end=1.057ms
+
+2026-01-03 11:25:28,177 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.087ms | End2end=1.091ms
+
+2026-01-03 11:25:29,178 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.132ms | End2end=1.135ms
+
+2026-01-03 11:25:30,179 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.037ms | End2end=1.042ms
+
+2026-01-03 11:25:31,180 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.094ms | End2end=1.097ms
+
+2026-01-03 11:25:32,182 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.454ms | End2end=1.457ms
+
+2026-01-03 11:25:33,183 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.266ms | End2end=1.269ms
+
+2026-01-03 11:25:34,184 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.311ms | End2end=1.314ms
+
+2026-01-03 11:25:35,185 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.179ms | End2end=1.182ms
+
+2026-01-03 11:25:36,187 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.285ms | End2end=1.288ms
+
+2026-01-03 11:25:37,188 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.163ms | End2end=1.166ms
+
+2026-01-03 11:25:38,189 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.275ms | End2end=1.279ms
+
+2026-01-03 11:25:39,190 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.132ms | End2end=1.135ms
+
+2026-01-03 11:25:40,191 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.275ms | End2end=1.278ms
+
+2026-01-03 11:25:41,192 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.384ms | End2end=1.387ms
+
+2026-01-03 11:25:42,194 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.648ms | End2end=1.652ms
+
+2026-01-03 11:25:43,195 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.227ms | End2end=1.232ms
+
+2026-01-03 11:25:44,196 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.091ms | End2end=1.094ms
+
+2026-01-03 11:25:45,197 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.150ms | End2end=1.153ms
+
+2026-01-03 11:25:46,198 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.184ms | End2end=1.187ms
+
+2026-01-03 11:25:47,200 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.186ms | End2end=1.189ms
+
+2026-01-03 11:25:48,202 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.800ms | End2end=1.803ms
+
+2026-01-03 11:25:49,202 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.164ms | End2end=1.167ms
+
+2026-01-03 11:25:50,204 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.492ms | End2end=1.506ms
+
+2026-01-03 11:25:51,205 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.595ms | End2end=1.598ms
+
+2026-01-03 11:25:52,206 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.993ms | End2end=0.996ms
+
+2026-01-03 11:25:53,207 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.205ms | End2end=1.208ms
+
+2026-01-03 11:25:54,209 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.742ms | End2end=1.746ms
+
+2026-01-03 11:25:55,209 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.310ms | End2end=1.313ms
+
+2026-01-03 11:25:56,211 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.061ms | End2end=1.063ms
+
+2026-01-03 11:25:57,212 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.177ms | End2end=1.180ms
+
+2026-01-03 11:25:58,214 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.091ms | End2end=1.094ms
+
+2026-01-03 11:25:59,215 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.031ms | End2end=1.034ms
+
+2026-01-03 11:26:00,216 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.075ms | End2end=1.077ms
+
+2026-01-03 11:26:01,218 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.182ms | End2end=1.185ms
+
+2026-01-03 11:26:02,219 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.301ms | End2end=1.303ms
+
+2026-01-03 11:26:03,220 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.209ms | End2end=1.213ms
+
+2026-01-03 11:26:04,221 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.224ms | End2end=1.228ms
+
+2026-01-03 11:26:05,222 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.280ms | End2end=1.282ms
+
+2026-01-03 11:26:06,223 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.063ms | End2end=1.066ms
+
+2026-01-03 11:26:07,224 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.160ms | End2end=1.162ms
+
+2026-01-03 11:26:08,226 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.182ms | End2end=1.185ms
+
+2026-01-03 11:26:09,227 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.104ms | End2end=1.107ms
+
+2026-01-03 11:26:10,228 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.287ms | End2end=1.290ms
+
+2026-01-03 11:26:11,229 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.098ms | End2end=1.101ms
+
+2026-01-03 11:26:12,230 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.077ms | End2end=1.080ms
+
+2026-01-03 11:26:13,232 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.169ms | End2end=1.172ms
+
+2026-01-03 11:26:14,233 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.251ms | End2end=1.254ms
+
+2026-01-03 11:26:15,234 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.033ms | End2end=1.036ms
+
+2026-01-03 11:26:16,235 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.202ms | End2end=1.205ms
+
+2026-01-03 11:26:17,237 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.177ms | End2end=1.180ms
+
+2026-01-03 11:26:18,238 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.115ms | End2end=1.118ms
+
+2026-01-03 11:26:19,239 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.310ms | End2end=1.313ms
+
+2026-01-03 11:26:20,240 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.219ms | End2end=1.222ms
+
+2026-01-03 11:26:21,242 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.196ms | End2end=1.199ms
+
+2026-01-03 11:26:22,243 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.190ms | End2end=1.206ms
+
+2026-01-03 11:26:23,245 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.164ms | End2end=1.167ms
+
+2026-01-03 11:26:24,246 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.318ms | End2end=1.321ms
+
+2026-01-03 11:26:25,248 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.071ms | End2end=1.074ms
+
+2026-01-03 11:26:26,249 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.220ms | End2end=1.223ms
+
+2026-01-03 11:26:27,251 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.983ms | End2end=0.986ms
+
+2026-01-03 11:26:28,252 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.284ms | End2end=1.287ms
+
+2026-01-03 11:26:29,253 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.121ms | End2end=1.124ms
+
+2026-01-03 11:26:30,255 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.246ms | End2end=1.249ms
+
+2026-01-03 11:26:31,255 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.047ms | End2end=1.049ms
+
+2026-01-03 11:26:32,257 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.221ms | End2end=1.225ms
+
+2026-01-03 11:26:33,258 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.155ms | End2end=1.158ms
+
+2026-01-03 11:26:34,260 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.568ms | End2end=1.571ms
+
+2026-01-03 11:26:35,261 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.176ms | End2end=1.180ms
+
+2026-01-03 11:26:36,262 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.022ms | End2end=1.026ms
+
+2026-01-03 11:26:37,264 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.148ms | End2end=1.150ms
+
+2026-01-03 11:26:38,265 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.202ms | End2end=1.204ms
+
+2026-01-03 11:26:39,266 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.086ms | End2end=1.089ms
+
+2026-01-03 11:26:40,268 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.310ms | End2end=1.313ms
+
+2026-01-03 11:26:41,269 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.020ms | End2end=1.023ms
+
+2026-01-03 11:26:42,271 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.134ms | End2end=1.137ms
+
+2026-01-03 11:26:43,272 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.996ms | End2end=0.999ms
+
+2026-01-03 11:26:44,273 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.158ms | End2end=1.160ms
+
+2026-01-03 11:26:45,274 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.093ms | End2end=1.096ms
+
+2026-01-03 11:26:46,276 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.208ms | End2end=1.212ms
+
+2026-01-03 11:26:47,277 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.079ms | End2end=1.081ms
+
+2026-01-03 11:26:48,278 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.133ms | End2end=1.137ms
+
+2026-01-03 11:26:49,279 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.079ms | End2end=1.082ms
+
+2026-01-03 11:26:50,281 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.145ms | End2end=1.147ms
+
+2026-01-03 11:26:51,282 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.086ms | End2end=1.088ms
+
+2026-01-03 11:26:52,283 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.105ms | End2end=1.108ms
+
+2026-01-03 11:26:53,284 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.055ms | End2end=1.058ms
+
+2026-01-03 11:26:54,286 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.174ms | End2end=1.176ms
+
+2026-01-03 11:26:55,287 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.092ms | End2end=1.094ms
+
+2026-01-03 11:26:56,288 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.244ms | End2end=1.247ms
+
+2026-01-03 11:26:57,289 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.154ms | End2end=1.156ms
+
+2026-01-03 11:26:58,291 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.395ms | End2end=1.398ms
+
+2026-01-03 11:26:59,292 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.270ms | End2end=1.273ms
+
+2026-01-03 11:27:00,293 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.073ms | End2end=1.076ms
+
+2026-01-03 11:27:01,294 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.095ms | End2end=1.098ms
+
+2026-01-03 11:27:02,296 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.365ms | End2end=1.369ms
+
+2026-01-03 11:27:03,297 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.257ms | End2end=1.260ms
+
+2026-01-03 11:27:04,298 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.098ms | End2end=1.101ms
+
+2026-01-03 11:27:05,300 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.393ms | End2end=1.397ms
+
+2026-01-03 11:27:06,301 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.090ms | End2end=1.094ms
+
+2026-01-03 11:27:07,302 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.073ms | End2end=1.076ms
+
+2026-01-03 11:27:08,303 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.993ms | End2end=0.996ms
+
+2026-01-03 11:27:09,304 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.042ms | End2end=1.044ms
+
+2026-01-03 11:27:10,305 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.049ms | End2end=1.052ms
+
+2026-01-03 11:27:11,306 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.093ms | End2end=1.095ms
+
+2026-01-03 11:27:12,308 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.201ms | End2end=1.204ms
+
+2026-01-03 11:27:13,309 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.087ms | End2end=1.090ms
+
+2026-01-03 11:27:14,310 INFO UE=1.0 -> Predicted class: URLLC | Latency=0.964ms | End2end=0.966ms
+
+2026-01-03 11:27:15,311 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.090ms | End2end=1.093ms
+
+2026-01-03 11:27:16,312 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.095ms | End2end=1.098ms
+
+2026-01-03 11:27:17,313 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.083ms | End2end=1.086ms
+
+2026-01-03 11:27:18,315 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.085ms | End2end=1.088ms
+
+2026-01-03 11:27:19,316 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.033ms | End2end=1.036ms
+
+2026-01-03 11:27:20,317 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.097ms | End2end=1.100ms
+
+2026-01-03 11:27:21,319 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.371ms | End2end=1.383ms
+
+2026-01-03 11:27:22,320 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.280ms | End2end=1.282ms
+
+2026-01-03 11:27:23,321 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.306ms | End2end=1.309ms
+
+2026-01-03 11:27:24,322 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.100ms | End2end=1.103ms
+
+2026-01-03 11:27:25,324 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.191ms | End2end=1.194ms
+
+2026-01-03 11:27:26,325 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.108ms | End2end=1.110ms
+
+2026-01-03 11:27:27,327 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.104ms | End2end=1.107ms
+
+2026-01-03 11:27:28,329 INFO UE=1.0 -> Predicted class: URLLC | Latency=2.472ms | End2end=2.475ms
+
+2026-01-03 11:27:29,329 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.115ms | End2end=1.118ms
+
+2026-01-03 11:27:30,330 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.079ms | End2end=1.081ms
+
+2026-01-03 11:27:31,332 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.273ms | End2end=1.276ms
+
+2026-01-03 11:27:32,333 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.181ms | End2end=1.184ms
+
+2026-01-03 11:27:33,334 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.091ms | End2end=1.095ms
+
+2026-01-03 11:27:34,336 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.360ms | End2end=1.363ms
+
+2026-01-03 11:27:36,339 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.305ms | End2end=1.308ms
+
+2026-01-03 11:27:37,340 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.059ms | End2end=1.061ms
+
+2026-01-03 11:27:38,341 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.037ms | End2end=1.040ms
+
+2026-01-03 11:27:39,343 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.065ms | End2end=1.068ms
+
+2026-01-03 11:27:40,344 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.096ms | End2end=1.098ms
+
+2026-01-03 11:27:41,345 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.104ms | End2end=1.106ms
+
+2026-01-03 11:27:42,346 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.126ms | End2end=1.129ms
+
+2026-01-03 11:27:43,348 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.200ms | End2end=1.203ms
+
+2026-01-03 11:27:44,349 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.028ms | End2end=1.031ms
+
+2026-01-03 11:27:45,350 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.143ms | End2end=1.146ms
+
+2026-01-03 11:27:46,352 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.289ms | End2end=1.293ms
+
+2026-01-03 11:27:47,353 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.096ms | End2end=1.099ms
+
+2026-01-03 11:27:48,354 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.145ms | End2end=1.149ms
+
+2026-01-03 11:27:49,356 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.104ms | End2end=1.106ms
+
+2026-01-03 11:27:50,357 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.119ms | End2end=1.122ms
+
+2026-01-03 11:27:51,358 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.154ms | End2end=1.157ms
+
+2026-01-03 11:27:53,361 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.053ms | End2end=1.055ms
+
+2026-01-03 11:27:54,362 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.143ms | End2end=1.146ms
+
+2026-01-03 11:27:55,364 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.146ms | End2end=1.149ms
+
+2026-01-03 11:27:56,365 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.484ms | End2end=1.487ms
+
+2026-01-03 11:27:57,366 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.229ms | End2end=1.232ms
+
+2026-01-03 11:27:58,367 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.123ms | End2end=1.126ms
+
+2026-01-03 11:27:59,369 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.190ms | End2end=1.194ms
+
+2026-01-03 11:28:00,370 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.176ms | End2end=1.179ms
+
+2026-01-03 11:28:01,373 INFO UE=1.0 -> Predicted class: mMTC | Latency=2.032ms | End2end=2.035ms
+
+2026-01-03 11:28:02,373 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.112ms | End2end=1.115ms
+
+2026-01-03 11:28:05,377 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.210ms | End2end=1.213ms
+
+2026-01-03 11:28:06,378 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.182ms | End2end=1.185ms
+
+2026-01-03 11:28:07,380 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.030ms | End2end=1.033ms
+
+2026-01-03 11:28:09,383 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.081ms | End2end=1.084ms
+
+2026-01-03 11:28:10,384 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.133ms | End2end=1.140ms
+
+2026-01-03 11:28:11,386 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.247ms | End2end=1.249ms
+
+2026-01-03 11:28:12,387 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.383ms | End2end=1.386ms
+
+2026-01-03 11:28:13,388 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.129ms | End2end=1.132ms
+
+2026-01-03 11:28:14,390 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.224ms | End2end=1.228ms
+
+2026-01-03 11:28:15,391 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.285ms | End2end=1.288ms
+
+2026-01-03 11:28:16,393 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.161ms | End2end=1.164ms
+
+2026-01-03 11:28:17,394 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.191ms | End2end=1.195ms
+
+2026-01-03 11:28:18,396 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.015ms | End2end=1.018ms
+
+2026-01-03 11:28:19,398 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.201ms | End2end=1.204ms
+
+2026-01-03 11:28:20,399 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.154ms | End2end=1.158ms
+
+2026-01-03 11:28:21,401 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.118ms | End2end=1.121ms
+
+2026-01-03 11:28:22,402 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.083ms | End2end=1.086ms
+
+2026-01-03 11:28:23,404 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.141ms | End2end=1.144ms
+
+2026-01-03 11:28:24,405 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.081ms | End2end=1.086ms
+
+2026-01-03 11:28:25,406 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.116ms | End2end=1.128ms
+
+2026-01-03 11:28:26,408 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.097ms | End2end=1.101ms
+
+2026-01-03 11:28:27,409 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.207ms | End2end=1.210ms
+
+2026-01-03 11:28:28,411 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.490ms | End2end=1.492ms
+
+2026-01-03 11:28:29,412 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.180ms | End2end=1.183ms
+
+2026-01-03 11:28:30,413 INFO UE=1.0 -> Predicted class: mMTC | Latency=1.165ms | End2end=1.168ms
+
+2026-01-03 11:28:31,416 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.829ms | End2end=1.833ms
+
+2026-01-03 11:28:32,416 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.125ms | End2end=1.129ms
+
+2026-01-03 11:28:33,418 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.070ms | End2end=1.074ms
+
+2026-01-03 11:28:34,420 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.553ms | End2end=1.557ms
+
+2026-01-03 11:28:37,424 INFO UE=1.0 -> Predicted class: URLLC | Latency=1.306ms | End2end=1.310ms
+

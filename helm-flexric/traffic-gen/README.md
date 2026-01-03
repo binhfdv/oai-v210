@@ -91,6 +91,7 @@ chmod +x ip_change.py
 chmod +x replay_pcap.sh
 ./replay_pcap.sh URLLC_109_modified_DL.pcap # replay file, use the pcap with changed IPs
 ./replay_pcap_folder.sh ./pcap/unicorn-urllc-oran # replay folder
+./replay_pcap_folder.sh ./pcap/mahdi-urllc-oran
 ```
 
 `If you have different OAI setup, you have to check this`

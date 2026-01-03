@@ -1,0 +1,13 @@
+URLLC
+T = 4
+tractor: 1.9594117647058824
+xgboost: 3.3525416666666668
+T = 8
+tractor: 2.809601837672282
+xgboost: 1.596235059760956
+T = 16
+tractor: 4.077256637168142
+xgboost: 2.369571428571428
+T = 32
+tractor: 
+xgboost: 

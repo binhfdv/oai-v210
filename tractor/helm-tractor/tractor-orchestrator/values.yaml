@@ -17,6 +17,7 @@ env:
   STREAM_ID: default
   MODEL_PATH: /mnt/model/model.pt
   NORM_PATH: /mnt/model/norm.pkl
+  T: "16"
 
 serviceType: ClusterIP
 service:

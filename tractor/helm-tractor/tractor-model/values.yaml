@@ -19,6 +19,7 @@ serviceAccount:
 volumeMounts:
   model:
     mountPath: /mnt/model/model.pt
+    subPath: model.16.cnn.pt
 
 persistentVolume:
   enabled: true

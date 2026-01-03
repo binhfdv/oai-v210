@@ -207,8 +207,15 @@ def processing_worker(num_feats, slice_len):
             predict_time_ms = (t1 - t0) * 1000.0
             pred_class = int(pred["class"])
 
+            # logging.info(
+            #     f"[UE={ue_id}] Predicted class: {['eMBB','mMTC','URLLC'][pred_class]} | "
+            #     f"queue_wait={queue_wait_ms:.2f} ms | normalize={normalize_time_ms:.2f} ms | "
+            #     f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
+            # )
+            
             logging.info(
-                f"[UE={ue_id}] Predicted class: {['eMBB','mMTC','URLLC'][pred_class]} | "
+                f"[UE={ue_id}] Predicted class: "
+                f"{(['eMBB','mMTC','URLLC'][pred_class] if pred_class < 3 else 'UNKNOWN')} | "
                 f"queue_wait={queue_wait_ms:.2f} ms | normalize={normalize_time_ms:.2f} ms | "
                 f"buffer={buffer_time_ms:.2f} ms | predict={predict_time_ms:.2f} ms"
             )
