@@ -1,4 +1,4 @@
-URLLC
+URLLC-UNICORN
 T = 4
 tractor: 92.15686274509804
 xgboost: 97.34848484848484
@@ -10,5 +10,33 @@ tractor: 100.0
 xgboost: 99.20634920634922
 
 T = 32
-tractor: 100
-xgboost: 100
+tractor: 100.0
+xgboost: 100.0
+
+URLLC-Mahdi
+T = 4
+tractor:  99.09206349228732
+xgboost:  97.14285714285714
+T = 8
+tractor:  97.23874018732038
+xgboost:  95.74468085106383
+T = 16
+tractor:  99.15035555555555
+xgboost:  99.19354838709677
+T = 32
+tractor:  100.0
+xgboost:  100.0
+
+eMBB-Mahdi
+T = 4
+tractor:  55.982323
+xgboost:  100.0
+T = 8
+tractor:  71.63872937230
+xgboost:  100.0
+T = 16
+tractor:  82.09382772792
+xgboost:  100.0
+T = 32
+tractor:  100.0
+xgboost:  100.0
