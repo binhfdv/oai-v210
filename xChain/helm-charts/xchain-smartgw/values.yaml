@@ -21,7 +21,7 @@ env:
   MODEL_PATH: /mnt/model/smartgw.pkl
   TRACTOR_HOST: tractor-orchestrator
   TRACTOR_PORT: "4300"
-  XCHAIN_HOST: xchain-model
+  XCHAIN_HOST: xchain-fastinfer
   XCHAIN_PORT: "4400"
   KPM_COL_THPDL: "13"
   KPM_COL_THPUL: "20"
@@ -34,9 +34,9 @@ persistentVolume:
   size: 1Gi
   accessMode: ReadWriteMany
   mountPath: /mnt/model/smartgw.pkl
-  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/smartGW
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/smartGW
   reclaimPolicy: Delete
-  subPath: smartgw_2c.pkl
+  subPath: smartgw_0134.pkl
 
 resources: {}
 nodeSelector: {}

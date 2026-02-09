@@ -89,13 +89,13 @@ xchain-smartgw:
     tag: latest
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/xChain/src/smartGW
+    subPath: smartgw_0134.pkl
   env:
     TRACTOR_HOST: tractor-orchestrator
     TRACTOR_PORT: "4300"
     XCHAIN_HOST: xchain-fastinfer
     XCHAIN_PORT: "4400"
-  persistentVolume:
-    subPath: smartgw_2c.pkl
+    
 
 xchain-fastinfer:
   enabled: true

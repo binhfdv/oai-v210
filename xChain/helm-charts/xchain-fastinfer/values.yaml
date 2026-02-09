@@ -1,15 +1,15 @@
 replicaCount: 1
 
 image:
-  repository: ddocker122/xchain-fasinfer
+  repository: ddocker122/xchain-fastinfer
   tag: latest
   pullPolicy: IfNotPresent
 
-fullnameOverride: "xchain-fasinfer"
+fullnameOverride: "xchain-fastinfer"
 
 serviceAccount:
   create: true
-  name: "xchain-fasinfer-sa"
+  name: "xchain-fastinfer-sa"
   automount: true
   annotations: {}
 
@@ -28,8 +28,8 @@ env:
 
 persistentVolume:
   enabled: true
-  name: xchain-fasinfer-pv
-  claimName: xchain-fasinfer-pvc
+  name: xchain-fastinfer-pv
+  claimName: xchain-fastinfer-pvc
   size: 1Gi
   accessMode: ReadWriteMany
   mountPath: /mnt/model/xgb_model.json

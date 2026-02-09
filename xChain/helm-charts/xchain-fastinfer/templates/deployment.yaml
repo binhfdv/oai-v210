@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "xchain-fasinfer.fullname" . }}
+  name: {{ include "xchain-fastinfer.fullname" . }}
   labels:
-    {{- include "xchain-fasinfer.labels" . | nindent 4 }}
+    {{- include "xchain-fastinfer.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "xchain-fasinfer.selectorLabels" . | nindent 6 }}
+      {{- include "xchain-fastinfer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "xchain-fasinfer.labels" . | nindent 8 }}
+        {{- include "xchain-fastinfer.labels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
@@ -28,7 +28,7 @@ spec:
       {{- end }}
 
       containers:
-        - name: xchain-fasinfer
+        - name: xchain-fastinfer
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 

@@ -152,18 +152,18 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       sleep 7
       ;;
 
-    tractor-basic)
-      echo "Deploying tractor-basic..."
+    xchain-basic)
+      echo "Deploying xchain-basic..."
       cd -
-      cd "$REPODIR/tractor/helm-tractor/tractor-basic" || exit 1
+      cd "$REPODIR/xChain/helm-charts/xchain-basic" || exit 1
       helm dependency update
-      helm install tractor-basic .
-      wait_for_pod_ready tractor-orchestrator TRACTOR-Orchestrator
+      helm install xchain-basic .
+      # wait_for_pod_ready tractor-orchestrator TRACTOR-Orchestrator
       ;;
 
     *)
       echo "Unknown component: $COMPONENT"
-      echo "Valid options: core | cu | gnb | ue | ue-gnb | ric | kpm | gmrp | rc | tractor-basic"
+      echo "Valid options: core | cu | gnb | ue | ue-gnb | ric | kpm | gmrp | rc | xchain-basic"
       exit 1
       ;;
   esac

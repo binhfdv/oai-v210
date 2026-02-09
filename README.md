@@ -181,7 +181,7 @@ bash deploy_oai.sh . core ric gnb ue-gnb kpm gmrp
 
 # the below command is to run 5g Core, nearRT-RIC, CU/DU, NR-UE, xApp kpm, TRACTOR
 # make sure to use image ddocker122/oai-e2gnb-mono:dev for CUCP/CUUP/DU
-bash deploy_oai.sh . core ric cu ue-gnb kpm gmrp tractor-basic
+bash deploy_oai.sh . core ric cu ue-gnb kpm gmrp xchain-basic
 ```
 
 ## Use docker compose, by default, it runs 5g Core, nearRT-RIC, CU/DU, NR-UE, xApp kpm, xApp gtp-mac-rlc-pdcp, xApp rc
