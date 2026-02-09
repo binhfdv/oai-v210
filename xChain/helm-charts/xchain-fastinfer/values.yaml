@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-fasinfer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-fasinfer"
+
+serviceAccount:
+  create: true
+  name: "xchain-fasinfer-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-http
+    containerPort: 4400
+  - name: model-http
+    containerPort: 5001
+
+env:
+  MODEL_PATH: /mnt/model/xgb_model.json
+  XCHAIN_DATA_PORT: "4400"
+  T: "4"
+
+persistentVolume:
+  enabled: true
+  name: xchain-fasinfer-pv
+  claimName: xchain-fasinfer-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model/xgb_model.json
+  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/xapp-fast
+  reclaimPolicy: Delete
+  subPath: xgb_model_T_4.json
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

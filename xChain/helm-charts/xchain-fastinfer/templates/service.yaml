@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "xchain-fasinfer.fullname" . }}
+  labels:
+    {{- include "xchain-fasinfer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.serviceType | default "ClusterIP" }}
+  ports:
+    {{- range .Values.service }}
+    - name: {{ .name }}
+      port: {{ .containerPort }}
+      targetPort: {{ .containerPort }}
+      protocol: TCP
+    {{- end }}
+  selector:
+    {{- include "xchain-fasinfer.selectorLabels" . | nindent 4 }}

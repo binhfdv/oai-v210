@@ -1,0 +1,111 @@
+tractor-kpm-oai:
+  enabled: true
+  fullnameOverride: "tractor-kpm-oai"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    ORCH_HOST: xchain-smartgw
+    ORCH_PORT: "4200"
+
+tractor-kpm-simu:
+  enabled: false
+  fullnameOverride: "tractor-kpm-simu"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    ORCH_HOST: tractor-mono
+
+tractor-orchestrator:
+  enabled: true
+  fullnameOverride: "tractor-orchestrator"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    T: "32"
+
+tractor-normalizer:
+  enabled: true
+  fullnameOverride: "tractor-normalizer"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+  env:
+    T: "32"
+
+tractor-buffer:
+  enabled: true
+  fullnameOverride: "tractor-buffer"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+
+tractor-model:
+  enabled: true
+  fullnameOverride: "tractor-model"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+  volumeMounts:
+    model:
+      subPath: model.32.cnn.pt
+
+tractor-mono:
+  enabled: false
+  fullnameOverride: "tractor-mono"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    model:
+      hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+    norm:
+      hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+  env:
+    T: "4"
+  volumeMounts:
+    model:
+      subPath: model.4.cnn.pt
+
+xchain-smartgw:
+  enabled: true
+  fullnameOverride: "xchain-smartgw"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/smartGW
+  env:
+    TRACTOR_HOST: tractor-orchestrator
+    TRACTOR_PORT: "4300"
+    XCHAIN_HOST: xchain-fastinfer
+    XCHAIN_PORT: "4400"
+  persistentVolume:
+    subPath: smartgw_2c.pkl
+
+xchain-fastinfer:
+  enabled: true
+  fullnameOverride: "xchain-fastinfer"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp-fastinfer
+    subPath: xgb_model_T_4.json
+  env:
+    T: "4"
