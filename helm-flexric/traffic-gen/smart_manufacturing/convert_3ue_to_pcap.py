@@ -24,7 +24,7 @@ import os
 import sys
 import csv
 import argparse
-from scapy.all import Ether, IP, UDP, TCP, Raw, wrpcap
+from scapy.all import IP, UDP, TCP, Raw, PcapWriter
 
 # UE IP mapping for OAI deployment
 UE_IPS = {
@@ -71,29 +71,27 @@ def determine_protocol(message_type, communication_type):
     # Default to UDP
     return "UDP"
 
-def build_packet(src_ip, dst_ip, src_mac, dst_mac, proto, size, timestamp):
+def build_packet(src_ip, dst_ip, proto, size, timestamp):
     """
-    Build a network packet with specified source and destination.
-    For inter-UE traffic, source and dest IPs/MACs will differ.
+    Build a raw IP packet (no Ethernet header) for TUN interface replay.
+    For inter-UE traffic, source and dest IPs will differ.
     """
-    eth = Ether(src=src_mac, dst=dst_mac)
     ip_layer = IP(src=src_ip, dst=dst_ip)
 
     # Build L4 layer
     if proto.upper() == "TCP":
-        l4 = TCP(sport=12345, dport=8080, flags="PA")  # Push + ACK for data
+        l4 = TCP(sport=12345, dport=8080, flags="PA")
     else:  # UDP
         l4 = UDP(sport=12345, dport=9999)
 
-    pkt = eth / ip_layer / l4
+    pkt = ip_layer / l4
 
     # Calculate padding needed
     cur_len = len(pkt)
     target_size = int(float(size))
 
-    # Cap at maximum jumbo frame size (9000 bytes)
-    # Very large messages (like 1MB camera data) would be fragmented in reality
-    MAX_PACKET_SIZE = 9000
+    # Cap at TUN interface MTU (1500 bytes)
+    MAX_PACKET_SIZE = 1500
     if target_size > MAX_PACKET_SIZE:
         target_size = MAX_PACKET_SIZE
 
@@ -206,18 +204,15 @@ def process_csv_to_pcap(csv_path, output_pcap, ue_id, chunk_num=None, total_chun
                         rx_ue = device_to_ue.get(receiver, ue_id)
                         src_ip = UE_IPS[tx_ue]
                         dst_ip = UE_IPS[rx_ue]
-                        src_mac = UE_MACS[tx_ue]
-                        dst_mac = UE_MACS[rx_ue]
                     else:
-                        # Fallback: use source UE for both
-                        src_ip = dst_ip = ue_ip
-                        src_mac = dst_mac = ue_mac
+                        src_ip = ue_ip
+                        dst_ip = ue_ip
 
                     # Determine protocol
                     proto = determine_protocol(message_type, comm_type)
 
-                    # Build packet with correct source/dest
-                    pkt = build_packet(src_ip, dst_ip, src_mac, dst_mac, proto, data_size, timestamp)
+                    # Build raw IP packet (no Ethernet, for TUN interface)
+                    pkt = build_packet(src_ip, dst_ip, proto, data_size, timestamp)
                     packets.append(pkt)
                     packet_count += 1
                     total_processed += 1
@@ -243,7 +238,9 @@ def process_csv_to_pcap(csv_path, output_pcap, ue_id, chunk_num=None, total_chun
         return 0
 
     try:
-        wrpcap(output_pcap, packets)
+        with PcapWriter(output_pcap, linktype=101, sync=True) as writer:
+            for pkt in packets:
+                writer.write(bytes(pkt))
         print(f"[OK] Wrote {len(packets):,} packets to {output_pcap}")
         print(f"[INFO] All traffic uses {ue_id} IP: {ue_ip}")
         return len(packets)

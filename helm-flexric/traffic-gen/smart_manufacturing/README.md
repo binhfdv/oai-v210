@@ -23,6 +23,8 @@ kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-2 -o
 kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-3 -o name | head -n 1) -c debug -- bash
 
 # In any UE, start to replay traffic.
-cd traffic-gen
-
+cd traffic-gen/smart_manufacturing
+./replay_from_ue.sh <ue_folder> oaitun_ue1 [speed]
+./replay_from_ue.sh ue_pcaps/ue1 oaitun_ue1
 ```
+
