@@ -1,0 +1,135 @@
+====================================================================================================
+3-UE DEPLOYMENT: DEVICE-TO-UE MAPPING SUMMARY
+====================================================================================================
+
+
+UE1: Critical Production Control (URLLC)
+----------------------------------------------------------------------------------------------------
+Device Name                                        IP Address          
+----------------------------------------------------------------------------------------------------
+RobotController 1 #1                               10.122.225.162      
+RobotController 1 #2                               10.153.252.64       
+RobotController 1 #3                               10.174.103.44       
+RobotController 2 #1                               10.25.132.88        
+RobotController 2 #2                               10.77.8.132         
+RobotController 2 #3                               10.70.39.206        
+SC In - AGV Controller                             10.25.57.252        
+SC In - Crane Controller                           10.156.105.39       
+SC Out - Crane Controller                          10.108.19.41        
+Single Stacker Crane - In                          10.14.140.34        
+Single Stacker Crane - Out                         10.77.226.167       
+StorageController - In                             10.85.67.220        
+StorageController - Out                            10.57.226.156       
+
+Total devices in UE1: 13
+
+UE2: Mobile & Vision Systems (eMBB)
+----------------------------------------------------------------------------------------------------
+Device Name                                        IP Address          
+----------------------------------------------------------------------------------------------------
+AGV #1                                             10.21.32.209        
+AGV #2                                             10.200.79.244       
+AGV #3                                             10.149.191.78       
+AGV #4                                             10.43.195.215       
+AGV #5                                             10.123.149.41       
+CameraController #1                                10.245.123.227      
+CameraController #2                                10.125.99.61        
+CameraController #3                                10.131.102.62       
+QualityCamera #1                                   10.88.227.154       
+QualityCamera #2                                   10.202.220.102      
+QualityCamera #3                                   10.92.76.189        
+QualityNode #1                                     10.142.220.126      
+QualityNode #2                                     10.124.175.125      
+QualityNode #3                                     10.176.167.59       
+
+Total devices in UE2: 14
+
+UE3: Monitoring & Sensors (mMTC)
+----------------------------------------------------------------------------------------------------
+Device Name                                        IP Address          
+----------------------------------------------------------------------------------------------------
+FailLineRobot #1                                   10.187.112.254      
+FailLineRobot #2                                   10.63.207.135       
+FailLineRobot #3                                   10.224.114.120      
+FeedLineRobot 1 #1                                 10.32.110.6         
+FeedLineRobot 1 #2                                 10.98.41.154        
+FeedLineRobot 1 #3                                 10.25.205.162       
+FeedLineRobot 2 #1                                 10.204.151.75       
+FeedLineRobot 2 #2                                 10.147.125.111      
+FeedLineRobot 2 #3                                 10.131.110.159      
+FeedPressRobot 1 #1                                10.191.55.139       
+FeedPressRobot 1 #2                                10.129.75.252       
+FeedPressRobot 1 #3                                10.46.115.88        
+FeedPressRobot 2 #1                                10.96.58.185        
+FeedPressRobot 2 #2                                10.8.45.207         
+FeedPressRobot 2 #3                                10.180.128.178      
+FeedPressRobot 3 #1                                10.133.21.206       
+FeedPressRobot 3 #2                                10.125.137.106      
+FeedPressRobot 3 #3                                10.140.64.47        
+FeedPressRobot 4 #1                                10.1.4.83           
+FeedPressRobot 4 #2                                10.72.109.216       
+FeedPressRobot 4 #3                                10.126.253.26       
+FeederPressLine 1 #1                               10.149.40.108       
+FeederPressLine 1 #2                               10.149.96.177       
+FeederPressLine 1 #3                               10.92.234.50        
+FeederPressLine 2 #1                               10.112.10.112       
+FeederPressLine 2 #2                               10.8.122.114        
+FeederPressLine 2 #3                               10.75.164.104       
+GlobalMonitorSystem                                10.105.48.74        
+InFromConveyor #1                                  10.73.222.124       
+InFromConveyor #2                                  10.56.106.208       
+InFromConveyor #3                                  10.129.247.83       
+InToConveyor #1                                    10.243.136.36       
+InToConveyor #2                                    10.243.63.188       
+InToConveyor #3                                    10.21.197.99        
+InboundShelf #1                                    10.29.89.181        
+InboundShelf #2                                    10.197.95.93        
+OutFromConveyor #1                                 10.96.240.180       
+OutFromConveyor #2                                 10.73.72.21         
+OutFromConveyor #3                                 10.82.253.55        
+OutShelfFromConveyor #1                            10.4.66.62          
+OutShelfToConveyor #1                              10.3.26.103         
+OutToConveyor #1                                   10.113.112.108      
+OutToConveyor #2                                   10.75.116.201       
+OutToConveyor #3                                   10.187.205.149      
+OutboundLine 1 #1                                  10.109.110.41       
+OutboundLine 1 #2                                  10.125.243.61       
+OutboundLine 1 #3                                  10.212.235.240      
+OutboundLine 2 #1                                  10.253.90.134       
+OutboundLine 2 #2                                  10.216.143.87       
+OutboundLine 2 #3                                  10.65.84.29         
+OutboundShelf #1                                   10.171.81.200       
+OutboundShelf #2                                   10.19.90.89         
+RobotController 3 #1                               10.84.172.234       
+RobotController 3 #2                               10.133.10.26        
+RobotController 3 #3                               10.238.253.72       
+RobotController 4 #1                               10.233.145.9        
+RobotController 4 #2                               10.177.87.52        
+RobotController 4 #3                               10.15.20.160        
+RobotController 5 #1                               10.217.20.87        
+RobotController 5 #2                               10.130.214.2        
+RobotController 5 #3                               10.57.243.134       
+RobotController 6 #1                               10.110.174.44       
+RobotController 6 #2                               10.244.137.157      
+RobotController 6 #3                               10.94.104.83        
+RobotController 7 #1                               10.144.131.167      
+RobotController 7 #2                               10.70.164.177       
+RobotController 7 #3                               10.22.168.181       
+UWICORE Press 1 #1                                 10.200.105.121      
+UWICORE Press 1 #2                                 10.112.160.139      
+UWICORE Press 1 #3                                 10.114.63.252       
+UWICORE Press 2 #1                                 10.234.7.126        
+UWICORE Press 2 #2                                 10.205.148.150      
+UWICORE Press 2 #3                                 10.114.151.102      
+UWICORE Press 3 #1                                 10.3.182.71         
+UWICORE Press 3 #2                                 10.161.238.55       
+UWICORE Press 3 #3                                 10.48.225.100       
+
+Total devices in UE3: 76
+
+====================================================================================================
+UE1 (URLLC):  13 devices
+UE2 (eMBB):   14 devices
+UE3 (mMTC):   76 devices
+TOTAL:        103 devices
+====================================================================================================
