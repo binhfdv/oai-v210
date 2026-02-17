@@ -21,6 +21,12 @@ For example, running below command will update hostpath to the sub-charts direct
 
 commands on each terminal
 - service status
-```
+```bash
 bash deploy_oai.sh . core ric cu ue-gnb kpm xchain-basic
+watch kubectl get pods
+```
+
+- KPM xApp
+```bash
+kubectl logs -l app=oai-xapp-kpm-moni --tail 10 -f
 ```
