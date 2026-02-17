@@ -111,6 +111,27 @@ spec:
           - infinity
         {{- end}}
       {{- end }}
+      {{- if .Values.debug.enabled }}
+      - name: debug
+        image: "{{ .Values.debug.image }}:{{ .Values.debug.version }}"
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+          {{- if .Values.persistentVolume.enabled }}
+          - name: traffic-gen-volume
+            mountPath: {{ .Values.persistentVolume.mountPath }}
+          {{- end }}
+        {{- if .Values.resources.define }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu | default "100m" }}
+            memory: {{ .Values.resources.limits.memory | default "128Mi" }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+        {{- end }}
+      {{- end }}
       volumes:
       - configMap:
           name: {{ .Release.Name }}-configmap

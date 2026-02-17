@@ -1,5 +1,6 @@
 presiquites
 K8s cluster
+namespace `oai`
 configurations
 update corresponding hostpaths to xchain-basic/values.yaml
 For example, running below command will update hostpath to the sub-charts directly. You can whether update manually to xchain-basic/values.yaml or comment the hostpath lines. Values in xchain-basic/values.yaml will override that of sub-charts.

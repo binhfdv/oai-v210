@@ -71,6 +71,12 @@ tcpdumpimage:
   version: alpine-3.20
   pullPolicy: IfNotPresent
 
+debug:
+  enabled: true
+  image: ddocker122/traffic-gen-sidecar #ubuntu:22.04
+  version: latest
+  pullPolicy: IfNotPresent
+
 resources:
   define: false
   limits:
