@@ -25,6 +25,21 @@ kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-3 -o
 # In any UE, start to replay traffic.
 cd traffic-gen/smart_manufacturing
 ./replay_from_ue.sh <ue_folder> oaitun_ue1 [speed]
-./replay_from_ue.sh ue_pcaps/ue1 oaitun_ue1
+./replay_from_ue.sh ue_pcaps/ue1 oaitun_ue1 1000
+./replay_from_ue.sh ue_pcaps/ue2 oaitun_ue1 1000
+./replay_from_ue.sh ue_pcaps/ue3 oaitun_ue1 1000
+```
+
+# Capture KPM
+- watcher KPM
+```bash
+cd ../watcher-kpm-moni/
+helm install watcher-kpm-moni .
+```
+
+- clearer KPM
+```bash
+cd ../cleaner-kpm-moni/
+helm install cleaner-kpm-moni .
 ```
 

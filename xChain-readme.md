@@ -31,3 +31,16 @@ watch kubectl get pods
 ```bash
 kubectl logs -l app=oai-xapp-kpm-moni --tail 10 -f
 ```
+
+2 terminals in background
+- watcher KPM
+```bash
+cd watcher-kpm-moni/
+helm install watcher-kpm-moni .
+```
+
+- clearer KPM
+```bash
+cd cleaner-kpm-moni/
+helm install cleaner-kpm-moni .
+```
