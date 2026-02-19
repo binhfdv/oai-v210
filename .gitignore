@@ -38,3 +38,6 @@ helm-flexric/traffic-gen/pcap
 helm-flexric/traffic-gen/replay_logs
 helm-flexric/traffic-gen/smart_manufacturing/ue_pcaps
 helm-flexric/traffic-gen/smart_manufacturing/*.csv
+helm-flexric/traffic-gen/smart_manufacturing/ue-embb
+helm-flexric/traffic-gen/smart_manufacturing/ue-mmtc
+helm-flexric/traffic-gen/smart_manufacturing/ue-urllc
