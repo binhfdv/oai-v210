@@ -4,10 +4,10 @@
 # Usage:
 #   ./replay.sh <ue_folder> <interface> [speed]
 #
-# Examples:
+# Examples (interface names are same for all UEs in this example):
 #   ./replay.sh ue1 oaitun_ue1
-#   ./replay.sh ue2 oaitun_ue2 10
-#   ./replay.sh ue3 oaitun_ue3 5
+#   ./replay.sh ue2 oaitun_ue1 10
+#   ./replay.sh ue3 oaitun_ue1 5
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <ue_folder> <interface> [speed]"

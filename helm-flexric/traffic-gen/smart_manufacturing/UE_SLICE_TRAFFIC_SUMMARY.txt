@@ -1,0 +1,142 @@
+================================================================================
+UE SLICE TRAFFIC SUMMARY - Smart Manufacturing 5G Simulation
+================================================================================
+
+SCENARIO: 5-UE per slice, intra-slice traffic only
+TOTAL UEs: 5 per slice (IPs: 12.1.1.100 - 12.1.1.104)
+SOURCE DATA: data_communications.csv (12,757,920 total records) (https://github.com/uwicore/Smart-Manufacturing-Dataset)
+
+================================================================================
+URLLC SLICE  (ue-urllc/)
+Role: Critical Production Control
+================================================================================
+
+  UE1 (12.1.1.100) - Production Line 1 Robots
+  File : ue1_5ue_traffic.csv
+  Rows : 4,108,041
+  TX   : RobotController 1 #1, RobotController 1 #2, RobotController 1 #3
+
+  UE2 (12.1.1.101) - Production Line 2 Robots
+  File : ue2_5ue_traffic.csv
+  Rows : 4,108,041
+  TX   : RobotController 2 #1, RobotController 2 #2, RobotController 2 #3
+
+  UE3 (12.1.1.102) - Storage Inbound Control
+  File : ue3_5ue_traffic.csv
+  Rows : 1,683
+  TX   : SC In - Crane Controller
+  NOTE : StorageController-In and SC In-AGV Controller have no intra-slice
+         traffic (they communicate with devices in other slices only)
+
+  UE4 (12.1.1.103) - Storage Outbound Control
+  File : ue4_5ue_traffic.csv
+  Rows : 14,214
+  TX   : SC Out - Crane Controller
+
+  UE5 (12.1.1.104) - Physical Crane Unit
+  File : ue5_5ue_traffic.csv
+  Rows : 29,602
+  TX   : Single Stacker Crane - In, Single Stacker Crane - Out
+
+  Total URLLC intra-slice traffic : 8,261,581 messages
+
+================================================================================
+eMBB SLICE  (ue-embb/)
+Role: Mobile Units & Vision Systems
+================================================================================
+
+  UE1 (12.1.1.100) - Mobile Units Group 1
+  File : ue1_5ue_traffic.csv
+  Rows : 0
+  TX   : AGV #1, AGV #2, AGV #3
+  NOTE : AGVs communicate exclusively with StorageController-In (URLLC slice).
+         No intra-slice traffic exists for this group.
+
+  UE2 (12.1.1.101) - Mobile Units Group 2
+  File : ue2_5ue_traffic.csv
+  Rows : 0
+  TX   : AGV #4, AGV #5
+  NOTE : Same as UE1 - AGVs only talk to URLLC devices.
+
+  UE3 (12.1.1.102) - Camera Controllers
+  File : ue3_5ue_traffic.csv
+  Rows : 59,812
+  TX   : CameraController #1, CameraController #2, CameraController #3
+
+  UE4 (12.1.1.103) - Quality Cameras
+  File : ue4_5ue_traffic.csv
+  Rows : 174,137
+  TX   : QualityCamera #1, QualityCamera #2, QualityCamera #3
+
+  UE5 (12.1.1.104) - Quality Nodes
+  File : ue5_5ue_traffic.csv
+  Rows : 29,906
+  TX   : QualityNode #1, QualityNode #2, QualityNode #3
+
+  Total eMBB intra-slice traffic : 263,855 messages
+
+================================================================================
+mMTC SLICE  (ue-mmtc/)
+Role: Monitoring & Sensors
+================================================================================
+
+  UE1 (12.1.1.100) - Secondary Robots A
+  File : ue1_5ue_traffic.csv
+  Rows : 141,519
+  TX   : RobotController 3 #1-3, RobotController 4 #1-3
+
+  UE2 (12.1.1.101) - Secondary Robots B
+  File : ue2_5ue_traffic.csv
+  Rows : 169,700
+  TX   : RobotController 5 #1-3, RobotController 6 #1-3, RobotController 7 #1-3
+
+  UE3 (12.1.1.102) - Press Operations
+  File : ue3_5ue_traffic.csv
+  Rows : 189,821
+  TX   : UWICORE Press 1 #1-3, UWICORE Press 2 #1-3, UWICORE Press 3 #1-3
+
+  UE4 (12.1.1.103) - Feeding Mechanisms
+  File : ue4_5ue_traffic.csv
+  Rows : 59,842
+  TX   : FeedPressRobot 1-4 (#1-3)
+  NOTE : FeedLineRobots and FeederPressLines have no intra-slice traffic
+         (they communicate with devices in other slices only)
+
+  UE5 (12.1.1.104) - Monitoring & Transport
+  File : ue5_5ue_traffic.csv
+  Rows : 82,130
+  TX   : GlobalMonitorSystem, InFromConveyor #1-3, OutToConveyor #1-3,
+         FailLineRobot #1-3
+  NOTE : InToConveyor, OutFromConveyor, and shelf devices have no
+         intra-slice traffic
+
+  Total mMTC intra-slice traffic : 643,012 messages
+
+================================================================================
+GRAND TOTAL SUMMARY
+================================================================================
+
+  Slice    Files   Total Rows    Empty UEs
+  -------  ------  ------------  ---------
+  URLLC    5       8,261,581     0
+  eMBB     5         263,855     2 (UE1, UE2 - AGVs)
+  mMTC     5         643,012     0
+  -------  ------  ------------  ---------
+  TOTAL    15      9,168,448
+
+  Excluded (cross-slice traffic): ~3,589,472 messages
+
+================================================================================
+NOTES
+================================================================================
+
+  1. Empty eMBB UEs (AGV groups): AGVs only communicate with StorageController
+     (URLLC slice).
+
+  2. Partial UE groups: Some devices assigned to a UE group have no intra-slice
+     traffic because all their communications go to devices in other slices.
+
+  3. IP Assignment: Each UE uses the same IP range (12.1.1.100-104) per slice.
+     When replaying, ensure each slice uses separate network interfaces.
+
+================================================================================

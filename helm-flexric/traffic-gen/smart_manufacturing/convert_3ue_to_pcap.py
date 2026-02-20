@@ -33,11 +33,6 @@ UE_IPS = {
     'UE3': '12.1.1.102',  # mMTC - Monitoring & Sensors
 }
 
-UE_MACS = {
-    'UE1': '02:00:0c:01:01:64',  # From 12.1.1.100
-    'UE2': '02:00:0c:01:01:65',  # From 12.1.1.101
-    'UE3': '02:00:0c:01:01:66',  # From 12.1.1.102
-}
 
 def detect_ue_from_filename(filename):
     """Auto-detect UE number from filename."""
@@ -150,10 +145,9 @@ def process_csv_to_pcap(csv_path, output_pcap, ue_id, chunk_num=None, total_chun
         return 0
 
     ue_ip = UE_IPS[ue_id]
-    ue_mac = UE_MACS[ue_id]
 
     print(f"[INFO] Processing {csv_path}")
-    print(f"[INFO] Source UE: {ue_id}, IP: {ue_ip}, MAC: {ue_mac}")
+    print(f"[INFO] Source UE: {ue_id}, IP: {ue_ip}")
 
     # Load device-to-UE mapping for inter-UE traffic
     device_to_ue = load_device_to_ue_mapping()
