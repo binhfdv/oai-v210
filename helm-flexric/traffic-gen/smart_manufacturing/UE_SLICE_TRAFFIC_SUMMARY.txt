@@ -126,6 +126,44 @@ GRAND TOTAL SUMMARY
 
   Excluded (cross-slice traffic): ~3,589,472 messages
 
+
+================================================================================
+KPM
+================================================================================
+
+oai-kpm-2026-02-23-085959-embb.csv
+
+UE 3: (0, 791)
+UE 4: (791, 1936)
+UE 5: (1936, end)
+
+oai-kpm-2026-02-23-092029-mmtc.csv
+
+UE 1: (0, 1114)
+UE 2: (1114, 2144)
+UE 3: (2144, 3254)
+UE 4: (3254, 3774)
+UE 5: (3774, end)
+
+oai-kpm-2026-02-23-094231-urllc.csv
+
+UE 1: (0, 1744)
+UE 2: (1744, 3114)
+UE 3: (3114, 3364)
+UE 4: (3364, 3594)
+UE 5: (3594, end)
+
+P.S.:
+- The range refers to the KPM rows in the CSV file, where we identify which KPM entries correspond to traffic replayed from each UE.
+- Some KPM rows are similar across all UEs when no traffic is replayed. These rows do not contain useful information and should be removed during data preprocessing.:
+       2026-02-23T09:00:43.656357	1	1	1	0	0	0	0	0	5	55
+       2026-02-23T09:00:43.656658	2	2	2	0	0	0	0	0	5	55
+       2026-02-23T09:00:43.657028	3	3	3	0	0	0	0	0	5	55
+       2026-02-23T09:00:43.657255	4	4	4	0	0	0	0	0	5	50
+       2026-02-23T09:00:44.654906	5	5	5	0	0	0	0	0	5	50
+- Some initial rows do not include all five UEs because the UEs were not fully deployed yet. These rows should also be removed during data preprocessing.
+
+
 ================================================================================
 NOTES
 ================================================================================
@@ -138,5 +176,9 @@ NOTES
 
   3. IP Assignment: Each UE uses the same IP range (12.1.1.100-104) per slice.
      When replaying, ensure each slice uses separate network interfaces.
+
+  4. Replayed traffic:
+       - URLLC: UE 1: 278115 packets, UE 2: 217146 packets (too many packets from those UEs, so only some are replayed)
+       - Traffic from other were all replayed.
 
 ================================================================================
