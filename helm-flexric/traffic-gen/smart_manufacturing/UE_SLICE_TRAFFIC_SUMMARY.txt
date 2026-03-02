@@ -149,9 +149,9 @@ oai-kpm-2026-02-23-094231-urllc.csv
 
 UE 1: (0, 1744)
 UE 2: (1744, 3114)
-UE 3: (3114, 3364)
-UE 4: (3364, 3594)
-UE 5: (3594, end)
+UE 3: (3114, 3599)
+UE 4: (3599, 3674)
+UE 5: (3674, end)
 
 P.S.:
 - The range refers to the KPM rows in the CSV file, where we identify which KPM entries correspond to traffic replayed from each UE.
