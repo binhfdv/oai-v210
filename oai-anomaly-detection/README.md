@@ -106,7 +106,12 @@ If you find this repository useful in your research, please consider citing the 
 ### Start gNB-mono
   ```bash
   cd openairinterface5g/cmake_targets/ran_build/build
-  sudo ./nr-softmodem -O /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/gnb.conf --rfsim -E --gNBs.[0].min_rxtxtime 6  --telnetsrv --telnetsrv.shrmod rrc
+  sudo ./nr-softmodem \
+  --sa \
+  -O /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/gnb.conf \
+  --rfsim -E --gNBs.[0].min_rxtxtime 6 \
+  --telnetsrv --telnetsrv.shrmod rrc \
+  --serveraddr server
   ```
 
   ### Start RC xApp
@@ -136,15 +141,29 @@ Both Anomaly Detectors should be connected to the xapps.
 #### Start UE1
   ```bash
   cd openairinterface5g/cmake_targets/ran_build/build
-  sudo <path-to/multi-ue.sh> -c1 -e  # create namespace
+  sudo /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/multi-ue.sh -c1 -e  # create namespace
   sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem --rfsimulator.serveraddr 10.201.1.100 -r 106 --numerology 1 --band 78 -C 3619200000 --rfsim --sa -O <path-to/oai-anomaly-detection/conf/ue_1.conf> -E
+
+  sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem \
+  --sa \
+  -r 106 --numerology 1 --band 78 -C 3619200000 \
+  --rfsim \
+  -O /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/ue_1.conf -E \
+  --serveraddr 10.201.1.100
   ```
 
 #### Start UE2
   ```bash
   cd openairinterface5g/cmake_targets/ran_build/build
-  sudo <path-to/multi-ue.sh> -c2 -e  # create namespace
+  sudo /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/multi-ue.sh -c2 -e  # create namespace
   sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem --rfsimulator.serveraddr 10.202.1.100 -r 106 --numerology 1 --band 78 -C 3619200000 --rfsim --sa -O <path-to/oai-anomaly-detection/ue_2.conf> -E
+
+  sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem \
+  --sa \
+  -r 106 --numerology 1 --band 78 -C 3619200000 \
+  --rfsim \
+  -O /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/ue_2.conf -E \
+  --serveraddr 10.202.1.100
   ```
 
 ### Generate UE Traffic from the real-world dataset (KDDCUP’99) via Scapy:
@@ -152,16 +171,16 @@ Both Anomaly Detectors should be connected to the xapps.
 #### For UE1:    
  ```bash
 ip netns exec ue1 bash
-cd <path-to/oai-anomaly-detection/generate-ue-traffic>
+cd /home/lapdk/workspace/oai-v210/oai-anomaly-detection/generate-ue-traffic
 python3 generate-ue1.py
 ```
 
 #### For UE2:    
  ```bash
-ip netns exec ue2 bash
-sudo ip route add 192.168.70.145 dev oaitun_ue1
-cd <path-to/oai-anomaly-detection/generate-ue-traffic>
-python3 generate-ue2.py
+sudo ip netns exec ue2 bash
+# ip netns exec ue1 bash
+cd /home/lapdk/workspace/oai-v210/oai-anomaly-detection/generate-ue-traffic
+PYTHONPATH=/home/lapdk/.local/lib/python3.10/site-packages python3 generate-ue2.py
 ```
 
 ### Generate DoS Attack using Hping3:

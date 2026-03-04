@@ -104,6 +104,22 @@ Problem: UE crashed with: [CONFIG] unknown option: --sa
     sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem ... --rfsim -O ue_1.conf -E
 
 ------------------------------------------------------------------------
+5. oai-anomaly-detection/conf/gnb.conf — added sa=1 (line 1)
+------------------------------------------------------------------------
+
+Problem: gNB started successfully but never sent NG_SETUP_REQUEST to AMF.
+         AMF table showed no connected gNBs.
+
+Root cause: slicing-spring-of-code branch's gnb_app.c guards NGAP
+            registration with:
+              if(get_softmodem_params()->sa) { ... send NGAP_REGISTER_GNB_REQ }
+            Without sa=1 in config, SA mode was off, so NGAP was silently
+            skipped. The develop branch handled this differently.
+
+  Before: (no sa setting in gnb.conf)
+  After:  sa = 1; added at the top of gnb.conf (same as ue_1.conf)
+
+------------------------------------------------------------------------
 RUNTIME NOTES (not file changes — command-line flags to remember)
 ------------------------------------------------------------------------
 

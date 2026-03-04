@@ -30,13 +30,13 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
     update-alternatives --set gcc /usr/bin/gcc-12
 
 # Build and install SWIG
-WORKDIR /opt
-RUN git clone --branch release-4.1 --single-branch https://github.com/swig/swig.git && \
-    cd swig && \
-    ./autogen.sh && \
-    ./configure --prefix=/usr/ && \
-    make -j$(nproc) && \
-    make install
+# WORKDIR /opt
+# RUN git clone --branch release-4.1 --single-branch https://github.com/swig/swig.git && \
+#     cd swig && \
+#     ./autogen.sh && \
+#     ./configure --prefix=/usr/ && \
+#     make -j$(nproc) && \
+#     make install
 
 
 # Clone and build OpenAirInterface
@@ -50,13 +50,13 @@ WORKDIR /opt/oai/cmake_targets
 RUN ./build_oai -w SIMU --gNB --nrUE --build-e2 --ninja
 
 
-WORKDIR /opt
-RUN git clone https://gitlab.eurecom.fr/mosaic5g/flexric flexric && \
-    cd flexric && \
-    git checkout slicing-spring-of-code && \
-    mkdir build && cd build && \
-    cmake .. && make -j8 && \
-    make install
+# WORKDIR /opt
+# RUN git clone https://gitlab.eurecom.fr/mosaic5g/flexric flexric && \
+#     cd flexric && \
+#     git checkout slicing-spring-of-code && \
+#     mkdir build && cd build && \
+#     cmake .. && make -j8 && \
+#     make install
 
 # ---- Stage 2: Runtime Stage ----
 FROM ubuntu:22.04
@@ -101,9 +101,9 @@ RUN apt-get update && \
 
 # Copy built binaries from builder
 COPY --from=builder /opt/oai /opt/oai
-COPY --from=builder /usr/bin/swig /usr/bin/swig
+# COPY --from=builder /usr/bin/swig /usr/bin/swig
 COPY --from=builder /usr/lib*/libswig* /usr/lib/
-COPY --from=builder /usr/local/lib/flexric /usr/local/lib/flexric
+# COPY --from=builder /usr/local/lib/flexric /usr/local/lib/flexric
 
 # Set default working directory
 WORKDIR /opt/oai/cmake_targets/ran_build/build
