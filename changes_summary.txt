@@ -1,0 +1,130 @@
+========================================================
+CHANGES SUMMARY — OAI Anomaly Detection Setup
+========================================================
+
+------------------------------------------------------------------------
+1. oai-anomaly-detection/conf/gnb.conf — 4 parameter changes
+------------------------------------------------------------------------
+
+Problem: UE could detect the gNB but PRACH kept failing —
+         "exceeded RA window" and PRACH not being detected.
+
+  ra_ResponseWindow (line 85)
+    Before : 4  (10 slots)
+    After  : 5  (20 slots)
+    Why    : gNB detected PRACH at slot 19 but needed 11 slots to
+             schedule RAR — exceeded the 10-slot window by 1.
+             Doubling the window to 20 slots fixed this.
+
+  prach_dtx_threshold (line 196)
+    Before : 120
+    After  : 60
+    Why    : Detection threshold too high, causing gNB to miss weak
+             PRACH signals in the rfsim environment.
+
+  pucch0_dtx_threshold (line 197)
+    Before : 100
+    After  : 50
+    Why    : Same reason — threshold too high for rfsim.
+
+  att_tx / att_rx (lines 207-208)
+    Before : 12
+    After  : 0
+    Why    : 12 dB of RF attenuation was making the simulated PRACH
+             signal too weak to detect. Set to 0 for rfsim.
+
+------------------------------------------------------------------------
+2. openairinterface5g/executables/nr-softmodem.c — bug fix (line 578)
+------------------------------------------------------------------------
+
+Problem: gNB E2 agent crashed with:
+           Assertion 'rc == 1' failed in init_sctp_conn_client
+         because the nearRT-RIC IP address was passed as empty string.
+         Log showed: [E2 AGENT]: nearRT-RIC IP Address =  , PORT = 36421
+
+Root cause: fr_args_t.ip is a char[16] array, but the code did:
+              fr_args_t args = { .ip = oai_args.ip };
+            This assigns the low byte of the pointer to args.ip[0]
+            instead of copying the string. The compiler warned:
+              "initialization of 'char' from 'const char *'"
+
+  Before:
+    fr_args_t args = { .ip = oai_args.ip }; // init_fr_args(0, NULL);
+    memcpy(args.libs_dir, oai_args.sm_dir, 128);
+
+  After:
+    fr_args_t args = {0};
+    strncpy(args.ip, oai_args.ip, sizeof(args.ip) - 1);
+    memcpy(args.libs_dir, oai_args.sm_dir, 128);
+
+------------------------------------------------------------------------
+3. OAI branch switch — gNB rebuilt from slicing-spring-of-code
+------------------------------------------------------------------------
+
+Problem: gNB compiled from develop HEAD (Feb 2026) crashed with:
+           Assertion 'ctrl->hdr.frmt_1.ctrl_act_id == 2' failed
+         whenever the xApp sent an RC CONTROL message for slice PRB
+         control. The develop branch only supports ctrl_act_id == 2
+         (QoS flow mapping), but the xApp (from slicing-spring-of-code
+         2023) sends ctrl_act_id == Slice_level_PRB_quotal_7_6_3_1.
+
+Fix: Checked out origin/slicing-spring-of-code and rebuilt the gNB.
+     This branch:
+       - Comments out the hard assertion on ctrl_act_id == 2
+       - Adds a handler for ric_style_type == 2 with
+         ctrl_act_id == Slice_level_PRB_quotal_7_6_3_1
+
+     Build commands used:
+       cd openairinterface5g
+       git checkout -b slicing-spring-of-code origin/slicing-spring-of-code
+       cd cmake_targets
+       ./build_oai -c -C -w SIMU --gNB --nrUE --build-e2 --ninja
+
+     Then rebuilt telnetsrv at commit 243c985af8 (adds libtelnetsrv_rrc.so
+     needed for --telnetsrv.shrmod rrc / RRC release trigger):
+       cd ..
+       git checkout 243c985af86f857c28d14c2bb25e54e223b07a00
+       cd cmake_targets
+       ./build_oai --build-lib telnetsrv
+       cd ..
+       git checkout slicing-spring-of-code
+
+------------------------------------------------------------------------
+4. oai-anomaly-detection/README.md — removed --sa from UE command
+------------------------------------------------------------------------
+
+Problem: UE crashed with: [CONFIG] unknown option: --sa
+         because sa=1 is already set inside ue_1.conf. Passing --sa
+         on the CLI too caused a conflict in this OAI build version.
+
+  Before:
+    sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem ... --rfsim --sa -O ue_1.conf -E
+
+  After:
+    sudo LD_LIBRARY_PATH=. ./nr-uesoftmodem ... --rfsim -O ue_1.conf -E
+
+------------------------------------------------------------------------
+RUNTIME NOTES (not file changes — command-line flags to remember)
+------------------------------------------------------------------------
+
+gNB must be started with --serveraddr server (not in config file):
+  The rfsimulator serveraddr parameter has PARAMFLAG_CMDLINE_NOPREFIXENABLED
+  which means the config file value is ignored. Always pass on CLI:
+    sudo ./nr-softmodem -O gnb.conf --rfsim --serveraddr server -E \
+      --gNBs.[0].min_rxtxtime 6 --telnetsrv --telnetsrv.shrmod rrc
+
+UE must run inside network namespace with correct serveraddr:
+    sudo ip netns exec ue1 bash -c \
+      'cd <build_dir> && LD_LIBRARY_PATH=. ./nr-uesoftmodem \
+       --rfsimulator.serveraddr 10.201.1.100 \
+       -r 106 --numerology 1 --band 78 -C 3619200000 \
+       --rfsim -O ue_1.conf -E'
+  10.201.1.100 is the host-side veth address for ue1 namespace,
+  which NAT-masquerades to the gNB's 127.0.0.1:4043.
+
+Namespace lifecycle:
+  Create : sudo multi-ue.sh -c1
+  Delete : sudo multi-ue.sh -d1
+  List   : sudo multi-ue.sh -l
+
+========================================================

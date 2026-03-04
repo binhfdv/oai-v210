@@ -78,16 +78,19 @@ If you find this repository useful in your research, please consider citing the 
   cp <path-to/oai-anomaly-detection/xapp_rc_slice_ctrl.c> /examples/xApp/c/ctrl/
   ```
   ```bash
-  mkdir build && cd build && cmake -DXAPP_MULTILANGUAGE=OFF .. && make -j8 && sudo make install
+  mkdir build && cd build
+  cmake -DXAPP_MULTILANGUAGE=OFF .. && make -j8 && sudo make install
   ```
 
 ### Compile OAI and build telnet libraries for RRC Release trigger.
   ```bash
   git clone https://gitlab.eurecom.fr/oai/openairinterface5g
-  cd openairinterface5g
+  cd openairinterface5g/cmake_targets
+  ./build_oai -c -C -I -w SIMU --gNB --nrUE --build-e2 --ninja
+  cd ..
   git checkout slicing-spring-of-code
   cd cmake_targets
-  ./build_oai -c -C -w SIMU --gNB --nrUE --build-e2 --ninja
+  ./build_oai -w SIMU --gNB --nrUE --build-e2 --ninja
   cd ../
   git checkout 243c985af86f857c28d14c2bb25e54e223b07a00
   cd cmake_targets
@@ -103,7 +106,7 @@ If you find this repository useful in your research, please consider citing the 
 ### Start gNB-mono
   ```bash
   cd openairinterface5g/cmake_targets/ran_build/build
-  sudo ./nr-softmodem -O <path-to/oai-anomaly-detection/gnb.conf> --sa --rfsim -E --gNBs.[0].min_rxtxtime 6  --telnetsrv --telnetsrv.shrmod rrc
+  sudo ./nr-softmodem -O /home/lapdk/workspace/oai-v210/oai-anomaly-detection/conf/gnb.conf --rfsim -E --gNBs.[0].min_rxtxtime 6  --telnetsrv --telnetsrv.shrmod rrc
   ```
 
   ### Start RC xApp
