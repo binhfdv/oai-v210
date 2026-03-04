@@ -1,0 +1,29 @@
+FROM oaisoftwarealliance/oai-upf:v2.0.1
+
+# Set non-interactive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update apt and install packages
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    tcpdump \
+    iputils-ping \
+    net-tools \
+    nano \
+    build-essential
+
+# Add your requirements.txt file to the container
+COPY requirements.txt /tmp/
+
+# Install Python dependencies from requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Clean up APT when done to reduce image size
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
