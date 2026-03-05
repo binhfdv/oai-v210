@@ -120,21 +120,6 @@ If you find this repository useful in your research, please consider citing the 
   ./xapp_rc_slice_ctrl
   ```
 
-  ### Start the Anomaly Detection Servers in the UPF:
- 
-  #### For UPF-Slice1:
-  ```bash
-  docker exec -ti oai-upf-slice1 bash
-  python3 anomaly-detection-server-slice1.py
-  ```
-
-  #### For UPF-Slice2:
-  ```bash
-  docker exec -ti oai-upf-slice2 bash
-  python3 anomaly-detection-server-slice2.py
-  ```
-
-Both Anomaly Detectors should be connected to the xapps.
 
 ### Start the UEs
 
@@ -166,20 +151,37 @@ Both Anomaly Detectors should be connected to the xapps.
   --serveraddr 10.202.1.100
   ```
 
+  ### Start the Anomaly Detection Servers in the UPF:
+ 
+  #### For UPF-Slice1:
+  ```bash
+  docker exec -ti oai-upf-slice1 bash
+  python3 anomaly-detection-server-slice1.py
+  ```
+
+  #### For UPF-Slice2:
+  ```bash
+  docker exec -ti oai-upf-slice2 bash
+  python3 anomaly-detection-server-slice2.py
+  ```
+
+Both Anomaly Detectors should be connected to the xapps.
+
 ### Generate UE Traffic from the real-world dataset (KDDCUP’99) via Scapy:
 
 #### For UE1:    
  ```bash
-ip netns exec ue1 bash
+sudo ip netns exec ue1 bash
 cd /home/lapdk/workspace/oai-v210/oai-anomaly-detection/generate-ue-traffic
-python3 generate-ue1.py
+# if no route to ext-dn: ip route add 192.168.70.145 dev oaitun_ue1
+PYTHONPATH=/home/lapdk/.local/lib/python3.10/site-packages python3 generate-ue1.py
 ```
 
 #### For UE2:    
  ```bash
 sudo ip netns exec ue2 bash
-# ip netns exec ue1 bash
 cd /home/lapdk/workspace/oai-v210/oai-anomaly-detection/generate-ue-traffic
+# if no route to ext-dn: ip route add 192.168.70.145 dev oaitun_ue1
 PYTHONPATH=/home/lapdk/.local/lib/python3.10/site-packages python3 generate-ue2.py
 ```
 

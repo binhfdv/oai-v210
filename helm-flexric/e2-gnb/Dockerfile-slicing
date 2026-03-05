@@ -1,4 +1,5 @@
 # ---- Stage 1: Build Stage ----
+# docker build -f /home/lapdk/workspace/oai-v210/helm-flexric/e2-gnb/Dockerfile-slicing -t oai-gnb-slicing:latest /home/lapdk/workspace/oai-v210/helm-flexric/e2-gnb
 FROM ubuntu:22.04 AS builder
 
 # Avoid interactive frontend
