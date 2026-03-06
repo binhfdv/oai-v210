@@ -1,0 +1,74 @@
+apiVersion: v2
+name: oai-5g-slicing
+type: application
+icon: http://www.openairinterface.org/wp-content/uploads/2015/06/cropped-oai_final_logo.png
+version: v2.1.0
+description: OAI 5G Release 16 Core Network
+
+appVersion: v2.1.0
+
+keywords:
+  - 5GCN
+  - AMF
+  - SMF
+  - NRF
+  - UPF
+  - UDM
+  - UDR
+  - AUSF
+  - Traffic_server
+  - network slicing
+
+maintainers:
+  - name:  OPENAIRINTERFACE
+    email: contact@openairinterface.org
+
+dependencies:
+- condition: mysql.enabled
+  name: mysql
+  repository: "file://../mysql"
+  version: 9.0.1
+- condition: oai-nrf.enabled
+  name: oai-nrf
+  repository: "file://../oai-nrf"
+  version: v2.1.0
+- condition: oai-udr.enabled
+  name: oai-udr
+  repository: "file://../oai-udr"
+  version: v2.1.0
+- condition: oai-udm.enabled
+  name: oai-udm
+  repository: "file://../oai-udm"
+  version: v2.1.0
+- condition: oai-ausf.enabled
+  name: oai-ausf
+  repository: "file://../oai-ausf"
+  version: v2.1.0
+- condition: oai-amf.enabled
+  name: oai-amf
+  repository: "file://../oai-amf"
+  version: v2.1.0
+- condition: oai-smf-slice1.enabled
+  name: oai-smf-slice1
+  repository: "file://../oai-smf-slice1"
+  version: v2.1.0
+- condition: oai-smf-slice2.enabled
+  name: oai-smf-slice2
+  repository: "file://../oai-smf-slice2"
+  version: v2.1.0
+- condition: oai-upf-slice1.enabled
+  name: oai-upf-slice1
+  repository: "file://../oai-upf-slice1"
+  version: v2.1.0
+- condition: oai-upf-slice2.enabled
+  name: oai-upf-slice2
+  repository: "file://../oai-upf-slice2"
+  version: v2.1.0
+- condition: oai-lmf.enabled
+  name: oai-lmf
+  repository: "file://../oai-lmf"
+  version: v2.1.0
+- condition: oai-traffic-server.enabled
+  name: oai-traffic-server
+  repository: "file://../oai-traffic-server"
+  version: v1

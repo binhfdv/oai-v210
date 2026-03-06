@@ -55,6 +55,30 @@ configuration:
       nsiInformationList:
         nrfId: http://oai-cn5g-nrf-20.fr:8080/nnrf-disc/v1/nf-instances
         nsiId: '20'
+    # ----------------------------------------------------------------
+    # Added from Docker anomaly-detection deployment (slicing-cn).
+    # IPs converted to K8s DNS: 192.168.70.136/137 → oai-nrf service.
+    # These slices are used by UE1 (SST=1) and UE2 (SST=1/SD=5)
+    # via oai-upf-slice1 and oai-upf-slice2.
+    # ----------------------------------------------------------------
+    - snssai:
+        sst: 128
+        sd: '128'
+      nsiInformationList:
+        nrfId: http://oai-nrf:80/nnrf-disc/v1/nf-instances
+        nsiId: '11'
+    - snssai:
+        sst: 1
+      nsiInformationList:
+        nrfId: http://oai-nrf:80/nnrf-disc/v1/nf-instances
+        nsiId: '12'
+    - snssai:
+        sst: 130
+        sd: '130'
+      nsiInformationList:
+        nrfId: http://oai-nrf:80/nnrf-disc/v1/nf-instances
+        nsiId: '12'
+    # ----------------------------------------------------------------
   taInfoList:
     - tai:
         plmnId:
@@ -67,6 +91,9 @@ configuration:
       - sst: 1
         sd: '000001'
       - sst: 2
+      # Added from Docker anomaly-detection deployment
+      - sst: 128
+        sd: '128'
     - tai:
         plmnId:
           mcc: '208'
@@ -115,9 +142,12 @@ configuration:
                 tac: 33456
               supportedSnssaiList:
                 - sst: 222
-                - sst: '123'
-                  sd: "000001"
-                - sst: '1'
+                # - sst: '123'
+                #   sd: "000001"
+                # - sst: '1'
+                - sst: 1
+                - sst: 130
+                  sd: 130
         - nfId: 405e8251-cc5a-45dd-a494-efb9eaf1cd68
           supportedNssaiAvailabilityData:
               tai:

@@ -32,6 +32,10 @@ config:
   ueroute: 12.1.1.0/24
   upfHost: 172.21.6.95
   noOfIperf3Server: 10
+  # Set slice: true to enable slicing mode (multiple UPF routes + iptables masquerade).
+  # Set slice: false (default) to use single-UPF mode (ueroute/upfHost above).
+  slice: false
+  routes: []
 
 securityContext:
  capabilities:

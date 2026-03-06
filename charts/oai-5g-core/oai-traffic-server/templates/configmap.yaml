@@ -6,10 +6,26 @@ metadata:
 data:
   script.sh: |
     #!/bin/bash
+    {{- if .Values.config.slice }}
+    # --- Slicing mode enabled ---
+    # NAT masquerade (mirrors docker ext-dn entrypoint)
+    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    # One route per UPF slice
+    {{- range .Values.config.routes }}
+    {{- if $.Values.multus.create }}
+    ip route add {{ .subnet }} via {{ .upfHost }} dev net1
+    {{- else }}
+    ip route add {{ .subnet }} via $(getent ahostsv4 {{ .upfHost }} | awk 'NR==1{print $1}') dev eth0
+    {{- end }}
+    {{- end }}
+    
+    {{- else }}
+    # --- Single UPF mode (default) ---
     {{- if .Values.multus.create }}
     ip route add {{ .Values.config.ueroute }} via {{ .Values.config.upfHost }} dev net1
     {{- else }}
     ip route add {{ .Values.config.ueroute }} via $(getent ahostsv4 {{ .Values.config.upfHost }} | awk 'NR==1{print $1}') dev eth0
+    {{- end }}
     {{- end }}
     num_servers={{ .Values.config.noOfIperf3Server }}
     base_port=5200
