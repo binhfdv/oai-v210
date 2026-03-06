@@ -48,7 +48,7 @@ RUN ./build_oai -I -w SIMU
 WORKDIR /opt/oai
 RUN git checkout slicing-spring-of-code
 WORKDIR /opt/oai/cmake_targets
-RUN ./build_oai -w SIMU --gNB --nrUE --build-e2 --ninja
+RUN ./build_oai -c -w SIMU --gNB --nrUE --build-e2 --ninja
 
 
 # WORKDIR /opt
