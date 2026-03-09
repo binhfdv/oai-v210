@@ -11,18 +11,18 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-xapp-rc-moni-sa"
+  name: "oai-xapp-rc-prb-rrc-release-sa"
 
 multus:
   e2Interface:
     create: true #false
-    ipAdd: "192.168.72.155"
+    ipAdd: "192.168.72.156"
     netmask: "22"
     name: "e2"
     # if gatway is empty then it will be removed
     #gateway: ""
     #routes: 
-    hostInterface: "enp0s31f6"      # Interface of the host machine on which this pod will be scheduled
+    hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
 
 config:
   timeZone: "Europe/Paris"
@@ -39,7 +39,7 @@ securityContext:
   privileged: false
 
 start:
-  oaixapprcmoni: true #If false the network function container will run in sleep mode for manually testing
+  oaixappctrl: true #If false the network function container will run in sleep mode for manually testing
   tcpdump: false
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
