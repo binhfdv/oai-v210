@@ -280,5 +280,3 @@ oai-smf:
     node-role: core
   imagePullSecrets:
     - name: "regcred"
-  nodeSelector:
-    node-role: core

@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  nr-ue.conf:
+      uicc0 = {
+        imsi = "{{ .Values.config.fullImsi }}";
+        key = "{{ .Values.config.fullKey }}";
+        opc= "{{ .Values.config.opc }}";
+        dnn= "{{ .Values.config.dnn }}";
+        nssai_sst="{{ .Values.config.sst }}";
+        nssai_sd="{{ .Values.config.sd }}";
+      }
+
+      telnetsrv = {
+        listenport = "{{ .Values.config.telnetsrvListenPort }}";
+        histfile = "{{ .Values.config.telnetsrvHistFile }}";
+      }
+
+      log_config = {
+        sdap_log_level = "info";
+        rlc_log_level = "info";
+      }

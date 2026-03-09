@@ -211,17 +211,17 @@ oai-upf-slice1:
   # change params later
   persistentVolume:
     enabled: true
-    name: traffic-gen-pv
-    claimName: traffic-gen-pvc
+    name: atd-pv
+    claimName: atd-pvc
     size: 1Gi
     accessMode: ReadWriteOnce
-    hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/traffic-gen
+    hostPath: /home/lapdk/workspace/oai-v210/oai-anomaly-detection
     reclaimPolicy: Delete
-    mountPath: /traffic-gen
+    mountPath: /oai-anomaly-detection
   pktserver:
     enabled: true
-    image: ddocker122/traffic-gen-sidecar
-    version: latest
+    image: ttsourdinis/custom-upf
+    version: slice1
     pullPolicy: IfNotPresent
   resources:
     define: false
@@ -299,17 +299,17 @@ oai-upf-slice2:
   # change params later
   persistentVolume:
     enabled: true
-    name: traffic-gen-pv
-    claimName: traffic-gen-pvc
+    name: atd-pv
+    claimName: atd-pvc
     size: 1Gi
     accessMode: ReadWriteOnce
-    hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/traffic-gen
+    hostPath: /home/lapdk/workspace/oai-v210/oai-anomaly-detection
     reclaimPolicy: Delete
-    mountPath: /traffic-gen
+    mountPath: /oai-anomaly-detection
   pktserver:
     enabled: true
-    image: ddocker122/traffic-gen-sidecar
-    version: latest
+    image: ttsourdinis/custom-upf
+    version: slice2
     pullPolicy: IfNotPresent
   resources:
     define: false
@@ -357,10 +357,6 @@ oai-smf-slice1:
       hostInterface: "enp1s0f0"
   nodeSelector:
     node-role: core
-  imagePullSecrets:
-    - name: "regcred"
-  nodeSelector:
-    node-role: core
 
 # -----------------------------------------------------------------------
 
@@ -391,10 +387,6 @@ oai-smf-slice2:
       ## If you do not want to add any routes in your pod then leave this field empty
       #routes: [{'dst': '10.8.0.0/24','gw': '172.21.7.254'}, {'dst': '10.9.0.0/24','gw': '172.21.7.254'}]
       hostInterface: "enp1s0f0"
-  nodeSelector:
-    node-role: core
-  imagePullSecrets:
-    - name: "regcred"
   nodeSelector:
     node-role: core
 

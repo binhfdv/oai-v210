@@ -42,3 +42,5 @@ helm-flexric/traffic-gen/smart_manufacturing/ue_embb
 helm-flexric/traffic-gen/smart_manufacturing/ue_mmtc
 helm-flexric/traffic-gen/smart_manufacturing/ue_urllc
 helm-flexric/traffic-gen/smart_manufacturing/inter_ue
+oai-anomaly-detection/flexric
+oai-anomaly-detection/openairinterface5g
