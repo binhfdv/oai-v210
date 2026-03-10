@@ -28,7 +28,7 @@
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 # docker build \                                                                                                                                                    
-#   -f /home/lapdk/workspace/oai-v210/helm-flexric/nearrt-ric/Dockerfile-rc-prb-rrc-release \
+#   -f /home/lapdk/workspace/oai-v210/helm-flexric/nearrt-ric/Dockerfile.rc-prb-rrc-release \
 #   -t oai-flexric:detect \
 #   /home/lapdk/workspace/oai-v210/helm-flexric
 ARG BASE_IMAGE=ubuntu:jammy

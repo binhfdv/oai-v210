@@ -71,6 +71,8 @@ spec:
       containers:
       - name: gnbdu
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 10 }}
         volumeMounts:
           - mountPath: /opt/oai-gnb/etc
             name: configuration
@@ -109,7 +111,9 @@ spec:
           {{- else if eq .Values.config.usrp "x3xx" }}
             /opt/oai-gnb/bin/uhd_images_downloader.py -t x3xx;
           {{- end }}
-            ./nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
+            mkdir -p /usr/local/lib/flexric/;
+            find /opt/oai/cmake_targets/ran_build/build -name "libsm_*.so" -exec cp {} /usr/local/lib/flexric/ \; 2>/dev/null || true;
+            LD_LIBRARY_PATH=. ./nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
         {{- else}}
         command:
           - /bin/sleep

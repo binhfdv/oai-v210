@@ -130,7 +130,7 @@ spec:
                 -e s/@CUCP_IP_ADDRESS@/$CUCP_IP_ADDRESS/g
                 -e s/@AMF_IP_ADDRESS@/$AMF_IP_ADDRESS/g
                 /opt/oai-gnb/etc/cucp.conf | tee /tmp/cucp.conf;
-            ./nr-softmodem -O /tmp/cucp.conf $USE_ADDITIONAL_OPTIONS;
+            LD_LIBRARY_PATH=. ./nr-softmodem -O /tmp/cucp.conf $USE_ADDITIONAL_OPTIONS;
         {{- else}}
         command:
           - /bin/sleep

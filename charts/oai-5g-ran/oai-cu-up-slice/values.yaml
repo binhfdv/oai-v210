@@ -88,6 +88,9 @@ podSecurityContext:
 
 securityContext:
   privileged: false
+  capabilities:
+    add:
+      - SYS_NICE
 
 start:
   oaicuup: true #If false the network function container will run in sleep mode for manually testing

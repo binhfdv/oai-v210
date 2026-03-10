@@ -48,22 +48,22 @@ dependencies:
   name: oai-amf
   repository: "file://../oai-amf"
   version: v2.1.0
-- condition: oai-smf-slice1.enabled
-  name: oai-smf-slice1
-  repository: "file://../oai-smf-slice1"
-  version: v2.1.0
-- condition: oai-smf-slice2.enabled
-  name: oai-smf-slice2
-  repository: "file://../oai-smf-slice2"
-  version: v2.1.0
-- condition: oai-upf-slice1.enabled
-  name: oai-upf-slice1
-  repository: "file://../oai-upf-slice1"
-  version: v2.1.0
-- condition: oai-upf-slice2.enabled
-  name: oai-upf-slice2
-  repository: "file://../oai-upf-slice2"
-  version: v2.1.0
+# - condition: oai-smf-slice1.enabled
+#   name: oai-smf-slice1
+#   repository: "file://../oai-smf-slice1"
+#   version: v2.1.0
+# - condition: oai-smf-slice2.enabled
+#   name: oai-smf-slice2
+#   repository: "file://../oai-smf-slice2"
+#   version: v2.1.0
+# - condition: oai-upf-slice1.enabled
+#   name: oai-upf-slice1
+#   repository: "file://../oai-upf-slice1"
+#   version: v2.1.0
+# - condition: oai-upf-slice2.enabled
+#   name: oai-upf-slice2
+#   repository: "file://../oai-upf-slice2"
+#   version: v2.1.0
 - condition: oai-lmf.enabled
   name: oai-lmf
   repository: "file://../oai-lmf"

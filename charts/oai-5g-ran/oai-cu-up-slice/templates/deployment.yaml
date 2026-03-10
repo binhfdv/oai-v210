@@ -125,7 +125,9 @@ spec:
                 -e s/@CU_CP_IP_ADDRESS@/$CU_CP_IP_ADDRESS/g
                 -e s/@CU_UP_IP_ADDRESS@/$CU_UP_IP_ADDRESS/g
                 /opt/oai-gnb/etc/cuup.conf | tee /tmp/cuup.conf;
-            ./nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS;
+            mkdir -p /usr/local/lib/flexric/;
+            find /opt/oai/cmake_targets/ran_build/build -name "libsm_*.so" -exec cp {} /usr/local/lib/flexric/ \; 2>/dev/null || true;
+            LD_LIBRARY_PATH=. ./nr-cuup -O /tmp/cuup.conf $USE_ADDITIONAL_OPTIONS;
         {{- else}}
         command:
           - /bin/sleep

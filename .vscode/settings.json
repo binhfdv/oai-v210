@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "nr_drb-toaddmodlist.h": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/home/lapdk/workspace/oai-v210/oai-anomaly-detection/flexric/examples/ric"
 }

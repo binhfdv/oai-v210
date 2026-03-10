@@ -70,7 +70,7 @@ spec:
         args:
           - RFSIM_IP_ADDRESS=$(getent hosts $RFSIM_HOST | awk '{print $1}');
             RFSIM_IP_ADDRESS=$(if [[ $RFSIM_IP_ADDRESS ]]; then echo $RFSIM_IP_ADDRESS; else echo $RFSIM_HOST;fi);
-            exec LD_LIBRARY_PATH=. ./nr-uesoftmodem $USE_ADDITIONAL_OPTIONS -O /opt/oai-nr-ue-gnb/etc/nr-ue.conf --rfsimulator.serveraddr $RFSIM_IP_ADDRESS;
+            LD_LIBRARY_PATH=. ./nr-uesoftmodem $USE_ADDITIONAL_OPTIONS -O /opt/oai-nr-ue-gnb/etc/nr-ue.conf --rfsimulator.serveraddr $RFSIM_IP_ADDRESS;
         {{- else}}
         command:
           - /bin/sleep

@@ -31,8 +31,8 @@ delay_between_deployments = 10  # seconds
 # --- Slice definitions ---
 # Add more slices here if needed
 slices = [
-    {"name": "slice1", "dnn": "oai1",  "sst": "1", "sd": "0x000001", "count": num_ues_slice1},
-    {"name": "slice2", "dnn": "oai2",  "sst": "1", "sd": "0x000005", "count": num_ues_slice2},
+    {"name": "slice1", "dnn": "oai1",  "sst": "1", "sd": "1", "count": num_ues_slice1},
+    {"name": "slice2", "dnn": "oai2",  "sst": "1", "sd": "5", "count": num_ues_slice2},
 ]
 
 # Shared UE credentials (same key/opc for all UEs)
