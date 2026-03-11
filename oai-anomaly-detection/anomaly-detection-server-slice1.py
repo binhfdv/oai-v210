@@ -26,7 +26,7 @@ def connect_to_server():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     while True:
         try:
-            client_socket.connect(('192.168.70.1', 8080))
+            client_socket.connect(('192.168.80.1', 8080))
             logging.info("Connected to server.")
             break
         except ConnectionRefusedError:
@@ -155,7 +155,7 @@ def main():
     global sock
     while True:
         try:
-            sock = socket.create_connection(("192.168.70.1", 8080))
+            sock = socket.create_connection(("192.168.80.1", 8080))
             logging.info("Connected to the server")
             break
         except ConnectionRefusedError:

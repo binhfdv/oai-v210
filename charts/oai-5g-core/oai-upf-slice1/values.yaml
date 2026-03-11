@@ -71,6 +71,12 @@ multus:
     ## If you do not want to add any routes in your pod then leave this field empty
     routes: ""
     hostInterface: "enp1s0f0"
+  a1Interface:
+    create: true
+    ipAdd: "192.168.80.11"
+    netmask: "24"
+    name: "a1"
+    hostInterface: "enp1s0f0"
 
 ## Debugging section
 start:
@@ -128,8 +134,8 @@ nodeName:
 
 persistentVolume:
   enabled: true
-  name: atd-pv
-  claimName: atd-pvc
+  name: atd-pv-1
+  claimName: atd-pvc-1
   size: 1Gi
   accessMode: ReadWriteOnce
   hostPath: /home/lapdk/workspace/oai-v210/oai-anomaly-detection

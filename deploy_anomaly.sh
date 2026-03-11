@@ -3,7 +3,7 @@
 # ==============================
 # Anomaly Detection Slicing Deployment Script
 # Usage: ./deploy_anomaly.sh <repodir> [--c] [components...]
-# Components: core | slices | cu | ric | ue | kpm | rc | all
+# Components: core | slices | cu | ric | ue | kpm | rc | ping | all
 # Options:
 #   --c    Continue deployment (skip helm uninstall)
 # UE config (env vars, defaults shown):
@@ -53,7 +53,7 @@ for arg in "$@"; do
   if [ "$arg" == "--c" ]; then
     SKIP_UNINSTALL=true
   elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core slices cu ric rc ue) # installation order
+    COMPONENTS=(core slices cu ue ric rc) # installation order
   else
     COMPONENTS+=("$arg")
   fi
@@ -61,7 +61,7 @@ done
 
 if [ ${#COMPONENTS[@]} -eq 0 ]; then
   echo "Error: No components specified."
-  echo "Valid options: core | slices | cu | ric | ue | kpm | rc | all"
+  echo "Valid options: core | slices | cu | ric | ue | kpm | rc | ping | all"
   exit 1
 fi
 
@@ -69,6 +69,7 @@ fi
 NUM_UES_SLICE1="${NUM_UES_SLICE1:-1}"
 NUM_UES_SLICE2="${NUM_UES_SLICE2:-1}"
 NODE_ROLE="${NODE_ROLE:-core}"
+PING_TARGET="${PING_TARGET:-10.1.2.14}" # dn ip
 
 # --- Paths ---
 CORE_DIR="$REPODIR/charts/oai-5g-core/oai-5g-slicing"
@@ -83,6 +84,95 @@ UE_DIR="$REPODIR/charts/oai-5g-ran/oai-nr-ue-gnb-slice"
 RIC_DIR="$REPODIR/helm-flexric/nearrt-ric"
 KPM_DIR="$REPODIR/helm-flexric/xapp-kpm-moni"
 RC_DIR="$REPODIR/helm-flexric/xapp-rc-prb-rrc-release"
+
+# --- Helper: ping test for all UE pods ---
+ping_test() {
+  echo ""
+  echo "=== Ping test for all UEs (target: $PING_TARGET) ==="
+  PODS=$(kubectl get pods -n oai -l app.kubernetes.io/name=oai-nr-ue-gnb \
+    -o jsonpath="{.items[*].metadata.name}" 2>/dev/null)
+
+  if [ -z "$PODS" ]; then
+    echo "No UE pods found."
+    return
+  fi
+
+  PASS=0
+  FAIL=0
+  for POD in $PODS; do
+    INSTANCE=$(kubectl get pod "$POD" -n oai \
+      -o jsonpath="{.metadata.labels.app\.kubernetes\.io/instance}" 2>/dev/null)
+    echo -n "  [$INSTANCE / $POD] ping $PING_TARGET via oaitun_ue1 ... "
+    if kubectl exec -n oai "$POD" -c nr-ue -- \
+        ping "$PING_TARGET" -I oaitun_ue1 -c 2 -W 3 -q 2>/dev/null | \
+        grep -q "2 received"; then
+      echo "OK"
+      PASS=$((PASS + 1))
+    else
+      echo "FAIL"
+      FAIL=$((FAIL + 1))
+    fi
+  done
+  echo "  Result: $PASS passed, $FAIL failed"
+}
+
+# --- Helper: wait for near-RT RIC to have all RAN components connected ---
+wait_for_ric_healthy() {
+  local TIMEOUT=300
+  local INTERVAL=10
+  local ELAPSED=0
+  local RAN_COMPONENTS=("ngran_gNB_DU" "ngran_gNB_CUUP" "ngran_gNB_CUCP")
+
+  echo ""
+  echo "=== Waiting for near-RT RIC: all RAN components connected ==="
+
+  while true; do
+    RIC_POD=$(kubectl get pods -n oai -l app=oai-nearrt-ric \
+      --no-headers -o custom-columns=":metadata.name,:status.phase" 2>/dev/null | head -1)
+    RIC_NAME=$(echo "$RIC_POD" | awk '{print $1}')
+    RIC_PHASE=$(echo "$RIC_POD" | awk '{print $2}')
+
+    if [ -z "$RIC_NAME" ]; then
+      echo "  No RIC pod found, waiting..."
+    else
+      # Check for failed/crash states
+      WAIT_REASON=$(kubectl get pod "$RIC_NAME" -n oai \
+        -o jsonpath="{.status.containerStatuses[0].state.waiting.reason}" 2>/dev/null)
+      if [ "$RIC_PHASE" = "Failed" ] || [ "$WAIT_REASON" = "CrashLoopBackOff" ] || [ "$WAIT_REASON" = "Error" ]; then
+        echo "  RIC pod $RIC_NAME is in ${RIC_PHASE}/${WAIT_REASON}. Deleting for clean restart..."
+        kubectl delete pod "$RIC_NAME" -n oai --wait=false 2>/dev/null
+        sleep 10
+        ELAPSED=0
+        continue
+      fi
+
+      # Check if all 3 RAN components are connected via logs
+      LOGS=$(kubectl logs "$RIC_NAME" -n oai 2>/dev/null)
+      ALL_CONNECTED=true
+      for RAN_TYPE in "${RAN_COMPONENTS[@]}"; do
+        if ! echo "$LOGS" | grep -q "E2 SETUP-REQUEST rx.*$RAN_TYPE"; then
+          ALL_CONNECTED=false
+          break
+        fi
+      done
+
+      if $ALL_CONNECTED; then
+        echo "  RIC pod $RIC_NAME is healthy — DU, CU-UP, CU-CP all connected."
+        return
+      else
+        echo "  RIC pod $RIC_NAME running but not all RAN components connected yet..."
+      fi
+    fi
+
+    if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+      echo "  Timeout waiting for RIC health. Proceeding anyway..."
+      return
+    fi
+
+    sleep $INTERVAL
+    ELAPSED=$((ELAPSED + INTERVAL))
+  done
+}
 
 # --- Helper: wait for pod ready ---
 wait_for_pod_ready() {
@@ -169,6 +259,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
     ric)
       echo ""
       echo "=== Deploying near-RT RIC ==="
+      # sleep 60 # wait for core/slices to stabilize before RIC
       cd "$RIC_DIR" || exit 1
       helm install near-rt-ric . -n oai
       wait_for_pod_ready oai-nearrt-ric near-RT-RIC
@@ -195,6 +286,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
     kpm)
       echo ""
       echo "=== Deploying xApp: KPM monitor ==="
+      wait_for_ric_healthy
       cd "$KPM_DIR" || exit 1
       helm install xapp-kpm-moni . -n oai
       sleep 7
@@ -203,6 +295,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
     rc)
       echo ""
       echo "=== Deploying xApp: RC PRB + RRC release ==="
+      wait_for_ric_healthy
       cd "$RC_DIR" || exit 1
       helm install xapp-rc-prb-rrc-release . -n oai
       sleep 7
@@ -213,11 +306,17 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       echo "=== Deploying UEs (slice1=$NUM_UES_SLICE1, slice2=$NUM_UES_SLICE2, node-role=$NODE_ROLE) ==="
       cd "$UE_DIR" || exit 1
       python3 deploy_multi_ue.py "$NUM_UES_SLICE1" "$NUM_UES_SLICE2" "$NODE_ROLE"
+      sleep 30
+      ping_test
       ;;
-    
+
+    ping)
+      ping_test
+      ;;
+
     *)
       echo "Unknown component: $COMPONENT"
-      echo "Valid options: core | slices | cu | ric | ue | kpm | rc | all"
+      echo "Valid options: core | slices | cu | ric | ue | kpm | rc | ping | all"
       exit 1
       ;;
   esac

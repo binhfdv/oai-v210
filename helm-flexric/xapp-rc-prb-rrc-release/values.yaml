@@ -20,13 +20,20 @@ multus:
     name: "e2"
     # if gatway is empty then it will be removed
     #gateway: ""
-    #routes: 
+    #routes:
     hostInterface: "enp1s0f0"      # Interface of the host machine on which this pod will be scheduled
+  a1Interface:
+    create: true
+    ipAdd: "192.168.80.1"
+    netmask: "24"
+    name: "a1"
+    hostInterface: "enp1s0f0"
 
 config:
   timeZone: "Europe/Paris"
   nearRtHost: "192.168.72.154"
   e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
+  a1IfName: "a1"   #if multus.a1Interface.create is true then use a1
   duration: "200000" #Duration in seconds for which the xApp will run.
 
 ## Debugging section

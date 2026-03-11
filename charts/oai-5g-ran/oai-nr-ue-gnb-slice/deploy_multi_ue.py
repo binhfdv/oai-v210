@@ -94,7 +94,12 @@ start:
 
 persistentVolume:
   enabled: true
-  claimName: traffic-gen-pvc
+  name: traffic-gen-ue-pv-{sa_number}
+  claimName: traffic-ue-gen-pvc-{sa_number}
+  size: 1Gi
+  accessMode: ReadWriteOnce
+  hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/traffic-gen
+  reclaimPolicy: Delete
   mountPath: /traffic-gen
 
 includeTcpDumpContainer: false

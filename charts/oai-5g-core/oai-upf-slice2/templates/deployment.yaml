@@ -48,6 +48,12 @@ spec:
                 {{- end }}
           }
           {{- end }}
+          {{- if .Values.multus.a1Interface.create }}
+          ,{
+                "name": "{{ .Chart.Name }}-{{ .Values.multus.a1Interface.name }}",
+                "interface": "{{ .Values.multus.a1Interface.name }}"
+          }
+          {{- end }}
           ]
     {{- end }}
     spec:
@@ -114,6 +120,10 @@ spec:
         volumeMounts:
           - mountPath: /openair-upf/etc
             name: configuration
+        {{- if .Values.persistentVolume.enabled }}
+          - mountPath: {{ .Values.persistentVolume.mountPath }}
+            name: atd-volume
+        {{- end }}
         securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
         {{- if .Values.readinessProbe}}
@@ -154,6 +164,27 @@ spec:
             memory: {{ .Values.resources.limits.nf.memory | quote }}
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
         {{- end}}
+      {{- if .Values.pktserver.enabled }}
+      - name: pktserver
+        image: "{{ .Values.pktserver.image }}:{{ .Values.pktserver.version }}"
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        {{- if .Values.persistentVolume.enabled }}
+          - mountPath: {{ .Values.persistentVolume.mountPath }}
+            name: atd-volume
+        {{- end }}
+        {{- if .Values.resources.define }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu | default "100m" }}
+            memory: {{ .Values.resources.limits.memory | default "128Mi" }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+        {{- end }}
+    {{- end }}
       volumes:
       - configMap:
       {{- if .Values.global }}
@@ -168,6 +199,11 @@ spec:
         persistentVolumeClaim:
           claimName: cn5g-pvc
       {{- end }}
+      {{- end }}
+      {{- if .Values.persistentVolume.enabled }}
+      - name: atd-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistentVolume.claimName }}
       {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always

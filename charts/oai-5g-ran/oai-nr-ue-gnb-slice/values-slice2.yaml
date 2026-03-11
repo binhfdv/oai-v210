@@ -55,10 +55,14 @@ start:
   tcpdump: false  # if false then started in sleep mode else it will start capturing packets, nr ue will have a lot of packets per sec better avoid this or add a filter in the deployment.yaml
 
 persistentVolume:
-  enabled: true
-  claimName: traffic-gen-pvc   # Reuse same PVC as traffic-server
-  mountPath: /traffic-gen
-
+    enabled: true
+    name: traffic-gen-ue-pv-2
+    claimName: traffic-ue-gen-pvc-2
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/traffic-gen
+    reclaimPolicy: Delete
+    mountPath: /traffic-gen
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
 tcpdumpimage:

@@ -74,3 +74,25 @@ spec:
     }'
 {{- end }}
 ---
+{{- if .Values.multus.a1Interface.create }}
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{ .Chart.Name }}-a1
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "macvlan",
+      "master": {{- cat .Values.multus.a1Interface.hostInterface | nospace | quote }},
+      "mode": "bridge",
+      "ipam": {
+        "type": "static",
+        "addresses": [
+                {
+                        "address": {{- cat .Values.multus.a1Interface.ipAdd "/" .Values.multus.a1Interface.netmask | nospace | quote }}
+                }
+        ]
+      }
+    }'
+{{- end }}
+---

@@ -32,12 +32,45 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 #include <sys/socket.h>
+#include <string.h>
+#include <limits.h>
 
 
 #define PORT 8080
 #define MAX_CLIENTS 2
 #define BUFFER_SIZE 2000
-#define SERVER_IP "192.168.70.1" // Replace with your server's IP address
+
+char g_atd_server_ip[64] = {0};
+
+// get server IP which provides anomaly detection from ATD in UPF for the xApp
+static void load_atd_server_ip(fr_args_t const* args)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    FILE* fp = fopen(args->conf_file, "r");
+    if (fp == NULL) {
+        printf("%s not found\n", args->conf_file);
+        exit(EXIT_FAILURE);
+    }
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        const char* needle = "ATD_SERVER_IP =";
+        char* ans = strstr(line, needle);
+        if (ans != NULL) {
+            ans += strlen(needle);
+            while (*ans == ' ') ans++;
+            char* end = ans + strlen(ans) - 1;
+            while (end > ans && (*end == '\n' || *end == '\r' || *end == ' ')) end--;
+            *(end + 1) = '\0';
+            strncpy(g_atd_server_ip, ans, sizeof(g_atd_server_ip) - 1);
+            break;
+        }
+    }
+    free(line);
+    fclose(fp);
+}
 
 typedef struct {
     int socket;
@@ -368,7 +401,7 @@ void *client_handler(void *client_data) {
 void* rrc_release_ue_thread(void* arg) {
     int ran_ue_id = *((int*)arg);
     char command[256];
-    snprintf(command, sizeof(command), "echo rrc release_rrc %d | nc %s 9090", ran_ue_id, SERVER_IP);
+    snprintf(command, sizeof(command), "echo rrc release_rrc %d | nc %s 9090", ran_ue_id, g_atd_server_ip);
     system(command);
     free(arg);
     return NULL;
@@ -520,6 +553,8 @@ int main(int argc, char *argv[]) {
     fr_args_t args = init_fr_args(argc, argv);
     //defer({ free_fr_args(&args); });
 
+    load_atd_server_ip(&args);
+
     // Init the xApp
     init_xapp_api(&args);
     sleep(1);
@@ -545,8 +580,10 @@ int main(int argc, char *argv[]) {
 
     // Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = inet_addr(SERVER_IP); // Use defined IP address
+    server.sin_addr.s_addr = inet_addr(g_atd_server_ip);
     server.sin_port = htons(PORT);
+    printf("ATD Server IP: %s, port: %d\n", g_atd_server_ip, PORT);
+    printf("Binding to %s:%d\n", g_atd_server_ip, PORT);
 
     // Bind
     if (bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0) {
