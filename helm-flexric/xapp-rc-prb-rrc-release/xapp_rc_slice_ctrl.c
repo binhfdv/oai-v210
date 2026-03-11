@@ -20,6 +20,7 @@
  */
 
 #include "../../../../src/xApp/e42_xapp_api.h"
+#include "../../../../src/util/ngran_types.h"
 #include "../../../../src/sm/rc_sm/ie/ir/ran_param_struct.h"
 #include "../../../../src/sm/rc_sm/ie/ir/ran_param_list.h"
 #include "../../../../src/util/time_now_us.h"
@@ -425,7 +426,9 @@ void enforce_slicing(e2_node_arr_xapp_t nodes) {
     rc_ctrl.msg = gen_rc_ctrl_msg(FORMAT_1_E2SM_RC_CTRL_MSG);
 
     for (size_t i = 0; i < nodes.len; ++i) {
-        control_sm_xapp_api(&nodes.n[i].id, SM_RC_ID, &rc_ctrl);
+        if (NODE_IS_DU(nodes.n[i].id.type)) {
+            control_sm_xapp_api(&nodes.n[i].id, SM_RC_ID, &rc_ctrl);
+        }
     }
     free_rc_ctrl_req_data(&rc_ctrl);
 }
@@ -659,7 +662,9 @@ int main(int argc, char *argv[]) {
 
     
     for (size_t i = 0; i < nodes.len; ++i) {
-              control_sm_xapp_api(&nodes.n[i].id, SM_RC_ID, &rc_ctrl);
+        if (NODE_IS_DU(nodes.n[i].id.type)) {
+            control_sm_xapp_api(&nodes.n[i].id, SM_RC_ID, &rc_ctrl);
+        }
     }
     free_rc_ctrl_req_data(&rc_ctrl);
     puts("RC initialization completed. Starting main loop...");
