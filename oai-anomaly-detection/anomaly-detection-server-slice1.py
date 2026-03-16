@@ -13,6 +13,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 sst = 1 
 sd = 1
 
+# xApp connection
+server_ip = "192.168.80.1"
+
 # Load pre-trained model and preprocessing pipeline
 model = joblib.load('random_forest_model.pkl')
 preprocessor = joblib.load('preprocessor.pkl')
@@ -26,7 +29,7 @@ def connect_to_server():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     while True:
         try:
-            client_socket.connect(('192.168.80.1', 8080))
+            client_socket.connect((server_ip, 8080))
             logging.info("Connected to server.")
             break
         except ConnectionRefusedError:
@@ -127,6 +130,9 @@ def make_predictions():
     anomaly_count = np.sum(predictions == 1)
     logging.info(f"Window results: {normal_count} Normal, {anomaly_count} Anomaly")
     message = f"sst:{sst},sd:{sd},normal:{normal_count},anomaly:{anomaly_count}"
+    # logging.info(f"Normal count: {normal_count}, Anomaly count: {anomaly_count}")
+    # logging.info(f"Window results: {60} Normal, {0} Anomaly")
+    # message = f"sst:{sst},sd:{sd},normal:{60},anomaly:{40}"
     print(message)
     send_message_to_server(message)
     for _ in range(step_size):
@@ -140,7 +146,7 @@ def send_message_to_server(message):
         logging.error(f"Error sending message to server: {e}")
 
 def capture_traffic():
-    subnet_filter = "net 12.2.1.0/24"
+    subnet_filter = "net 12.1.1.0/25"
     while True:
         try:
             # Continuously sniff packets only from the specified subnet
@@ -155,7 +161,7 @@ def main():
     global sock
     while True:
         try:
-            sock = socket.create_connection(("192.168.80.1", 8080))
+            sock = socket.create_connection((server_ip, 8080))
             logging.info("Connected to the server")
             break
         except ConnectionRefusedError:

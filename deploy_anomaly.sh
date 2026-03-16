@@ -236,22 +236,26 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       echo ""
       echo "=== Deploying SMF slice1 ==="
       cd "$SMF_SLICE1_DIR" || exit 1
+      helm dependency update
       helm install oai-smf-slice1 . -n oai
       wait_for_pod_ready oai-smf-slice1 SMF-Slice1
 
       echo "=== Deploying SMF slice2 ==="
       cd "$SMF_SLICE2_DIR" || exit 1
+      helm dependency update
       helm install oai-smf-slice2 . -n oai
       wait_for_pod_ready oai-smf-slice2 SMF-Slice2
       sleep 5
 
       echo "=== Deploying UPF slice1 ==="
       cd "$UPF_SLICE1_DIR" || exit 1
+      helm dependency update
       helm install oai-upf-slice1 . -n oai
       wait_for_pod_ready oai-upf-slice1 UPF-Slice1
 
       echo "=== Deploying UPF slice2 ==="
       cd "$UPF_SLICE2_DIR" || exit 1
+      helm dependency update
       helm install oai-upf-slice2 . -n oai
       wait_for_pod_ready oai-upf-slice2 UPF-Slice2
       ;;
@@ -261,6 +265,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       echo "=== Deploying near-RT RIC ==="
       # sleep 60 # wait for core/slices to stabilize before RIC
       cd "$RIC_DIR" || exit 1
+      helm dependency update
       helm install near-rt-ric . -n oai
       wait_for_pod_ready oai-nearrt-ric near-RT-RIC
       ;;

@@ -58,7 +58,7 @@ spec:
           name: e2
           protocol: SCTP
         {{- if .Values.start.oaixappkpmmoni}}
-        command: ["sh", "-c", "sleep {{ .Values.start.startupDelay | default 30 }} && stdbuf -o0 /usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"]
+        command: [ "stdbuf", "-o0", "/usr/local/flexric/xApp/c/monitor/xapp_kpm_moni"]
         {{- else}}
         command:
           - /bin/sleep

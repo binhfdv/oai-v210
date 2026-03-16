@@ -73,11 +73,15 @@ RUN git clone https://github.com/swig/swig.git && \
 FROM oai-flexric-base AS oai-flexric-builder
 
 COPY xapp-rc-prb-rrc-release/xapp_rc_slice_ctrl.c /tmp/xapp_rc_slice_ctrl.c
+COPY nearrt-ric/patches/map_xapps_sockaddr.c /tmp/patches/map_xapps_sockaddr.c
+COPY nearrt-ric/patches/sync_ui.c /tmp/patches/sync_ui.c
 
 RUN git clone https://gitlab.eurecom.fr/mosaic5g/flexric && \
     cd flexric && \
     git checkout slicing-spring-of-code && \
     cp /tmp/xapp_rc_slice_ctrl.c examples/xApp/c/ctrl/ && \
+    cp /tmp/patches/map_xapps_sockaddr.c src/ric/iApp/map_xapps_sockaddr.c && \
+    cp /tmp/patches/sync_ui.c src/xApp/sync_ui.c && \
     mkdir build && cd build && \
     cmake -DXAPP_MULTILANGUAGE=OFF -DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12 .. && make -j8 && make install
 
@@ -99,7 +103,8 @@ RUN apt-get update && \
        wget \
        libsctp1 \
        python3 \
-       python3-pip && \
+       python3-pip \
+       netcat-openbsd && \
     apt-get autoremove -y && \
     apt-get autoclean -y
 
@@ -140,4 +145,4 @@ EXPOSE 36421/sctp
 ## E42
 EXPOSE 36422/sctp
 
-CMD ["stdbuf", "-o0", "nearRT-RIC"]
+# CMD ["stdbuf", "-o0", "nearRT-RIC"]

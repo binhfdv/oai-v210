@@ -50,11 +50,33 @@ WORKDIR /opt/oai/cmake_targets
 RUN ./build_oai -I -w SIMU
 WORKDIR /opt/oai
 RUN git checkout slicing-spring-of-code
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/nr_slice_config.h \
+     openair2/LAYER2/NR_MAC_gNB/nr_slice_config.h
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/nr_slice_config.c \
+     openair2/LAYER2/NR_MAC_gNB/nr_slice_config.c
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/gNB_scheduler_dlsch.c \
+     openair2/LAYER2/NR_MAC_gNB/gNB_scheduler_dlsch.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/CUSTOMIZED/ran_func_slice.c \
+     openair2/E2AP/RAN_FUNCTION/CUSTOMIZED/ran_func_slice.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_rc.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_rc.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.h \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.h
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/CMakeLists.txt \
+     openair2/E2AP/RAN_FUNCTION/CMakeLists.txt
+COPY e2-gnb/patches/cmake_targets/CMakeLists.txt \
+     CMakeLists.txt
+COPY e2-gnb/patches/openair3/NGAP/ngap_gNB_handlers.c \
+     openair3/NGAP/ngap_gNB_handlers.c
+COPY e2-gnb/patches/openair2/F1AP/f1ap_cu_ue_context_management.c \
+     openair2/F1AP/f1ap_cu_ue_context_management.c
 WORKDIR /opt/oai/cmake_targets
 RUN ./build_oai -c -w SIMU --gNB --nrUE --build-e2 --ninja
 # build telnet
 WORKDIR /opt/oai
-RUN git checkout 243c985af86f857c28d14c2bb25e54e223b07a00
+RUN git checkout -f 243c985af86f857c28d14c2bb25e54e223b07a00
 WORKDIR /opt/oai/cmake_targets
 RUN ./build_oai --build-lib telnetsrv
 

@@ -114,9 +114,9 @@ smf:
     - single_nssai: *embb_slice2
       dnn: "oai2"
       qos_profile:
-        5qi: 6
-        session_ambr_ul: "100Mbps"
-        session_ambr_dl: "200Mbps"
+        5qi: 5
+        session_ambr_ul: "200Mbps"
+        session_ambr_dl: "400Mbps"
 
 ## DNN configuration
 dnns:
