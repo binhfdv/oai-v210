@@ -43,7 +43,7 @@ for arg in "$@"; do
   if [ "$arg" == "--c" ]; then
     SKIP_UNINSTALL=true
   elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core cu ric ue-gnb kpm xchain-basic)
+    COMPONENTS=(core cu)
   else
     COMPONENTS+=("$arg")
   fi

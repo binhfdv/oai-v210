@@ -6,6 +6,8 @@ metadata:
 data:
 {{- if eq .Values.oai5gdatabase "mini" }}
   {{ (.Files.Glob "initialization/oai_db-mini.sql").AsConfig | indent 2 | trim }}
-{{- else }}
+{{- else if eq .Values.oai5gdatabase "basic" }}
   {{ (.Files.Glob "initialization/oai_db-basic.sql").AsConfig | indent 2 | trim }}
+{{- else }}
+  {{ (.Files.Glob "initialization/oai_db-slicing.sql").AsConfig | indent 2 | trim }}
 {{- end }}
