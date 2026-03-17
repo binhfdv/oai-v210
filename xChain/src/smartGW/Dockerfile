@@ -1,6 +1,11 @@
 # -------------------------------
 # Stage 1 — builder (installs deps)
 # -------------------------------
+# docker build \
+#   -f xChain/src/smartGW/Dockerfile \
+#   -t ddocker122/xchain-smartgw:latest \
+#   xChain/src/
+
 FROM python:3.11-slim AS builder
 
 WORKDIR /app
@@ -37,20 +42,18 @@ COPY --from=builder /install /usr/local
 COPY smartGW/smartgw_server.py .
 COPY xapp/xapp_control.py /app/xapp_control.py
 
-# Expose SmartGW API port
-EXPOSE 4200
+# KPM TCP listener + Flask debug endpoint
+EXPOSE 4200 5004
 
-# Ensure Python runs efficiently in containers
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Read environment variables for configurable endpoints (optional)
-ENV ORCH_HOST=orchestrator
-ENV ORCH_PORT=4300
-ENV XCHAIN_HOST=xchain-orchestrator
-ENV XCHAIN_PORT=4400
+ENV ORCH_HOST=xchain-orchestrator
+ENV ORCH_PORT=5010
+ENV ORCH_POLL_INTERVAL=30
 
 ENV KPM_COL_THPDL=13
 ENV KPM_COL_THPUL=20
+ENV KPM_COL_VOLUL=32
 
 CMD ["python", "smartgw_server.py"]

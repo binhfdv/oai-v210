@@ -1,3 +1,7 @@
+# docker build \
+#   -f xChain/src/xchain-orchestrator/Dockerfile \
+#   -t ddocker122/xchain-orchestrator:latest \
+#   xChain/src/xchain-orchestrator/
 FROM python:3.11-slim
 
 WORKDIR /app
