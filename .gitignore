@@ -20,6 +20,7 @@ charts/e2e_scenarios/case3/charts/
 charts/oai-5g-core/oai-5g-slicing/Chart.lock
 charts/oai-5g-core/oai-5g-slicing/charts
 tractor/helm-tractor/tractor-basic/charts/
+xChain/helm-charts/xchain-basic/charts/
 oai/
 pcl_handson/
 pcl/
