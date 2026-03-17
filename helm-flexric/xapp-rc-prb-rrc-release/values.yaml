@@ -35,6 +35,7 @@ config:
   e2IfName: "e2"   #if multus.e2Interface.create is true then use e2
   a1IfName: "a1"   #if multus.a1Interface.create is true then use a1
   duration: "200000" #Duration in seconds for which the xApp will run.
+  gnbTelnetIp: "192.168.72.150"  # CU-CP e2 interface IP (stable multus IP) for RRC release telnet
 
 ## Debugging section
 podSecurityContext:

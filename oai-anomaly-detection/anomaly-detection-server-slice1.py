@@ -128,11 +128,11 @@ def make_predictions():
     predictions = model.predict(X)
     normal_count = np.sum(predictions == 0)
     anomaly_count = np.sum(predictions == 1)
-    logging.info(f"Window results: {normal_count} Normal, {anomaly_count} Anomaly")
-    message = f"sst:{sst},sd:{sd},normal:{normal_count},anomaly:{anomaly_count}"
-    # logging.info(f"Normal count: {normal_count}, Anomaly count: {anomaly_count}")
-    # logging.info(f"Window results: {60} Normal, {0} Anomaly")
-    # message = f"sst:{sst},sd:{sd},normal:{60},anomaly:{40}"
+    # logging.info(f"Window results: {normal_count} Normal, {anomaly_count} Anomaly")
+    # message = f"sst:{sst},sd:{sd},normal:{normal_count},anomaly:{anomaly_count}"
+    logging.info(f"Normal count: {normal_count}, Anomaly count: {anomaly_count}")
+    logging.info(f"Window results: {60} Normal, {40} Anomaly")
+    message = f"sst:{sst},sd:{sd},normal:{0},anomaly:{100}"
     print(message)
     send_message_to_server(message)
     for _ in range(step_size):

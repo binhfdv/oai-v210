@@ -41,6 +41,7 @@
 #define BUFFER_SIZE 2000
 
 char g_atd_server_ip[64] = {0};
+char g_gnb_telnet_ip[64] = {0};
 
 static void load_atd_server_ip(fr_args_t const* args)
 {
@@ -55,16 +56,19 @@ static void load_atd_server_ip(fr_args_t const* args)
     }
 
     while ((read = getline(&line, &len, fp)) != -1) {
-        const char* needle = "ATD_SERVER_IP =";
-        char* ans = strstr(line, needle);
-        if (ans != NULL) {
-            ans += strlen(needle);
-            while (*ans == ' ') ans++;
-            char* end = ans + strlen(ans) - 1;
-            while (end > ans && (*end == '\n' || *end == '\r' || *end == ' ')) end--;
-            *(end + 1) = '\0';
-            strncpy(g_atd_server_ip, ans, sizeof(g_atd_server_ip) - 1);
-            break;
+        const char* needles[2] = { "ATD_SERVER_IP =", "GNB_TELNET_IP =" };
+        char* dsts[2] = { g_atd_server_ip, g_gnb_telnet_ip };
+        size_t dstsz[2] = { sizeof(g_atd_server_ip), sizeof(g_gnb_telnet_ip) };
+        for (int k = 0; k < 2; k++) {
+            char* ans = strstr(line, needles[k]);
+            if (ans != NULL) {
+                ans += strlen(needles[k]);
+                while (*ans == ' ') ans++;
+                char* end = ans + strlen(ans) - 1;
+                while (end > ans && (*end == '\n' || *end == '\r' || *end == ' ')) end--;
+                *(end + 1) = '\0';
+                strncpy(dsts[k], ans, dstsz[k] - 1);
+            }
         }
     }
     free(line);
@@ -338,7 +342,7 @@ void *client_handler(void *client_data) {
 void* rrc_release_ue_thread(void* arg) {
     int ran_ue_id = *((int*)arg);
     char command[256];
-    snprintf(command, sizeof(command), "echo rrc release_rrc %d | nc %s 9090", ran_ue_id, g_atd_server_ip);
+    snprintf(command, sizeof(command), "echo rrc release_rrc %d | nc %s 9090", ran_ue_id, g_gnb_telnet_ip);
     system(command);
     free(arg);
     return NULL;

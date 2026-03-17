@@ -10,3 +10,4 @@ data:
     [XAPP]
     DB_DIR = /tmp/
     ATD_SERVER_IP = {{ .Values.multus.a1Interface.ipAdd }}
+    GNB_TELNET_IP = {{ .Values.config.gnbTelnetIp }}

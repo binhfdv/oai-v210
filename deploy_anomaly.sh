@@ -165,8 +165,9 @@ wait_for_ric_healthy() {
     fi
 
     if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
-      echo "  Timeout waiting for RIC health. Proceeding anyway..."
-      return
+      echo "  Timeout waiting for RIC health. Delete pod anyway..."
+      kubectl delete pod "$RIC_NAME" -n oai --wait=false 2>/dev/null
+      ELAPSED=0
     fi
 
     sleep $INTERVAL

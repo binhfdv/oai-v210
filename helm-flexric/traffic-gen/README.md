@@ -106,13 +106,13 @@ IFACE="net1"          # Interface used for sending which is ext-dn/traffic-serve
 
 # To test latency
 ## Start iperf3 server on UE1 (background)
-kubectl exec oai-nr-ue-1-64b4b7544c-kcl6n -c nr-ue -- iperf3 -s -D
+kubectl exec oai-nr-ue-1-64b4b7544c-2bnvt -c nr-ue -- iperf3 -s -D
 
 ## Start iperf3 server on UE2 (background)
-kubectl exec oai-nr-ue-2-56776bff45-rxgjr -c nr-ue -- iperf3 -s -D
+kubectl exec oai-nr-ue-2-56776bff45-h7ckb -c nr-ue -- iperf3 -s -D
 
 
-kubectl exec oai-traffic-server-69b85d4f57-zqd8m -c iperf3 -- bash -c \
+kubectl exec oai-traffic-server-69b85d4f57-wjzxd -c iperf3 -- bash -c \
   "echo '--- UE1 (12.1.1.2) ---' && iperf3 -c 12.1.1.2 -t 10 -b 100M 2>&1 | tail -3 && \
    echo '--- UE2 (12.2.1.130) ---' && iperf3 -c 12.2.1.130 -t 10 -b 100M 2>&1 | tail -3"
 
