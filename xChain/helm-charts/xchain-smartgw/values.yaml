@@ -13,19 +13,22 @@ serviceAccount:
   automount: true
   annotations: {}
 
+serviceType: ClusterIP
+
 service:
-  port: 4200
-  type: ClusterIP
+  - name: kpm-tcp
+    containerPort: 4200
+  - name: api-http
+    containerPort: 5004
 
 env:
-  MODEL_PATH: /mnt/model/smartgw.pkl
-  TRACTOR_HOST: tractor-orchestrator
-  TRACTOR_PORT: "4300"
-  XCHAIN_HOST: xchain-fastinfer
-  XCHAIN_PORT: "4400"
-  KPM_COL_THPDL: "13"
-  KPM_COL_THPUL: "20"
-  KPM_COL_VOLUL: "20"
+  MODEL_PATH:          /mnt/model/smartgw.pkl
+  ORCH_HOST:           xchain-orchestrator
+  ORCH_PORT:           "5010"
+  ORCH_POLL_INTERVAL:  "30"
+  KPM_COL_THPDL:       "13"
+  KPM_COL_THPUL:       "20"
+  KPM_COL_VOLUL:       "20"
 
 persistentVolume:
   enabled: true

@@ -41,6 +41,11 @@ dependencies:
     repository: "file://../tractor-mono"
     version: 0.1.0
 
+  - condition: xchain-orchestrator.enabled
+    name: xchain-orchestrator
+    repository: "file://../xchain-orchestrator"
+    version: 0.1.0
+
   - condition: xchain-smartgw.enabled
     name: xchain-smartgw
     repository: "file://../xchain-smartgw"

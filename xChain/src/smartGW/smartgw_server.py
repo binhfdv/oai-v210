@@ -9,6 +9,8 @@ import time
 import logging
 import socket
 import os
+import threading
+import requests
 from flask import Flask, request, jsonify
 import numpy as np
 from queue import Queue
@@ -31,17 +33,15 @@ feature_cols = model["feature_cols"]
 # ---------------------------------------------------------
 # Read environment variables (with safe defaults)
 # ---------------------------------------------------------
-TRACTOR_HOST = os.getenv("TRACTOR_HOST", "tractor-orchestrator")
-TRACTOR_PORT = int(os.getenv("TRACTOR_PORT", "4300"))
-
-XCHAIN_HOST = os.getenv("XCHAIN_HOST", "xchain-model")
-XCHAIN_PORT = int(os.getenv("XCHAIN_PORT", "4400"))
+ORCH_HOST          = os.getenv("ORCH_HOST",          "xchain-orchestrator")
+ORCH_PORT          = int(os.getenv("ORCH_PORT",          "5010"))
+ORCH_POLL_INTERVAL = int(os.getenv("ORCH_POLL_INTERVAL", "30"))
 
 # SmartGW listens for KPM-OAI on this port (server)
 PORT = int(os.getenv("PORT", "4200"))
 
-logging.info(f"[CONFIG] TRACTOR_HOST = {TRACTOR_HOST}:{TRACTOR_PORT}")
-logging.info(f"[CONFIG] XCHAIN_HOST  = {XCHAIN_HOST}:{XCHAIN_PORT}")
+logging.info(f"[CONFIG] ORCH_HOST          = {ORCH_HOST}:{ORCH_PORT}")
+logging.info(f"[CONFIG] ORCH_POLL_INTERVAL = {ORCH_POLL_INTERVAL}s")
 logging.info(f"[CONFIG] SMARTGW LISTEN PORT = {PORT}")
 
 # ---------------------------------------------------------
@@ -57,6 +57,51 @@ logging.info(f"[CONFIG] KPM_COL_VOLUL = {KPM_COL_VOLUL}")
 
 # incoming queue from socket listener
 data_queue = Queue()
+
+# ---------------------------------------------------------
+# Routing state (updated by poll thread)
+# ---------------------------------------------------------
+routing_lock  = threading.Lock()
+routing_table = {}   # class -> {"chain": name, "host": host, "port": port}
+chain_sockets = {}   # chain_name -> socket
+
+
+def fetch_routing_table():
+    """Fetch routing table from orchestrator. Returns dict or None on failure."""
+    try:
+        r = requests.get(
+            f"http://{ORCH_HOST}:{ORCH_PORT}/routing", timeout=3
+        )
+        if r.status_code == 200:
+            return r.json()
+    except Exception as e:
+        logging.warning(f"[SmartGW] Failed to fetch routing from orchestrator: {e}")
+    return None
+
+
+def poll_orchestrator():
+    """Background thread: periodically refresh routing table and open connections to new chains."""
+    global routing_table, chain_sockets
+
+    while True:
+        new_routing = fetch_routing_table()
+        if new_routing:
+            with routing_lock:
+                for cls, info in new_routing.items():
+                    name = info["chain"]
+                    if name not in chain_sockets:
+                        try:
+                            chain_sockets[name] = connect_socket(
+                                info["host"], info["port"], name
+                            )
+                        except Exception as e:
+                            logging.warning(
+                                f"[SmartGW] Could not connect to chain '{name}': {e}"
+                            )
+                routing_table = new_routing
+            logging.info(f"[SmartGW] Routing table refreshed: {list(routing_table.keys())}")
+
+        time.sleep(ORCH_POLL_INTERVAL)
 
 app = Flask(__name__)
 
@@ -185,20 +230,14 @@ def connect_socket(host, port, label):
 def classification_worker():
     logging.info("Classifier worker running...")
 
-    # Establish long-lived connections to tractor & xchain
-    tractor_socket = connect_socket(TRACTOR_HOST, TRACTOR_PORT, "TRACTOR")
-    xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
-
     while True:
-        x_raw, full_row, recv_time = data_queue.get()
+        x_raw, full_row, _ = data_queue.get()
 
-        # prediction
         start = time.perf_counter()
         try:
             prediction = smartgw_predict_ultrafast(x_raw, model)
         except Exception as e:
             logging.exception(f"Prediction failed: {e}")
-            # skip forwarding malformed
             data_queue.task_done()
             continue
         latency_ms = (time.perf_counter() - start) * 1000
@@ -207,26 +246,35 @@ def classification_worker():
             f"[SmartGW] Class={prediction}  Latency={latency_ms:.3f} ms  UE-Features={x_raw}"
         )
 
-        # forward via socket, choosing target
+        with routing_lock:
+            route = routing_table.get(prediction)
+            if route is None:
+                logging.warning(
+                    f"[SmartGW] No route for class '{prediction}', dropping row"
+                )
+                data_queue.task_done()
+                continue
+            chain_name = route["chain"]
+            sock = chain_sockets.get(chain_name)
+
+        if sock is None:
+            logging.warning(
+                f"[SmartGW] No socket for chain '{chain_name}', dropping row"
+            )
+            data_queue.task_done()
+            continue
+
         try:
-            if prediction == "eMBB-mMTC":
-                send_to_socket(tractor_socket, full_row + "\n")
-            else:
-                send_to_socket(xchain_socket, full_row + "\n")
+            send_to_socket(sock, full_row + "\n")
         except Exception as e:
-            logging.error(f"[SmartGW] Forwarding error: {e}")
-
-            # reconnect the appropriate socket and retry once
+            logging.error(f"[SmartGW] Forwarding to '{chain_name}' failed: {e}")
             try:
-                if prediction == "eMBB-mMTC":
-                    tractor_socket = connect_socket(TRACTOR_HOST, TRACTOR_PORT, "TRACTOR")
-                    send_to_socket(tractor_socket, full_row + "\n")
-                else:
-                    xchain_socket = connect_socket(XCHAIN_HOST, XCHAIN_PORT, "XCHAIN")
-                    send_to_socket(xchain_socket, full_row + "\n")
+                new_sock = connect_socket(route["host"], route["port"], chain_name)
+                with routing_lock:
+                    chain_sockets[chain_name] = new_sock
+                send_to_socket(new_sock, full_row + "\n")
             except Exception as e2:
-                logging.error(f"[SmartGW] Retry forward failed: {e2}")
-
+                logging.error(f"[SmartGW] Retry forward to '{chain_name}' failed: {e2}")
         finally:
             data_queue.task_done()
 
@@ -247,14 +295,22 @@ def test_predict():
 # MAIN
 # ======================================================
 if __name__ == "__main__":
-    # SmartGW acts as SERVER for KPM-OAI (one accept is fine here, your open_control_socket does exactly that)
     control_sck = open_control_socket(PORT)
 
-    # start listener for incoming KPM rows (this will read from the accepted socket)
-    Thread(target=socket_listener, args=(control_sck,), daemon=True).start()
+    # initial routing fetch
+    initial = fetch_routing_table()
+    if initial:
+        for cls, info in initial.items():
+            name = info["chain"]
+            if name not in chain_sockets:
+                chain_sockets[name] = connect_socket(info["host"], info["port"], name)
+        routing_table.update(initial)
+        logging.info(f"[SmartGW] Initial routing loaded: {list(routing_table.keys())}")
+    else:
+        logging.warning("[SmartGW] Orchestrator unavailable at startup, routing table empty")
 
-    # start classifier worker (consumer + client sockets)
-    Thread(target=classification_worker, daemon=True).start()
+    Thread(target=socket_listener,    args=(control_sck,), daemon=True).start()
+    Thread(target=classification_worker,                   daemon=True).start()
+    Thread(target=poll_orchestrator,                       daemon=True).start()
 
-    # small debug HTTP endpoint for manual testing
     app.run(host="0.0.0.0", port=5004)

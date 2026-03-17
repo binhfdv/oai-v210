@@ -80,6 +80,19 @@ tractor-mono:
     model:
       subPath: model.4.cnn.pt
 
+xchain-orchestrator:
+  enabled: true
+  fullnameOverride: "xchain-orchestrator"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    TRACTOR_HOST:   tractor-orchestrator
+    TRACTOR_PORT:   "4300"
+    FASTINFER_HOST: xchain-fastinfer
+    FASTINFER_PORT: "4400"
+
 xchain-smartgw:
   enabled: true
   fullnameOverride: "xchain-smartgw"
@@ -91,10 +104,9 @@ xchain-smartgw:
     hostPath: /home/lapdk/workspace/oai-v210/xChain/src/smartGW
     subPath: smartgw_0134.pkl
   env:
-    TRACTOR_HOST: tractor-orchestrator
-    TRACTOR_PORT: "4300"
-    XCHAIN_HOST: xchain-fastinfer
-    XCHAIN_PORT: "4400"
+    ORCH_HOST:          xchain-orchestrator
+    ORCH_PORT:          "5010"
+    ORCH_POLL_INTERVAL: "30"
     
 
 xchain-fastinfer:

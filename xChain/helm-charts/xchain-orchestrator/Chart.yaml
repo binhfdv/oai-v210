@@ -1,0 +1,6 @@
+apiVersion: v2
+name: xchain-orchestrator
+description: xChain Orchestrator - chain registry and routing table manager
+type: application
+version: 0.1.0
+appVersion: latest

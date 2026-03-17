@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-orchestrator
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-orchestrator"
+
+serviceAccount:
+  create: true
+  name: "xchain-orchestrator-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: api
+    containerPort: 5010
+
+env:
+  TRACTOR_HOST:   tractor-orchestrator
+  TRACTOR_PORT:   "4300"
+  FASTINFER_HOST: xchain-fastinfer
+  FASTINFER_PORT: "4400"
+  PORT:           "5010"
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []
