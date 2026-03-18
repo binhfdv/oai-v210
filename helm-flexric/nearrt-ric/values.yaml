@@ -1,7 +1,7 @@
 nfimage:   # image name either locally present or in a public/private repository
   repository: ddocker122/oai-flexric
   # dev is normal version, detect is anomaly detection version.
-  version: dev
+  version: detect
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 

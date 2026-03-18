@@ -1,6 +1,6 @@
 nfimage:   # image name either locally present or in a public/private repository
   repository: ddocker122/oai-flexric 
-  version: detect # image tag or dev
+  version: dev # image tag or dev
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 

@@ -43,7 +43,7 @@ for arg in "$@"; do
   if [ "$arg" == "--c" ]; then
     SKIP_UNINSTALL=true
   elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core cu)
+    COMPONENTS=(core ric cu ue-gnb) # the order must be core → ric → cu → ue-gnb → others for proper dependency setup
   else
     COMPONENTS+=("$arg")
   fi
@@ -62,7 +62,7 @@ PING_TARGET="${PING_TARGET:-10.1.2.14}" # dn ip
 ping_test() {
   echo ""
   echo "=== Ping test for all UEs (target: $PING_TARGET) ==="
-  PODS=$(kubectl get pods -n oai -l app.kubernetes.io/name=oai-nr-ue \
+  PODS=$(kubectl get pods -n oai -l app.kubernetes.io/name=oai-nr-ue-gnb \
     -o jsonpath="{.items[*].metadata.name}" 2>/dev/null)
 
   if [ -z "$PODS" ]; then
