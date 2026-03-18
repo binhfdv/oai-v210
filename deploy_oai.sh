@@ -2,33 +2,38 @@
 
 # ==============================
 # OAI Basic Deployment Script
-# Usage: ./deploy_oai.sh <repodir> [--c] [components...]
+# Usage: ./deploy_oai.sh <repodir> [--c] [--ues N] [components...]
 # Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all
 # Options:
-#   --c    Continue deployment (skip helm uninstall)
+#   --c       Continue deployment (skip helm uninstall)
+#   --ues N   Number of UEs to deploy (default: 1)
 # Config (env vars, defaults shown):
 #   PING_TARGET=10.1.2.14   target IP for UE ping test
+#   NODE_ROLE=core           node-role label for UE pods
 # Example:
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core cu ric
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 all
+#   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --ues 5 ue-gnb
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c kpm
 
 # # Deploy step by step
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c cu
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c ric
+# ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c --ues 5 ue-gnb
 
 # Key points:
-# all expands to core cu ric in that order
+# all expands to core ric cu ue-gnb in that order
 # --c skips uninstall (continue/add components to existing deployment)
+# --ues N deploys N UEs via deploy_multi_ue.py (N>1) or single helm install (N=1)
 # ping runs a connectivity test from every UE pod via oaitun_ue1
 # ==============================
 
 # --- Validate input ---
 if [ -z "$1" ]; then
-  echo "Usage: $0 <repodir> [--c] [components...]"
+  echo "Usage: $0 <repodir> [--c] [--ues N] [components...]"
   echo "Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all"
-  echo "Options: --c  (skip helm uninstall)"
+  echo "Options: --c  (skip helm uninstall)  --ues N  (number of UEs, default 1)"
   exit 1
 fi
 
@@ -37,16 +42,26 @@ shift
 
 # --- Parse flags and components ---
 SKIP_UNINSTALL=false
+NUM_UES=1
 COMPONENTS=()
 
-for arg in "$@"; do
-  if [ "$arg" == "--c" ]; then
-    SKIP_UNINSTALL=true
-  elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core ric cu ue-gnb) # the order must be core → ric → cu → ue-gnb → others for proper dependency setup
-  else
-    COMPONENTS+=("$arg")
-  fi
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --c)
+      SKIP_UNINSTALL=true
+      ;;
+    --ues)
+      shift
+      NUM_UES="$1"
+      ;;
+    all)
+      COMPONENTS=(core ric cu ue-gnb) # the order must be core → ric → cu → ue-gnb → others for proper dependency setup
+      ;;
+    *)
+      COMPONENTS+=("$1")
+      ;;
+  esac
+  shift
 done
 
 if [ ${#COMPONENTS[@]} -eq 0 ]; then
@@ -57,6 +72,7 @@ fi
 
 # --- Config (override via env vars) ---
 PING_TARGET="${PING_TARGET:-10.1.2.14}" # dn ip
+NODE_ROLE="${NODE_ROLE:-core}"           # node-role label for UE pods
 
 # --- Helper: ping test for all UE pods ---
 ping_test() {
@@ -241,9 +257,9 @@ for COMPONENT in "${COMPONENTS[@]}"; do
 
     ue-gnb)
       echo ""
-      echo "=== Deploying oai-nr-ue-gnb ==="
+      echo "=== Deploying $NUM_UES UE(s) via deploy_multi_ue.py (node-role=$NODE_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-ran/oai-nr-ue-gnb" || exit 1
-      helm install oai-nr-ue-gnb . -n oai
+      python3 deploy_multi_ue.py "$NUM_UES" "$NODE_ROLE"
       sleep 30
       ping_test
       ;;

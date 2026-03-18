@@ -4,10 +4,11 @@ tractor-kpm-oai:
   nodeSelector:
     node-role: core
   image:
-    tag: latest
+    tag: kcl
   env:
-    ORCH_HOST: xchain-smartgw
-    ORCH_PORT: "4200"
+    ORCH_HOST: xchain-kcl
+    ORCH_PORT: "4500"
+    NUM_UES: "5"
 
 tractor-kpm-simu:
   enabled: false
@@ -20,7 +21,7 @@ tractor-kpm-simu:
     ORCH_HOST: tractor-mono
 
 tractor-orchestrator:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-orchestrator"
   nodeSelector:
     node-role: core
@@ -30,7 +31,7 @@ tractor-orchestrator:
     T: "32"
 
 tractor-normalizer:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-normalizer"
   nodeSelector:
     node-role: core
@@ -42,7 +43,7 @@ tractor-normalizer:
     T: "32"
 
 tractor-buffer:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-buffer"
   nodeSelector:
     node-role: core
@@ -50,7 +51,7 @@ tractor-buffer:
     tag: latest
 
 tractor-model:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-model"
   nodeSelector:
     node-role: core
@@ -81,7 +82,7 @@ tractor-mono:
       subPath: model.4.cnn.pt
 
 xchain-orchestrator:
-  enabled: true
+  enabled: false
   fullnameOverride: "xchain-orchestrator"
   nodeSelector:
     node-role: core
@@ -94,7 +95,7 @@ xchain-orchestrator:
     FASTINFER_PORT: "4400"
 
 xchain-smartgw:
-  enabled: true
+  enabled: false
   fullnameOverride: "xchain-smartgw"
   nodeSelector:
     node-role: core
@@ -109,8 +110,25 @@ xchain-smartgw:
     ORCH_POLL_INTERVAL: "30"
     
 
-xchain-fastinfer:
+xchain-kcl:
   enabled: true
+  fullnameOverride: "xchain-kcl"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    LISTEN_PORT: "4500"
+    MODELS_DIR: /models
+    LABELING_MODEL: labeling_xapp.pth
+    RESOURCE_MODEL: resource_xapp.pth
+    SCALER_FILE: scaler.pkl
+    NUM_UES: "5"
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kcl
+
+xchain-fastinfer:
+  enabled: false
   fullnameOverride: "xchain-fastinfer"
   nodeSelector:
     node-role: core

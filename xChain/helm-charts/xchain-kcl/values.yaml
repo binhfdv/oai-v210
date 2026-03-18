@@ -1,0 +1,44 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-kcl
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-kcl"
+
+serviceAccount:
+  create: true
+  name: "xchain-kcl-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-tcp
+    containerPort: 4500
+
+env:
+  LISTEN_PORT: "4500"
+  MODELS_DIR: /models
+  LABELING_MODEL: labeling_xapp.pth
+  RESOURCE_MODEL: resource_xapp.pth
+  SCALER_FILE: scaler.pkl
+  NUM_UES: "1"
+  LOG_LEVEL: INFO
+
+persistentVolume:
+  enabled: true
+  name: xchain-kcl-pv
+  claimName: xchain-kcl-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /models
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kcl
+  reclaimPolicy: Delete
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

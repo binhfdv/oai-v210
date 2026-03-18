@@ -55,3 +55,8 @@ dependencies:
     name: xchain-fastinfer
     repository: "file://../xchain-fastinfer"
     version: 0.1.0
+
+  - condition: xchain-kcl.enabled
+    name: xchain-kcl
+    repository: "file://../xchain-kcl"
+    version: 0.1.0

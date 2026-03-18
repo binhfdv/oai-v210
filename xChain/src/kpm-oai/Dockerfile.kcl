@@ -1,3 +1,4 @@
+# docker build -f Dockerfile.kcl -t ddocker122/tractor-kpm-oai:kcl .
 FROM python:3.11-slim
 
 ENV CLEAN_DIR=/data/clean \
@@ -9,7 +10,7 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir watchdog
 
-COPY kpm_colosseum_oai.py /app/kpm.py
+COPY kpm_oai.py /app/kpm.py
 
 EXPOSE 4200
 

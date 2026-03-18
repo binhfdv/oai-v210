@@ -2,6 +2,7 @@ replicaCount: 1
 
 image:
   repository: ddocker122/tractor-kpm-oai
+  # kcl or latest
   tag: latest
   pullPolicy: IfNotPresent
 
