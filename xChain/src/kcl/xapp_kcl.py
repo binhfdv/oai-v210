@@ -2,17 +2,18 @@
 xApp KCL — Dual xApp (LabelingxApp GNN + ResourcexApp DDQN) TCP inference server.
 Receives KPM metrics, classifies UE load (Light/Medium/Heavy), allocates PRBs.
 
-Pipeline: TCP recv → parse CSV → round buffer (NUM_UES lines) → GNN classification → DDQN PRB allocation → log
+Pipeline: TCP recv → parse CSV → temporal buffer (T seconds, NUM_UES UEs)
+          → mean per UE → GNN classification → DDQN PRB allocation → log
 
-Buffering: lines are keyed by ran_ue_id. A duplicate ran_ue_id signals a new
-batch — the current round is flushed first, ensuring each inference round
-contains exactly one row per UE all from the same kpm_oai batch (no mixing).
+Buffering: rows are accumulated per ran_ue_id over a T-second window.
+When T seconds have elapsed AND all NUM_UES UEs have at least one row,
+the mean of each UE's rows is computed and inference is run.
 """
 
 import os
 import socket
 import logging
-import pickle
+import time
 import numpy as np
 import pandas as pd
 import torch
@@ -27,8 +28,8 @@ LISTEN_PORT    = int(os.getenv("LISTEN_PORT", "4500"))
 MODELS_DIR     = os.getenv("MODELS_DIR", "/models")
 LABELING_MODEL = os.getenv("LABELING_MODEL", "labeling_xapp.pth")
 RESOURCE_MODEL = os.getenv("RESOURCE_MODEL", "resource_xapp.pth")
-SCALER_FILE    = os.getenv("SCALER_FILE", "scaler.pkl")
-NUM_UES        = int(os.getenv("NUM_UES", "1"))   # expected UEs per timestamp
+NUM_UES        = int(os.getenv("NUM_UES", "1"))   # expected UEs per inference round
+T              = float(os.getenv("T", "5.0"))     # temporal window in seconds
 LOG_LEVEL      = os.getenv("LOG_LEVEL", "INFO").upper()
 
 # 5 features used by the GNN
@@ -106,22 +107,14 @@ class ResourcexApp:
 # --- Preprocessor ---
 
 class KPMPreprocessor:
-    def __init__(self, scaler=None):
-        self.scaler = scaler or RobustScaler()
-        self._fitted = scaler is not None
-
     def transform_to_graph(self, df: pd.DataFrame) -> Data:
         features = df[FEATURE_COLS].copy()
         for col in FEATURE_COLS:
             features[col] = pd.to_numeric(features[col], errors='coerce')
         features = features.ffill().fillna(0.0)
 
-        if not self._fitted:
-            scaled = self.scaler.fit_transform(features.values)
-            self._fitted = True
-            logger.info("RobustScaler fitted on first batch")
-        else:
-            scaled = self.scaler.transform(features.values)
+        # Fit a fresh scaler per round — consistent with training (per-window RobustScaler)
+        scaled = RobustScaler().fit_transform(features.values.astype(np.float32))
 
         n = len(df)
         # Cyclic graph: every node connects to its neighbours
@@ -139,7 +132,7 @@ class KPMPreprocessor:
 # --- Inference Engine ---
 
 class DualxAppInference:
-    def __init__(self, labeling_path: str, resource_path: str, scaler=None):
+    def __init__(self, labeling_path: str, resource_path: str):
         self.labeling = LabelingxApp(in_dim=len(FEATURE_COLS)).to(device)
         self.labeling.load_state_dict(torch.load(labeling_path, map_location=device))
         self.labeling.eval()
@@ -148,7 +141,7 @@ class DualxAppInference:
         self.resource.q_net.load_state_dict(torch.load(resource_path, map_location=device))
         self.resource.q_net.eval()
 
-        self.preprocessor = KPMPreprocessor(scaler=scaler)
+        self.preprocessor = KPMPreprocessor()
         logger.info(f"LabelingxApp loaded from {labeling_path}")
         logger.info(f"ResourcexApp loaded from {resource_path}")
 
@@ -198,32 +191,43 @@ class DualxAppInference:
 # --- TCP Server ---
 
 
-def _flush_round(round_buf: dict, engine: DualxAppInference):
-    """Run inference on a complete round and log results."""
-    rows = sorted(round_buf.values(), key=lambda r: r.get('ran_ue_id', ''))
+def _flush_window(win_buf: dict, engine: DualxAppInference):
+    """Average each UE's buffered rows and run inference."""
+    rows = []
+    for ue_id in sorted(win_buf.keys()):
+        ue_rows = pd.DataFrame(win_buf[ue_id])
+        for col in FEATURE_COLS:
+            ue_rows[col] = pd.to_numeric(ue_rows[col], errors='coerce')
+        mean_row = ue_rows.mean(numeric_only=True)
+        mean_row['ran_ue_id'] = ue_id
+        mean_row['timestamp'] = ue_rows['timestamp'].iloc[-1]
+        mean_row['DRB.UEThpUl'] = pd.to_numeric(ue_rows['DRB.UEThpUl'], errors='coerce').mean()
+        rows.append(mean_row)
+
     df = pd.DataFrame(rows)
     result = engine.predict(df)
-    ts = rows[0]['timestamp']
+    ts = df['timestamp'].iloc[0]
     for i in range(result['num_ues']):
         r = df.iloc[i]
         logger.info(
             f"[{ts}] UE {i + 1}/{NUM_UES} | "
             f"ran_ue_id={r['ran_ue_id']} | "
-            f"PRB={r['RRU.PrbTotDl']} "
-            f"ThpDl={r['DRB.UEThpDl']} "
-            f"ThpUl={r['DRB.UEThpUl']} "
-            f"RlcDelay={r['DRB.RlcSduDelayDl']} "
-            f"VolDL={r['DRB.PdcpSduVolumeDL']} "
-            f"VolUL={r['DRB.PdcpSduVolumeUL']} | "
+            f"PRB={r['RRU.PrbTotDl']:.2f} "
+            f"ThpDl={r['DRB.UEThpDl']:.2f} "
+            f"ThpUl={r['DRB.UEThpUl']:.2f} "
+            f"RlcDelay={r['DRB.RlcSduDelayDl']:.2f} "
+            f"VolDL={r['DRB.PdcpSduVolumeDL']:.0f} "
+            f"VolUL={r['DRB.PdcpSduVolumeUL']:.0f} | "
             f"Load: {result['load_labels'][i]:6s} | "
             f"PRB alloc: {result['allocations'][i]:.0%}"
         )
 
 
 def handle_client(conn, addr, engine: DualxAppInference):
-    logger.info(f"Client connected: {addr} | expecting NUM_UES={NUM_UES} per round")
+    logger.info(f"Client connected: {addr} | NUM_UES={NUM_UES} | T={T}s")
     buf = ""
-    round_buf = {}   # ran_ue_id → row for the current round (one entry per UE)
+    win_buf = {}        # ran_ue_id → list of row dicts accumulated over T seconds
+    window_start = time.time()
 
     try:
         while True:
@@ -247,24 +251,18 @@ def handle_client(conn, addr, engine: DualxAppInference):
                     continue
                 row = dict(zip(KPM_FIELDS, parts))
                 ue_id = row.get('ran_ue_id', '')
+                win_buf.setdefault(ue_id, []).append(row)
 
-                # A duplicate ran_ue_id means a new kpm batch is starting
-                if ue_id in round_buf:
-                    if len(round_buf) == NUM_UES:
-                        _flush_round(round_buf, engine)
-                    else:
-                        logger.warning(
-                            f"Incomplete round ({len(round_buf)}/{NUM_UES} UEs) "
-                            f"before new batch — discarding"
-                        )
-                    round_buf = {}
-
-                round_buf[ue_id] = row
-
-                # Full round collected — run inference
-                if len(round_buf) == NUM_UES:
-                    _flush_round(round_buf, engine)
-                    round_buf = {}
+            # Check if T seconds have elapsed
+            if time.time() - window_start >= T:
+                if len(win_buf) >= NUM_UES:
+                    _flush_window(win_buf, engine)
+                else:
+                    logger.warning(
+                        f"T={T}s elapsed but only {len(win_buf)}/{NUM_UES} UEs — skipping"
+                    )
+                win_buf = {}
+                window_start = time.time()
 
     except Exception as e:
         logger.error(f"Error with client {addr}: {e}")
@@ -276,17 +274,7 @@ def handle_client(conn, addr, engine: DualxAppInference):
 def load_engine() -> DualxAppInference:
     labeling_path = os.path.join(MODELS_DIR, LABELING_MODEL)
     resource_path = os.path.join(MODELS_DIR, RESOURCE_MODEL)
-    scaler_path   = os.path.join(MODELS_DIR, SCALER_FILE)
-
-    scaler = None
-    if os.path.exists(scaler_path):
-        with open(scaler_path, 'rb') as f:
-            scaler = pickle.load(f)
-        logger.info(f"Scaler loaded from {scaler_path}")
-    else:
-        logger.warning(f"scaler.pkl not found at {scaler_path} — will fit on first batch received")
-
-    return DualxAppInference(labeling_path, resource_path, scaler=scaler)
+    return DualxAppInference(labeling_path, resource_path)
 
 
 def start_server(engine: DualxAppInference):

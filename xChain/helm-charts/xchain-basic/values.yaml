@@ -8,7 +8,7 @@ tractor-kpm-oai:
   env:
     ORCH_HOST: xchain-kcl
     ORCH_PORT: "4500"
-    NUM_UES: "5"
+    NUM_UES: "3"
 
 tractor-kpm-simu:
   enabled: false
@@ -123,7 +123,8 @@ xchain-kcl:
     LABELING_MODEL: labeling_xapp.pth
     RESOURCE_MODEL: resource_xapp.pth
     SCALER_FILE: scaler.pkl
-    NUM_UES: "5"
+    NUM_UES: "3"
+    T: "4"
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kcl
 

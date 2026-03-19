@@ -24,8 +24,8 @@ env:
   MODELS_DIR: /models
   LABELING_MODEL: labeling_xapp.pth
   RESOURCE_MODEL: resource_xapp.pth
-  SCALER_FILE: scaler.pkl
   NUM_UES: "1"
+  T: "5"
   LOG_LEVEL: INFO
 
 persistentVolume:
