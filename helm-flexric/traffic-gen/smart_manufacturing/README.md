@@ -1,15 +1,15 @@
-# Deploy 5G and RAN:
+# Deploy 5G, RAN, xApp, UEs:
 ```bash
-bash deploy_oai.sh . core ric cu kpm
+bash deploy_oai.sh /home/lapdk/workspace/oai-v210 core ric cu ue-gnb kpm xchain-basic --ues 5
 
 ```
 
-# Deploy 3 or more UEs:
+<!-- # Deploy 3 or more UEs:
 ```bash
 cd charts/oai-5g-ran/oai-nr-ue-gnb
 #python3 deploy_multi_ue.py <num_ues> <node_role>
 python3 deploy_multi_ue.py 3 core
-```
+``` -->
 
 # Replay traffic
 ```bash
@@ -21,6 +21,12 @@ kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-2 -o
 
 # UE 3
 kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-3 -o name | head -n 1) -c debug -- bash
+
+# UE 4
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-4 -o name | head -n 1) -c debug -- bash
+
+# UE 5
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-5 -o name | head -n 1) -c debug -- bash
 
 # Increase the ID number if having more UEs
 
@@ -51,3 +57,7 @@ cd ../cleaner-kpm-moni/
 helm install cleaner-kpm-moni .
 ```
 
+# Save result logs
+```bash
+kubectl logs -f $(kubectl get pods -l app.kubernetes.io/name=xchain-kcl -o name | head -n 1) | tee logs.txt
+```
