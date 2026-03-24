@@ -14,24 +14,23 @@ python3 deploy_multi_ue.py 3 core
 # Replay traffic
 ```bash
 #UE 1
-kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-1 -o name | head -n 1) -c debug -- bash
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-1 -o name | head -n 1) -c debug -- bash -c "cd traffic-gen/smart_manufacturing && exec bash"
 
 # UE 2
-kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-2 -o name | head -n 1) -c debug -- bash
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-2 -o name | head -n 1) -c debug -- bash -c "cd traffic-gen/smart_manufacturing && exec bash"
 
 # UE 3
-kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-3 -o name | head -n 1) -c debug -- bash
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-3 -o name | head -n 1) -c debug -- bash -c "cd traffic-gen/smart_manufacturing && exec bash"
 
 # UE 4
-kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-4 -o name | head -n 1) -c debug -- bash
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-4 -o name | head -n 1) -c debug -- bash -c "cd traffic-gen/smart_manufacturing && exec bash"
 
 # UE 5
-kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-5 -o name | head -n 1) -c debug -- bash
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-5 -o name | head -n 1) -c debug -- bash -c "cd traffic-gen/smart_manufacturing && exec bash"
 
 # Increase the ID number if having more UEs
 
 # In each UE (check the number UE1, UE2, UE#), start to replay traffic.
-cd traffic-gen/smart_manufacturing
 ./replay_from_ue.sh <ue_folder> oaitun_ue1 [speed]
 ./replay_from_ue.sh ue_pcaps/ue1 oaitun_ue1 1000
 ./replay_from_ue.sh ue_pcaps/ue2 oaitun_ue1 1000

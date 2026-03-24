@@ -1,0 +1,87 @@
+[2026-03-24 08:50:57,498] [INFO] Using device: cpu
+/usr/local/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/usr/local/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+[2026-03-24 08:50:57,934] [INFO] LR scaler loaded from /models/lr_scaler.pkl
+[2026-03-24 08:50:57,934] [INFO] LogisticRegression loaded from /models/labeling_xapp.pkl
+[2026-03-24 08:50:57,936] [INFO] ResourcexApp loaded from /models/resource_xapp.pth
+[2026-03-24 08:50:57,936] [INFO] xApp KCL listening on port 4500
+[2026-03-24 08:51:15,023] [INFO] Client connected: ('10.244.0.25', 44092) | NUM_UES=5 | T=32.0s
+[2026-03-24 08:51:47,084] [INFO] [2026-03-24T08:51:46.187674] UE 1/5 | ran_ue_id=1 | PRB=5.45 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:51:47,084] [INFO] [2026-03-24T08:51:46.187674] UE 2/5 | ran_ue_id=2 | PRB=5.45 ThpDl=0.00 ThpUl=0.01 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:51:47,084] [INFO] [2026-03-24T08:51:46.187674] UE 3/5 | ran_ue_id=3 | PRB=5.45 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:51:47,084] [INFO] [2026-03-24T08:51:46.187674] UE 4/5 | ran_ue_id=4 | PRB=5.45 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:51:47,084] [INFO] [2026-03-24T08:51:46.187674] UE 5/5 | ran_ue_id=5 | PRB=5.47 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:52:19,132] [INFO] [2026-03-24T08:52:18.189066] UE 1/5 | ran_ue_id=1 | PRB=5.16 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:52:19,132] [INFO] [2026-03-24T08:52:18.189066] UE 2/5 | ran_ue_id=2 | PRB=5.16 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:52:19,132] [INFO] [2026-03-24T08:52:18.189066] UE 3/5 | ran_ue_id=3 | PRB=830.59 ThpDl=213.14 ThpUl=1697.39 RlcDelay=199.42 VolDL=187 VolUL=1657 | Load: Medium | PRB alloc: 9%
+[2026-03-24 08:52:19,132] [INFO] [2026-03-24T08:52:18.189066] UE 4/5 | ran_ue_id=4 | PRB=3251.38 ThpDl=1508.25 ThpUl=70.18 RlcDelay=243.69 VolDL=1490 VolUL=59 | Load: Heavy  | PRB alloc: 9%
+[2026-03-24 08:52:19,132] [INFO] [2026-03-24T08:52:18.189066] UE 5/5 | ran_ue_id=5 | PRB=783.00 ThpDl=197.08 ThpUl=124.62 RlcDelay=188.85 VolDL=180 VolUL=106 | Load: Heavy  | PRB alloc: 9%
+[2026-03-24 08:52:51,207] [INFO] [2026-03-24T08:52:50.188038] UE 1/5 | ran_ue_id=1 | PRB=5.00 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:52:51,208] [INFO] [2026-03-24T08:52:50.188038] UE 2/5 | ran_ue_id=2 | PRB=5.00 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:52:51,208] [INFO] [2026-03-24T08:52:50.188038] UE 3/5 | ran_ue_id=3 | PRB=938.25 ThpDl=305.46 ThpUl=2441.32 RlcDelay=264.64 VolDL=268 VolUL=2383 | Load: Medium | PRB alloc: 9%
+[2026-03-24 08:52:51,208] [INFO] [2026-03-24T08:52:50.188038] UE 4/5 | ran_ue_id=4 | PRB=3061.12 ThpDl=2168.88 ThpUl=99.55 RlcDelay=289.52 VolDL=2143 VolUL=84 | Load: Heavy  | PRB alloc: 9%
+[2026-03-24 08:52:51,208] [INFO] [2026-03-24T08:52:50.188038] UE 5/5 | ran_ue_id=5 | PRB=954.72 ThpDl=296.74 ThpUl=187.71 RlcDelay=274.50 VolDL=272 VolUL=160 | Load: Heavy  | PRB alloc: 9%
+[2026-03-24 08:53:23,273] [INFO] [2026-03-24T08:53:23.189011] UE 1/5 | ran_ue_id=1 | PRB=5.56 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:53:23,273] [INFO] [2026-03-24T08:53:23.189011] UE 2/5 | ran_ue_id=2 | PRB=5.56 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 36%
+[2026-03-24 08:53:23,273] [INFO] [2026-03-24T08:53:23.189011] UE 3/5 | ran_ue_id=3 | PRB=131.56 ThpDl=40.38 ThpUl=322.58 RlcDelay=28.04 VolDL=35 VolUL=315 | Load: Medium | PRB alloc: 9%
+[2026-03-24 08:53:23,273] [INFO] [2026-03-24T08:53:23.189011] UE 4/5 | ran_ue_id=4 | PRB=407.96 ThpDl=286.98 ThpUl=13.09 RlcDelay=28.02 VolDL=284 VolUL=11 | Load: Medium | PRB alloc: 9%
+[2026-03-24 08:53:23,274] [INFO] [2026-03-24T08:53:23.189011] UE 5/5 | ran_ue_id=5 | PRB=148.78 ThpDl=44.02 ThpUl=27.94 RlcDelay=40.08 VolDL=40 VolUL=24 | Load: Medium | PRB alloc: 9%
+[2026-03-24 08:53:55,360] [INFO] [2026-03-24T08:53:55.187738] UE 1/5 | ran_ue_id=1 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:53:55,360] [INFO] [2026-03-24T08:53:55.187738] UE 2/5 | ran_ue_id=2 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:53:55,360] [INFO] [2026-03-24T08:53:55.187738] UE 3/5 | ran_ue_id=3 | PRB=5.47 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:53:55,360] [INFO] [2026-03-24T08:53:55.187738] UE 4/5 | ran_ue_id=4 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:53:55,360] [INFO] [2026-03-24T08:53:55.187738] UE 5/5 | ran_ue_id=5 | PRB=5.47 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:54:27,472] [INFO] [2026-03-24T08:54:27.187577] UE 1/5 | ran_ue_id=1 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:54:27,472] [INFO] [2026-03-24T08:54:27.187577] UE 2/5 | ran_ue_id=2 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:54:27,472] [INFO] [2026-03-24T08:54:27.187577] UE 3/5 | ran_ue_id=3 | PRB=15296.22 ThpDl=8397.85 ThpUl=310.64 RlcDelay=457.15 VolDL=8353 VolUL=267 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:54:27,472] [INFO] [2026-03-24T08:54:27.187577] UE 4/5 | ran_ue_id=4 | PRB=949.81 ThpDl=335.67 ThpUl=8380.51 RlcDelay=253.12 VolDL=294 VolUL=8326 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:54:27,472] [INFO] [2026-03-24T08:54:27.187577] UE 5/5 | ran_ue_id=5 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:54:59,586] [INFO] [2026-03-24T08:54:59.188186] UE 1/5 | ran_ue_id=1 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:54:59,586] [INFO] [2026-03-24T08:54:59.188186] UE 2/5 | ran_ue_id=2 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:54:59,586] [INFO] [2026-03-24T08:54:59.188186] UE 3/5 | ran_ue_id=3 | PRB=15197.22 ThpDl=10118.12 ThpUl=371.29 RlcDelay=548.05 VolDL=10066 VolUL=319 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:54:59,587] [INFO] [2026-03-24T08:54:59.188186] UE 4/5 | ran_ue_id=4 | PRB=1030.84 ThpDl=401.29 ThpUl=10098.05 RlcDelay=319.39 VolDL=351 VolUL=10034 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:54:59,587] [INFO] [2026-03-24T08:54:59.188186] UE 5/5 | ran_ue_id=5 | PRB=5.00 ThpDl=0.00 ThpUl=0.01 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:55:31,714] [INFO] [2026-03-24T08:55:31.188487] UE 1/5 | ran_ue_id=1 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:55:31,714] [INFO] [2026-03-24T08:55:31.188487] UE 2/5 | ran_ue_id=2 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:55:31,714] [INFO] [2026-03-24T08:55:31.188487] UE 3/5 | ran_ue_id=3 | PRB=15082.09 ThpDl=10049.38 ThpUl=371.23 RlcDelay=544.80 VolDL=9997 VolUL=319 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:55:31,714] [INFO] [2026-03-24T08:55:31.188487] UE 4/5 | ran_ue_id=4 | PRB=1022.06 ThpDl=401.34 ThpUl=10028.39 RlcDelay=291.18 VolDL=351 VolUL=9965 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:55:31,715] [INFO] [2026-03-24T08:55:31.188487] UE 5/5 | ran_ue_id=5 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:03,866] [INFO] [2026-03-24T08:56:03.188479] UE 1/5 | ran_ue_id=1 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:03,866] [INFO] [2026-03-24T08:56:03.188479] UE 2/5 | ran_ue_id=2 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:03,866] [INFO] [2026-03-24T08:56:03.188479] UE 3/5 | ran_ue_id=3 | PRB=15062.81 ThpDl=10081.23 ThpUl=371.67 RlcDelay=546.27 VolDL=10033 VolUL=320 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:56:03,866] [INFO] [2026-03-24T08:56:03.188479] UE 4/5 | ran_ue_id=4 | PRB=1014.06 ThpDl=401.69 ThpUl=10060.53 RlcDelay=293.96 VolDL=352 VolUL=10001 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:56:03,866] [INFO] [2026-03-24T08:56:03.188479] UE 5/5 | ran_ue_id=5 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:36,022] [INFO] [2026-03-24T08:56:35.187773] UE 1/5 | ran_ue_id=1 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:36,023] [INFO] [2026-03-24T08:56:35.187773] UE 2/5 | ran_ue_id=2 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:56:36,023] [INFO] [2026-03-24T08:56:35.187773] UE 3/5 | ran_ue_id=3 | PRB=15159.94 ThpDl=10096.23 ThpUl=371.21 RlcDelay=548.72 VolDL=10044 VolUL=319 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:56:36,023] [INFO] [2026-03-24T08:56:35.187773] UE 4/5 | ran_ue_id=4 | PRB=1023.22 ThpDl=401.25 ThpUl=10075.71 RlcDelay=294.55 VolDL=351 VolUL=10012 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:56:36,023] [INFO] [2026-03-24T08:56:35.187773] UE 5/5 | ran_ue_id=5 | PRB=4.84 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:57:08,170] [INFO] [2026-03-24T08:57:07.189625] UE 1/5 | ran_ue_id=1 | PRB=5.00 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:57:08,171] [INFO] [2026-03-24T08:57:07.189625] UE 2/5 | ran_ue_id=2 | PRB=5.00 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:57:08,171] [INFO] [2026-03-24T08:57:07.189625] UE 3/5 | ran_ue_id=3 | PRB=9150.34 ThpDl=6073.37 ThpUl=225.02 RlcDelay=355.20 VolDL=6042 VolUL=194 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:57:08,171] [INFO] [2026-03-24T08:57:07.189625] UE 4/5 | ran_ue_id=4 | PRB=621.16 ThpDl=243.32 ThpUl=6060.70 RlcDelay=155.30 VolDL=213 VolUL=6022 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:57:08,171] [INFO] [2026-03-24T08:57:07.189625] UE 5/5 | ran_ue_id=5 | PRB=5.00 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:57:41,331] [INFO] [2026-03-24T08:57:41.187406] UE 1/5 | ran_ue_id=1 | PRB=5.80 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:57:41,331] [INFO] [2026-03-24T08:57:41.187406] UE 2/5 | ran_ue_id=2 | PRB=5.80 ThpDl=0.00 ThpUl=0.03 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:57:41,332] [INFO] [2026-03-24T08:57:41.187406] UE 3/5 | ran_ue_id=3 | PRB=5.40 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:57:41,332] [INFO] [2026-03-24T08:57:41.187406] UE 4/5 | ran_ue_id=4 | PRB=5.80 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:57:41,332] [INFO] [2026-03-24T08:57:41.187406] UE 5/5 | ran_ue_id=5 | PRB=5.20 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:58:13,487] [INFO] [2026-03-24T08:58:13.187679] UE 1/5 | ran_ue_id=1 | PRB=5.24 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:13,487] [INFO] [2026-03-24T08:58:13.187679] UE 2/5 | ran_ue_id=2 | PRB=5.24 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:13,487] [INFO] [2026-03-24T08:58:13.187679] UE 3/5 | ran_ue_id=3 | PRB=1250.05 ThpDl=400.90 ThpUl=374.04 RlcDelay=257.24 VolDL=352 VolUL=319 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:58:13,487] [INFO] [2026-03-24T08:58:13.187679] UE 4/5 | ran_ue_id=4 | PRB=5.24 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:13,487] [INFO] [2026-03-24T08:58:13.187679] UE 5/5 | ran_ue_id=5 | PRB=1176.33 ThpDl=387.18 ThpUl=363.20 RlcDelay=283.62 VolDL=339 VolUL=308 | Load: Heavy  | PRB alloc: 7%
+[2026-03-24 08:58:45,663] [INFO] [2026-03-24T08:58:45.188045] UE 1/5 | ran_ue_id=1 | PRB=5.50 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:45,663] [INFO] [2026-03-24T08:58:45.188045] UE 2/5 | ran_ue_id=2 | PRB=5.50 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:45,663] [INFO] [2026-03-24T08:58:45.188045] UE 3/5 | ran_ue_id=3 | PRB=70.90 ThpDl=21.72 ThpUl=20.55 RlcDelay=10.67 VolDL=19 VolUL=18 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:58:45,663] [INFO] [2026-03-24T08:58:45.188045] UE 4/5 | ran_ue_id=4 | PRB=5.33 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 29%
+[2026-03-24 08:58:45,663] [INFO] [2026-03-24T08:58:45.188045] UE 5/5 | ran_ue_id=5 | PRB=97.30 ThpDl=35.35 ThpUl=32.97 RlcDelay=17.53 VolDL=31 VolUL=28 | Load: Medium | PRB alloc: 7%
+[2026-03-24 08:59:17,859] [INFO] [2026-03-24T08:59:17.188213] UE 1/5 | ran_ue_id=1 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:59:17,859] [INFO] [2026-03-24T08:59:17.188213] UE 2/5 | ran_ue_id=2 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:59:17,859] [INFO] [2026-03-24T08:59:17.188213] UE 3/5 | ran_ue_id=3 | PRB=5.31 ThpDl=0.00 ThpUl=0.00 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:59:17,859] [INFO] [2026-03-24T08:59:17.188213] UE 4/5 | ran_ue_id=4 | PRB=5.47 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%
+[2026-03-24 08:59:17,859] [INFO] [2026-03-24T08:59:17.188213] UE 5/5 | ran_ue_id=5 | PRB=5.47 ThpDl=0.00 ThpUl=0.02 RlcDelay=0.00 VolDL=0 VolUL=0 | Load: Light  | PRB alloc: 20%

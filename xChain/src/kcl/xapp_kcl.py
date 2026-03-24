@@ -14,20 +14,23 @@ import os
 import socket
 import logging
 import time
+import joblib
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.data import Data
-from torch_geometric.nn import SAGEConv
-from sklearn.preprocessing import RobustScaler
+from torch_geometric.nn import SAGEConv, GCNConv
+from sklearn.preprocessing import RobustScaler, StandardScaler
 
 # --- Config ---
 LISTEN_PORT    = int(os.getenv("LISTEN_PORT", "4500"))
 MODELS_DIR     = os.getenv("MODELS_DIR", "/models")
 LABELING_MODEL = os.getenv("LABELING_MODEL", "labeling_xapp.pth")
 RESOURCE_MODEL = os.getenv("RESOURCE_MODEL", "resource_xapp.pth")
+MODEL_TYPE     = os.getenv("MODEL_TYPE", "gnn").lower()  # "gnn" (GraphSAGE), "gcn", or "lr"
+LR_SCALER      = os.getenv("LR_SCALER", "logreg_scaler.pkl")
 NUM_UES        = int(os.getenv("NUM_UES", "1"))   # expected UEs per inference round
 T              = float(os.getenv("T", "5.0"))     # temporal window in seconds
 LOG_LEVEL      = os.getenv("LOG_LEVEL", "INFO").upper()
@@ -65,6 +68,34 @@ class LabelingxApp(nn.Module):
         self.conv1 = SAGEConv(in_dim, hidden_dim)
         self.conv2 = SAGEConv(hidden_dim, hidden_dim)
         self.conv3 = SAGEConv(hidden_dim, hidden_dim // 2)
+        self.bn1 = nn.BatchNorm1d(hidden_dim)
+        self.bn2 = nn.BatchNorm1d(hidden_dim)
+        self.bn3 = nn.BatchNorm1d(hidden_dim // 2)
+        self.dropout = nn.Dropout(0.2)
+        self.load_head = nn.Sequential(
+            nn.Linear(hidden_dim // 2, 32),
+            nn.ReLU(),
+            nn.Linear(32, 3)
+        )
+        self.embeddings = None
+
+    def forward(self, x, edge_index):
+        h = F.relu(self.bn1(self.conv1(x, edge_index)))
+        h = F.relu(self.bn2(self.conv2(h, edge_index)))
+        h = F.relu(self.bn3(self.conv3(h, edge_index)))
+        h = self.dropout(h)
+        self.embeddings = h.detach()
+        return self.load_head(h)
+
+
+class GCNLabelingxApp(nn.Module):
+    """GNN (GCNConv) — classifies each UE as Light / Medium / Heavy load."""
+
+    def __init__(self, in_dim: int, hidden_dim: int = 64):
+        super().__init__()
+        self.conv1 = GCNConv(in_dim, hidden_dim)
+        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.conv3 = GCNConv(hidden_dim, hidden_dim // 2)
         self.bn1 = nn.BatchNorm1d(hidden_dim)
         self.bn2 = nn.BatchNorm1d(hidden_dim)
         self.bn3 = nn.BatchNorm1d(hidden_dim // 2)
@@ -133,30 +164,57 @@ class KPMPreprocessor:
 
 class DualxAppInference:
     def __init__(self, labeling_path: str, resource_path: str):
-        self.labeling = LabelingxApp(in_dim=len(FEATURE_COLS)).to(device)
-        self.labeling.load_state_dict(torch.load(labeling_path, map_location=device))
-        self.labeling.eval()
+        self.lr_model  = None
+        self.lr_scaler = None
+
+        if MODEL_TYPE == "lr":
+            lr_path     = os.path.join(MODELS_DIR, LABELING_MODEL)
+            scaler_path = os.path.join(MODELS_DIR, LR_SCALER)
+            self.lr_model = joblib.load(lr_path)
+            if os.path.exists(scaler_path):
+                self.lr_scaler = joblib.load(scaler_path)
+                logger.info(f"LR scaler loaded from {scaler_path}")
+            else:
+                self.lr_scaler = StandardScaler()
+                logger.warning(f"LR scaler not found at {scaler_path} — will fit on first batch")
+            logger.info(f"LogisticRegression loaded from {lr_path}")
+        else:
+            if MODEL_TYPE == "gcn":
+                self.labeling = GCNLabelingxApp(in_dim=len(FEATURE_COLS)).to(device)
+            else:  # "gnn" — GraphSAGE
+                self.labeling = LabelingxApp(in_dim=len(FEATURE_COLS)).to(device)
+            self.labeling.load_state_dict(torch.load(labeling_path, map_location=device))
+            self.labeling.eval()
+            logger.info(f"LabelingxApp ({MODEL_TYPE.upper()}) loaded from {labeling_path}")
 
         self.resource = ResourcexApp()
         self.resource.q_net.load_state_dict(torch.load(resource_path, map_location=device))
         self.resource.q_net.eval()
 
         self.preprocessor = KPMPreprocessor()
-        logger.info(f"LabelingxApp loaded from {labeling_path}")
         logger.info(f"ResourcexApp loaded from {resource_path}")
 
     def predict(self, df: pd.DataFrame) -> dict:
-        graph = self.preprocessor.transform_to_graph(df)
-
-        with torch.no_grad():
-            logits = self.labeling(graph.x, graph.edge_index)
-            load_preds = logits.argmax(dim=1).cpu().numpy()
-            embeddings = self.labeling.embeddings.cpu().numpy()
-
         features = df[FEATURE_COLS].apply(pd.to_numeric, errors='coerce').fillna(0.0)
         prb   = features['RRU.PrbTotDl'].values
         tput  = features['DRB.UEThpDl'].values
         delay = features['DRB.RlcSduDelayDl'].values
+
+        if MODEL_TYPE == "lr":
+            X = features.values
+            if not hasattr(self.lr_scaler, 'mean_'):
+                X = self.lr_scaler.fit_transform(X)
+                logger.info("LR StandardScaler fitted on first batch")
+            else:
+                X = self.lr_scaler.transform(X)
+            load_preds = self.lr_model.predict(X)
+            embeddings = np.zeros((len(df), 1))  # no GNN embeddings for LR
+        else:
+            graph = self.preprocessor.transform_to_graph(df)
+            with torch.no_grad():
+                logits = self.labeling(graph.x, graph.edge_index)
+                load_preds = logits.argmax(dim=1).cpu().numpy()
+                embeddings = self.labeling.embeddings.cpu().numpy()
 
         actions, allocations = [], []
         for i, load in enumerate(load_preds):
