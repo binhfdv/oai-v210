@@ -1,0 +1,137 @@
+xchain-gui-server:
+  enabled: true
+  image:
+    repository: ddocker122/xchain-gui-server
+    tag: latest
+  fullnameOverride: "xchain-gui-server"
+  nodeSelector:
+    node-role: core
+  env:
+    BASE_DIR:                   /results/
+    REFRESH_INTERVAL:           "2"
+    SOCKET_PORT:                "4000"
+    TRAFFIC_SERVER_HOSTNAME:    oai-traffic-server
+    TRAFFIC_SERVER_CMD_VR:      "start:bash -c cd /traffic-gen && ./replay_pcap.sh pcap/demo/vr.pcap"
+    TRAFFIC_SERVER_CMD_HAPTIC:  "start:bash -c cd /traffic-gen && ./replay_pcap.sh pcap/demo/haptic.pcap"
+    TRAFFIC_SERVER_CMD_SOCIAL:  "start:bash -c cd /traffic-gen && ./replay_pcap.sh pcap/demo/social.pcap"
+    TRAFFIC_SERVER_CMD_IOT:     "start:bash -c cd /traffic-gen && ./replay_pcap.sh pcap/demo/iot.pcap"
+    SMARTGW_HOSTNAME:           xchain-smartgw-demo
+    SMARTGW_CMD_MODELS:         "start:{models}"
+
+  # Shared results PVC (hostPath for now, migrate to NFS later)
+  persistentVolume:
+    enabled: true
+    name: demo-results-pv
+    claimName: demo-results-pvc
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
+    mountPath: /results
+
+tractor-kpm-oai:
+  enabled: true
+  fullnameOverride: "tractor-kpm-oai"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  env:
+    ORCH_HOST: xchain-smartgw-demo
+    ORCH_PORT: "4200"
+    NUM_UES: "1"
+
+
+
+xchain-smartgw-demo:
+  enabled: true
+  fullnameOverride: "xchain-smartgw-demo"
+  nodeSelector:
+    node-role: core
+  image:
+    repository: ddocker122/xchain-smartgw-demo
+    tag: latest
+  # Universal agent sidecar (AGENT_MODE=file)
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: file
+      AGENT_OUTPUT_FILE: /tmp/selected_models.txt
+
+
+xchain-fastinfer:
+  enabled: true
+  fullnameOverride: "xchain-fastinfer"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp-fastinfer
+    subPath: xgb_model_T_4.json
+  env:
+    T: "4"
+  # Universal agent sidecar (log_collector mode)
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: log_collector
+      MODEL_NAME: fastinfer
+      MODEL_TYPE: xgboost
+      LOG_FILE: /model-logs/model.log
+      RESULTS_DIR: /results
+
+  # Shared results PVC (same PV/PVC as xchain-gui-server)
+  resultsPVC:
+    claimName: demo-results-pvc
+    mountPath: /results
+
+
+tractor-mono:
+  enabled: true
+  fullnameOverride: "tractor-mono"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    model:
+      hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+    norm:
+      hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
+  env:
+    T: "4"
+  volumeMounts:
+    model:
+      subPath: model.4.cnn.pt
+  # Universal agent sidecar (log_collector mode)
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: log_collector
+      MODEL_NAME: cnn
+      MODEL_TYPE: cnn
+      LOG_FILE: /model-logs/model.log
+      RESULTS_DIR: /results
+    # Shared results PVC (same PV/PVC as xchain-gui-server)
+    resultsPVC:
+      claimName: demo-results-pvc
+      mountPath: /results
+
+# xchain-kcl:
+#   enabled: false

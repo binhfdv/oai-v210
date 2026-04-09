@@ -1,0 +1,380 @@
+================================================================
+xChain Netsoft 2026 Demo — Full Architecture & Requirements
+================================================================
+Date: 2026-04-08
+
+----------------------------------------------------------------
+OVERVIEW
+----------------------------------------------------------------
+A real-time dashboard to compare AI model inference performance
+(latency + accuracy) in a live 5G O-RAN scenario.
+Compares FastInfer (XGBoost) vs CNN (tractor-mono) on 4 traffic
+types: VR, Haptic, Social, IoT.
+
+----------------------------------------------------------------
+TRAFFIC FLOW
+----------------------------------------------------------------
+
+[Browser]
+    ↕ HTTP + WebSocket (port 5000)
+[xchain-gui-server]  ←── reads result CSVs ────────────────────┐
+    ↕ TCP (port 4000)                                           │ results-pvc
+    ├── [oai-traffic-server sidecar] → tcpreplay → gNB          │ hostPath:
+    └── [xchain-smartgw-demo sidecar] → writes selected_models  │ /home/lapdk/workspace/oai-v210/
+                                                                 │ xChain/src/2026-netsoft-demo/
+[gNB] → [tractor-kpm-oai] → [xchain-smartgw-demo]              │ api/server/demo/data
+                                  ├── [xchain-fastinfer] → sidecar → CSV ──┘
+                                  └── [tractor-mono]     → sidecar → CSV ──┘
+
+----------------------------------------------------------------
+GROUND TRUTH MAPPING
+----------------------------------------------------------------
+vr     → eMBB
+haptic → URLLC
+social → eMBB
+iot    → mMTC
+
+----------------------------------------------------------------
+SHARED PVC (results-pvc)
+----------------------------------------------------------------
+hostPath : /home/lapdk/workspace/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
+mountPath: /results   (BASE_DIR=/results in all pods)
+nodeSelector: node-role=core
+Note: migrate to NFS later for multi-node support
+
+Mounted in:
+  - xchain-gui-server      → reads CSVs, writes current_experiment.txt
+  - xchain-fastinfer       → sidecar writes fastinfer_accuracy.csv, fastinfer_latency.csv
+  - tractor-mono           → sidecar writes cnn_accuracy.csv, cnn_latency.csv
+
+CSV format:
+  {traffic_type}/fastinfer_accuracy.csv  → timestamp, accuracy
+  {traffic_type}/fastinfer_latency.csv   → timestamp, latency_ms
+  {traffic_type}/cnn_accuracy.csv        → timestamp, accuracy
+  {traffic_type}/cnn_latency.csv         → timestamp, latency_ms
+
+current_experiment.txt format (written by API server on START):
+  traffic_type=vr
+  ground_truth=eMBB
+
+----------------------------------------------------------------
+COMPONENT 1: universal_agent.py + Dockerfile
+----------------------------------------------------------------
+Location : xChain/src/2026-netsoft-demo/api/container_cmd/
+Image    : universal-agent (new Docker image)
+
+3 modes via AGENT_MODE env var:
+
+  AGENT_MODE=exec
+    - On START:{cmd}  → run cmd as subprocess
+    - On STOP         → kill subprocess
+    - Used in         : oai-traffic-server sidecar
+
+  AGENT_MODE=file
+    - On START:{payload} → write payload to AGENT_OUTPUT_FILE
+    - On STOP            → clear AGENT_OUTPUT_FILE
+    - Used in            : xchain-smartgw-demo sidecar
+
+  AGENT_MODE=log_collector
+    - Tails LOG_FILE (shared emptyDir with main container)
+    - Parses log lines using model-specific regex
+    - Reads current_experiment.txt from RESULTS_DIR for ground truth
+    - Resets counters when experiment changes
+    - Writes accuracy/latency CSVs to RESULTS_DIR/{traffic_type}/
+    - Used in: xchain-fastinfer sidecar, tractor-mono sidecar
+
+Common env vars (all modes):
+  DEMO_SERVER_HOST   # K8s service name of xchain-gui-server
+  DEMO_SERVER_PORT   # default: 4000
+  AGENT_MODE         # exec | file | log_collector
+
+file mode extra:
+  AGENT_OUTPUT_FILE  # default: /tmp/selected_models.txt
+
+log_collector mode extra:
+  MODEL_NAME         # fastinfer | cnn
+  MODEL_TYPE         # xgboost | cnn  (selects log parser)
+  LOG_FILE           # /model-logs/model.log (shared emptyDir)
+  RESULTS_DIR        # /results (PVC mount)
+
+Log parsers (from existing parse_logs.py):
+  xgboost: single-line regex
+    pattern: timestamp INFO UE=X -> Predicted class: Y | Latency=Xms | End2end=Xms
+  cnn: two-line pair
+    line1: timestamp INFO [UE=X] Predicted class: Y
+    line2: timestamp INFO [BATCH KPM ...] ... end2end=X ms
+
+Agent connection protocol:
+  - Connects to DEMO_SERVER_HOST:DEMO_SERVER_PORT via TCP
+  - Sends socket.gethostname() on connect (server matches by hostname)
+  - Sends keep-alive "1" every 5 seconds
+  - Auto-reconnects on disconnect
+
+----------------------------------------------------------------
+COMPONENT 2: api_server.py (modified)
+----------------------------------------------------------------
+Location: xChain/src/2026-netsoft-demo/api/server/api_server.py
+
+Changes from current version:
+  - hosts dict fully built from env vars (no hardcoded IPs or names)
+  - Agent connections matched by HOSTNAME (not IP)
+  - ContainerHost: replace ips[] with hostname field
+  - On START: write current_experiment.txt to BASE_DIR on PVC
+  - Dockerfile fixed (COPY paths + new ENV declarations)
+
+Env vars:
+  SOCKET_PORT                 default: 4000
+  BASE_DIR                    default: /results
+  REFRESH_INTERVAL            default: 2
+  TRAFFIC_SERVER_HOSTNAME     default: oai-traffic-server
+  TRAFFIC_SERVER_CMD_VR       start:/usr/local/bin/tcpreplay -i eth0 /demo/pcap/vr.pcap
+  TRAFFIC_SERVER_CMD_HAPTIC   start:/usr/local/bin/tcpreplay -i eth0 /demo/pcap/haptic.pcap
+  TRAFFIC_SERVER_CMD_SOCIAL   start:/usr/local/bin/tcpreplay -i eth0 /demo/pcap/social.pcap
+  TRAFFIC_SERVER_CMD_IOT      start:/usr/local/bin/tcpreplay -i eth0 /demo/pcap/iot.pcap
+  SMARTGW_HOSTNAME            default: xchain-smartgw-demo
+  SMARTGW_CMD_MODELS          default: start:{models}
+
+----------------------------------------------------------------
+COMPONENT 3: container_host.py (modified)
+----------------------------------------------------------------
+Location: xChain/src/2026-netsoft-demo/api/server/container_host.py
+
+Changes:
+  - Replace ips[] field with hostname field
+  - client_listener matches by hostname sent on connect, not source IP
+
+----------------------------------------------------------------
+COMPONENT 4: smartgw_server_demo.py (rewrite)
+----------------------------------------------------------------
+Location: xChain/src/smartGW/smartgw_server_demo.py
+
+REMOVED:
+  - KMeans classification logic
+  - Flask /predict endpoint
+  - Orchestrator polling (fetch_routing_table, poll_orchestrator)
+  - requests import
+
+KEPT:
+  - Socket listener (receives KPM rows from tractor-kpm-oai)
+  - connect_socket / send_to_socket helpers
+
+ADDED:
+  - Connect to all 4 chains at startup, keep connections open
+    (FastInfer + Tractor active; GNN + LSTM present but commented)
+  - File poll thread: reads /tmp/selected_models.txt every MODELS_POLL_INTERVAL
+  - Forward worker: broadcasts every incoming KPM row to all active chains
+
+Env vars:
+  PORT                   default: 4200  (listens for tractor-kpm-oai)
+  SELECTED_MODELS_FILE   default: /tmp/selected_models.txt
+  MODELS_POLL_INTERVAL   default: 2
+  FASTINFER_HOST         default: xchain-fastinfer
+  FASTINFER_PORT         default: 4400
+  TRACTOR_HOST           default: tractor-mono
+  TRACTOR_PORT           default: 4300
+  # GNN_HOST / GNN_PORT         ← commented (future)
+  # LSTM_HOST / LSTM_PORT       ← commented (future)
+
+----------------------------------------------------------------
+HELM CHART STRUCTURE
+----------------------------------------------------------------
+
+xchain-demo/  (NEW umbrella chart)
+  Location: xChain/helm-charts/xchain-demo/
+  Dependencies:
+    - xchain-gui-server     (new)
+    - xchain-smartgw-demo   (new)
+    - tractor-kpm-oai       (existing, ORCH_HOST=xchain-smartgw-demo)
+    - xchain-fastinfer      (existing, + sidecar)
+    - tractor-mono          (existing, + sidecar)
+    # - xchain-kcl          (future/disabled)
+
+xchain-gui-server/  (NEW chart)
+  Location: xChain/helm-charts/xchain-gui-server/
+  Image    : built from xChain/src/2026-netsoft-demo/Dockerfile
+  Ports    : 5000 (HTTP+WebSocket), 4000 (TCP agent connections)
+  Mounts   : results-pvc at /results
+  nodeSelector: node-role=core
+
+xchain-smartgw-demo/  (NEW chart)
+  Location: xChain/helm-charts/xchain-smartgw-demo/
+  Main container : smartgw_server_demo.py
+    Mounts: smartgw model PVC
+  Sidecar: universal-agent
+    AGENT_MODE=file
+    AGENT_OUTPUT_FILE=/tmp/selected_models.txt
+    DEMO_SERVER_HOST=xchain-gui-server
+    DEMO_SERVER_PORT=4000
+  Shared emptyDir /tmp between main + sidecar
+  nodeSelector: node-role=core
+
+xchain-fastinfer/  (MODIFIED, add sidecar)
+  Main container: override command to tee stdout
+    command: ["sh", "-c"]
+    args: ["python xchain_model.py 2>&1 | tee /model-logs/model.log"]
+  Sidecar: universal-agent
+    AGENT_MODE=log_collector
+    MODEL_NAME=fastinfer
+    MODEL_TYPE=xgboost
+    LOG_FILE=/model-logs/model.log
+    RESULTS_DIR=/results
+    DEMO_SERVER_HOST=xchain-gui-server
+    DEMO_SERVER_PORT=4000
+  Volumes:
+    emptyDir model-logs (shared main + sidecar)
+    results-pvc at /results (sidecar only)
+
+tractor-mono/  (MODIFIED, add sidecar)
+  Same pattern as xchain-fastinfer
+  Sidecar: universal-agent
+    AGENT_MODE=log_collector
+    MODEL_NAME=cnn
+    MODEL_TYPE=cnn
+    LOG_FILE=/model-logs/model.log
+    RESULTS_DIR=/results
+
+oai-traffic-server/  (MODIFIED, add sidecar — lives in charts/oai-5g-core/)
+  Sidecar: universal-agent
+    AGENT_MODE=exec
+    DEMO_SERVER_HOST=xchain-gui-server
+    DEMO_SERVER_PORT=4000
+  New agent block in values.yaml for sidecar config
+
+tractor-kpm-oai/  (in xchain-demo umbrella, overriding values)
+  ORCH_HOST=xchain-smartgw-demo
+  ORCH_PORT=4200
+
+----------------------------------------------------------------
+FILES TO CREATE / MODIFY
+----------------------------------------------------------------
+
+NEW files:
+  1. xChain/src/2026-netsoft-demo/api/container_cmd/universal_agent.py
+  2. xChain/src/2026-netsoft-demo/api/container_cmd/Dockerfile
+  3. xChain/helm-charts/xchain-demo/Chart.yaml
+  4. xChain/helm-charts/xchain-demo/values.yaml
+  5. xChain/helm-charts/xchain-gui-server/  (full chart)
+  6. xChain/helm-charts/xchain-smartgw-demo/  (full chart)
+
+MODIFIED files:
+  7.  xChain/src/2026-netsoft-demo/api/server/api_server.py
+  8.  xChain/src/2026-netsoft-demo/api/server/container_host.py
+  9.  xChain/src/2026-netsoft-demo/Dockerfile  (fix COPY paths + ENV)
+  10. xChain/src/smartGW/smartgw_server_demo.py
+  11. xChain/helm-charts/xchain-fastinfer/  (add sidecar)
+  12. xChain/helm-charts/tractor-mono/  (add sidecar)
+  13. charts/oai-5g-core/oai-traffic-server/templates/deployment.yaml
+  14. charts/oai-5g-core/oai-traffic-server/values.yaml
+
+----------------------------------------------------------------
+IMPLEMENTATION ORDER
+----------------------------------------------------------------
+
+PHASE 1 — Python scripts (no K8s dependency, testable locally)
+  Order matters due to dependencies between files.
+
+  Step 1: container_host.py  (MODIFY)
+    - Simplest change, required by api_server.py
+    - Replace ips[] with hostname, fix matching logic
+    - No external dependencies
+
+  Step 2: api_server.py  (MODIFY)
+    - Depends on container_host.py
+    - Replace hardcoded hosts dict with env vars
+    - Add current_experiment.txt write on START
+    - Change host matching to hostname-based
+
+  Step 3: universal_agent.py  (NEW)
+    - Standalone, no dependencies on other new files
+    - Implement all 3 modes: exec, file, log_collector
+    - Reuse regex parsers from parse_logs.py
+    - Test locally: python universal_agent.py with each AGENT_MODE
+
+  Step 4: smartgw_server_demo.py  (REWRITE)
+    - Standalone, no dependencies on other new files
+    - Strip classification + orchestrator
+    - Add file poll + broadcast worker
+    - Hardcode 4 chain connections (2 active, 2 commented)
+
+PHASE 2 — Dockerfiles (requires Phase 1 complete)
+
+  Step 5: xChain/src/2026-netsoft-demo/Dockerfile  (MODIFY)
+    - Fix broken COPY paths for GUI build
+    - Add new ENV declarations for all api_server.py env vars
+    - Image tag: xchain-gui-server
+
+  Step 6: xChain/src/2026-netsoft-demo/api/container_cmd/Dockerfile  (NEW)
+    - FROM python:3.11-slim
+    - COPY universal_agent.py
+    - Install dependencies (no heavy libs, stdlib only)
+    - Image tag: universal-agent
+    - Build and push before helm chart work
+
+  Step 6b: xChain/src/smartGW/Dockerfile.demo  (NEW)
+    - FROM python:3.11-slim
+    - COPY smartgw_server_demo.py + xapp_control.py
+    - stdlib only, no pip installs
+    - Image tag: xchain-smartgw-demo
+    - Build context: xChain/src/
+    - Build: docker build -f xChain/src/smartGW/Dockerfile.demo -t ddocker122/xchain-smartgw-demo:latest xChain/src/
+
+PHASE 3 — Helm charts (requires Phase 2 images built and pushed)
+
+  Step 7: xchain-smartgw-demo/  (NEW chart)
+    - Main container: smartgw_server_demo.py image
+    - Sidecar: universal-agent (AGENT_MODE=file)
+    - emptyDir for /tmp shared between main + sidecar
+    - PVC for smartgw model
+
+  Step 8: xchain-gui-server/  (NEW chart)
+    - Image: xchain-gui-server
+    - Service: ClusterIP ports 5000 + 4000
+    - PVC: results-pvc mounted at /results
+    - All env vars from api_server.py
+
+  Step 9: xchain-fastinfer/  (MODIFY, add sidecar)
+    - Override main container command to tee to /model-logs/model.log
+    - Add universal-agent sidecar (AGENT_MODE=log_collector)
+    - Add emptyDir model-logs volume
+    - Add results-pvc mount in sidecar
+
+  Step 10: tractor-mono/  (MODIFY, add sidecar)
+    - Same pattern as Step 9
+    - MODEL_NAME=cnn, MODEL_TYPE=cnn
+
+  Step 11: oai-traffic-server/  (MODIFY, add sidecar)
+    - Add agent block in values.yaml
+    - Add universal-agent sidecar (AGENT_MODE=exec) to deployment.yaml
+    - Does NOT go into xchain-demo umbrella
+
+  Step 12: xchain-demo/  (NEW umbrella chart)
+    - Last step, after all sub-charts exist
+    - Wire dependencies with correct values overrides
+    - tractor-kpm-oai: ORCH_HOST=xchain-smartgw-demo
+
+----------------------------------------------------------------
+TESTING ORDER (after implementation)
+----------------------------------------------------------------
+  1. Deploy results-pvc (verify hostPath accessible)
+  2. Deploy xchain-fastinfer + tractor-mono (with sidecars)
+  3. Deploy xchain-smartgw-demo
+  4. Deploy tractor-kpm-oai (verify KPIs flowing to smartgw-demo)
+  5. Deploy oai-traffic-server (with sidecar)
+  6. Deploy xchain-gui-server
+  7. Open browser → select models + traffic type → START
+  8. Verify: agents connect, tcpreplay starts, smartgw routes,
+             models infer, CSVs written, GUI updates live
+
+----------------------------------------------------------------
+NOTES
+----------------------------------------------------------------
+- results-pvc uses hostPath for now (all pods on node-role=core)
+- Migrate to NFS later for multi-node support
+- GNN (xchain-kcl) and LSTM are future — present in code but commented
+- GUI is complete, no changes needed
+- Do not modify any model Docker images
+- gateway_agent.py in xChain/src/smartGW/ is superseded by universal_agent.py
+================================================================
+
+helm upgrade --install xchain-demo xChain/helm-charts/xchain-demo \
+  --set oai-traffic-server.agent.enabled=true

@@ -1,0 +1,32 @@
+# docker build \
+#   -f xChain/src/smartGW/Dockerfile.demo \
+#   -t ddocker122/xchain-smartgw-demo:latest \
+#   xChain/src/
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN useradd -m smartgwuser
+USER smartgwuser
+
+# Copy application code (build context is xChain/src/)
+COPY smartGW/smartgw_server_demo.py .
+COPY xapp/xapp_control.py ./xapp_control.py
+
+# Only stdlib used — no pip installs needed
+
+EXPOSE 4200
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+ENV PORT=4200
+ENV SELECTED_MODELS_FILE=/tmp/selected_models.txt
+ENV MODELS_POLL_INTERVAL=2
+ENV FASTINFER_HOST=xchain-fastinfer
+ENV FASTINFER_PORT=4400
+ENV TRACTOR_HOST=tractor-mono
+ENV TRACTOR_PORT=4300
+
+CMD ["python", "smartgw_server_demo.py"]

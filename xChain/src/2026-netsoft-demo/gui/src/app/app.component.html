@@ -1,0 +1,165 @@
+<main class="main container page-shell">
+  <div class="row dashboard">
+
+    <header class="topbar">
+      <div>
+        <h1>Demo: Intelligence Where It Matters in Open RAN</h1>
+        <p>Binh V. Duong, Mahdi Attawna, Tung V. Doan, Mingyu Ma, Frank H.P. Fitzek, Giang T. Nguyen</p>
+        <!-- <p>Compact single-page dashboard with consistent CNN/FastInfer colors across latency and accuracy plots.</p> -->
+      </div>
+      <!-- <div class="badge">Demo layout</div> -->
+    </header>
+
+
+
+
+
+
+    <div class="col-md-8 main-section">
+
+      <div class="charts row text-center section-row">
+        <div class="col-md-12">
+          <div class="inner card">
+            <div class="card-head">
+              <h2>Inference Latency</h2>
+              <span class="pill">{{comparisonLabel}}</span>
+            </div>
+            <div class="white-bg">
+
+              <div *ngIf="IsLoading" style=" padding: 115px;">
+                <svg class="spinner" width="63px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30">
+                  </circle>
+                </svg>
+                <p>Running, please wait</p>
+              </div>
+
+              <div *ngIf="!IsLoading && !IsRunning" style=" padding: 115px;">
+                <div  width="63px" height="35px"  > </div>
+                <p></p>
+              </div>
+              <div *ngIf="!IsLoading && IsRunning">
+                <img [src]="latency_chart_path" alt="" style="width: 100%;height: 300px;">
+              </div>
+              <!-- <canvas #delay_chart baseChart width="400" height="300" [type]="'line'" [data]="Delay_ChartData"
+                [options]="lineChartOptions" [legend]="lineChartLegend" [options]="barChartOptions">
+              </canvas> -->
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+      <div class="charts row text-center">
+
+        @for (item of ai_models; track item) {
+
+        <div class="col-md-3 accuracy-card" [class.active]="item.isSelected" [class.inactive]="!item.isSelected">
+          <div style="height: 20px;"></div>
+          <div class="card">
+            <div class="card-head">
+              <h2>{{item.label}}</h2>
+              <!-- <span class="pill">{{item.label}}</span> -->
+            </div>
+            <div class="inner" style="width: 150px;">
+              <ngx-gauge foregroundColor="{{item.foregroundColor}}" backgroundColor="#484848" [thick]="8"
+                [value]="item.accuracy" [size]="150" [label]="gaugeLabel" [max]="100" cap="round"></ngx-gauge>
+              <h4>Accuracy</h4>
+            </div>
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+
+    <div class="col-md-4 sidebar right-column">
+      <div class="inner">
+
+        <div class="card ai-panel">
+          <div class="card-head">
+            <h2>AI Model Sets</h2>
+            <span class="meta">Multi-select</span>
+          </div>
+
+          <div class="model-grid models">
+            @for (item of ai_models; track item) {
+            <button class="model-card {{item.css_class}}" (click)="selectModel(item)" [class.active]="item.isSelected"
+              [class.inactive]="!item.isSelected" [disabled]="IsRunning">
+              <span class="icon"><img [src]="item.icon"> </span>
+              <span>{{item.label}}</span>
+            </button>
+            }
+
+          </div>
+        </div>
+
+        <div class="divider" style="height: 15px;"></div>
+
+        <div class="card usecase-panel">
+          <div class="card-head">
+            <h2>Use Cases</h2>
+            <span class="meta">4 scenarios</span>
+          </div>
+
+          <div class="usecase-grid">
+            @for (trafficType of trafficTypes; track trafficType) {
+            <button class="usecase {{trafficType.css_class}}"
+              [class.inactive]="selectedTrafficType.value!=trafficType.value"
+              [class.active]="selectedTrafficType.value==trafficType.value" [disabled]="IsRunning"
+              (click)="selectTrafficType(trafficType)">
+              <span>{{trafficType.label}}</span></button>
+            }
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="start-container">
+        <div class="start-btn col-md-12">
+
+          <div *ngIf="!IsRunning" class="btn start-button" (click)="start()">
+            <i class="bi bi-play-fill"></i>
+            <label>START</label>
+          </div>
+
+          <div *ngIf="IsRunning" class="btn stop-button" (click)="stop()">
+            <i class="bi bi-stop-fill"></i>
+            <label>STOP</label>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- <footer>
+    <div class="row logos-container">
+      <div class="col-md-3"><img src="/assets/images/logos/comnets.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/6glife.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/toast.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/tu.png" alt=""></div>
+    </div>
+    <div class="row">
+      <p style="font-size: 12px;">Version: 1.0</p>
+    </div>
+  </footer> -->
+
+</main>
+
+<router-outlet></router-outlet>

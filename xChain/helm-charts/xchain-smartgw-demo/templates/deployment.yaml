@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "xchain-smartgw-demo.fullname" . }}
+  labels:
+    {{- include "xchain-smartgw-demo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "xchain-smartgw-demo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "xchain-smartgw-demo.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+
+      containers:
+        # ── Main container: SmartGW demo server ──────────────────────────────
+        - name: smartgw-demo
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+          {{- range .Values.service }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+          {{- end }}
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          volumeMounts:
+            - name: model
+              mountPath: "{{ .Values.persistentVolume.mountPath }}"
+              subPath: "{{ .Values.persistentVolume.subPath }}"
+            # shared emptyDir with agent sidecar for selected_models.txt
+            - name: agent-tmp
+              mountPath: /tmp
+          resources:
+{{ toYaml .Values.resources | nindent 12 }}
+
+        # ── Sidecar: universal agent (file mode) ─────────────────────────────
+        {{- if .Values.agent.enabled }}
+        - name: agent
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy | default "IfNotPresent" }}
+          env:
+          {{- range $key, $value := .Values.agent.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          volumeMounts:
+            # shared emptyDir so agent can write /tmp/selected_models.txt
+            - name: agent-tmp
+              mountPath: /tmp
+        {{- end }}
+
+      volumes:
+        - name: model
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}
+        # emptyDir shared between smartgw-demo and agent sidecar
+        - name: agent-tmp
+          emptyDir: {}

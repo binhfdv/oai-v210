@@ -1,0 +1,184 @@
+<main class="main container">
+  <div class="row">
+    <div class="col-md-3 sidebar">
+      <div class="inner">
+        <div class="header-area row">
+
+          <div class="ctrl-buttons col-md-12">
+            <!-- START Traffic Types  -->
+            <h2>Settings</h2>
+            <div class="btn-container container">
+
+              <h4 class="h5">Select Traffic Type:</h4>
+              <div class="traffic-types row">
+                @for (trafficType of trafficTypes; track trafficType) {
+                <div class=" col-md-12">
+                  <div [class.active]="selectedTrafficType.value==trafficType.value" class="button"
+                    (click)="selectTrafficType(trafficType)">
+                    <div class="checked-mark"><i class="bi bi-check-square"></i></div>
+                    <div>
+                      <i class="{{trafficType.icon}}"></i>
+                      <!-- <img class="icon" src="/assets/images/{{trafficType.value}}-icon.svg" alt=""> -->
+                      <label>{{trafficType.label}}</label>
+                    </div>
+                  </div>
+                </div>
+                }
+              </div>
+
+              <!-- END Traffic Types  -->
+
+              <div class="scenarios-container row">
+                <h4 class="h5">Select Scenario:</h4>
+                @for (item of scenarios; track item) {
+                <div class="col-md-12">
+                  <div [class.active]="selectedScenario==item.value" class="button btn-{{item.value}}"
+                    (click)="selectScenario(item.value)">
+                    <div class="checked-mark"><i class="bi bi-check-square"></i></div>
+                    <div><label> {{item.label}}</label>
+                      <p>{{item.description}}</p>
+                    </div>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="start-container">
+        <div class="start-btn col-md-12">
+
+          <!-- <div *ngIf="IsRunning">
+            <svg class="spinner" width="63px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+            </svg>
+            <p>Running, please wait</p>
+          </div> -->
+
+          <!-- <div  class="btn start-button" (click)="test_updateThcounters()">
+            <i class="bi bi-play-fill"></i>
+            <label>START</label>
+          </div> -->
+
+
+          <div *ngIf="!IsRunning" class="btn start-button" (click)="start()">
+            <i class="bi bi-play-fill"></i>
+            <label>START</label>
+          </div>
+
+          <div *ngIf="IsRunning" class="btn stop-button" (click)="stop()">
+            <i class="bi bi-stop-fill"></i>
+            <label>STOP</label>
+          </div>
+          <!-- <p class="btn" (click)="stop()">
+          <i class="bi bi-play-fill"></i>
+          <label>STOP</label>
+        </p> -->
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="col-md-9 main-section">
+
+      <div class="charts row text-center">
+        <h2 class="h1 text-center section-title">Performance</h2>
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <ngx-gauge foregroundColor="#facb5e" backgroundColor="#484848" [thick]="18" [value]="sent_packets"
+              [label]="gaugeLabel" [max]="max_packets" cap="round"></ngx-gauge>
+            <h4>Transmitted Packets</h4>
+          </div>
+        </div>
+
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <ngx-gauge foregroundColor="#facb5e" backgroundColor="#484848" [thick]="20" [value]="received_packets"
+              [label]="gaugeLabel" [max]="max_packets" cap="round"></ngx-gauge>
+            <h4>Received Packets</h4>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        Selected traffic: {{selectedTrafficType.label}}, Number of packets: {{selectedTrafficType.pkts_count}}, IPD: {{selectedTrafficType.ipd}}, Payload size: {{selectedTrafficType.payload_size}}   
+      </div>
+
+
+
+      <div class="divider"></div>
+      <div class="charts row text-center section-row">
+        <h2 class="h1 text-center section-title">Summary</h2>
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <div class="white-bg">
+
+              <div *ngIf="IsRunning" style=" padding: 115px;">
+                <svg class="spinner" width="63px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30">
+                  </circle>
+                </svg>
+                <p>Running, please wait</p>
+              </div>
+
+
+              <div *ngIf="!IsRunning">
+                <img [src]="owd_chart_path" alt="" style="width: 100%;height: 300px;">
+              </div>
+              <!-- <canvas #delay_chart baseChart width="400" height="300" [type]="'line'" [data]="Delay_ChartData"
+                [options]="lineChartOptions" [legend]="lineChartLegend" [options]="barChartOptions">
+              </canvas> -->
+            </div>
+            <h4>One Way Delay (OWD)</h4>
+          </div>
+        </div>
+
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <div class="white-bg">
+              <div *ngIf="IsRunning" style=" padding: 115px;">
+                <svg class="spinner" width="63px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30">
+                  </circle>
+                </svg>
+                <p>Running, please wait</p>
+              </div>
+              <div *ngIf="!IsRunning">
+                <img [src]="pkt_loss_chart_path" alt="" style="width: 100%;height: 300px;">
+              </div>
+
+            </div>
+            <h4>Packet Loss</h4>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <footer>
+    <div class="row logos-container">
+      <div class="col-md-3"><img src="/assets/images/logos/comnets.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/6glife.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/toast.png" alt=""></div>
+      <div class="col-md-3"><img src="/assets/images/logos/tu.png" alt=""></div>
+    </div>
+    <div class="row">
+      <p style="font-size: 12px;">Version: 1.0</p>
+    </div>
+  </footer>
+
+</main>
+
+<router-outlet></router-outlet>

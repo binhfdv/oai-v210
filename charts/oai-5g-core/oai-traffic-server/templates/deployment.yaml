@@ -115,6 +115,26 @@ spec:
             memory: {{ .Values.resources.requests.memory | default "128Mi" }}
         {{- end }}
       {{- end }}
+      {{- if .Values.agent.enabled }}
+      - name: agent
+        image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
+        imagePullPolicy: {{ .Values.agent.image.pullPolicy | default "IfNotPresent" }}
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
+        env:
+        {{- range $key, $value := .Values.agent.env }}
+          - name: {{ $key }}
+            value: "{{ $value }}"
+        {{- end }}
+        {{- if .Values.persistentVolume.enabled }}
+        volumeMounts:
+          - name: traffic-gen-volume
+            mountPath: {{ .Values.persistentVolume.mountPath }}
+        {{- end }}
+      {{- end }}
       volumes:
       - name: scripts
         configMap:

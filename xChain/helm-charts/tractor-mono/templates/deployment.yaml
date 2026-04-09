@@ -27,11 +27,13 @@ spec:
 {{ toYaml .Values.tolerations | nindent 8 }}
       {{- end }}
       containers:
+        # ── Main container ────────────────────────────────────────────────────
         - name: tractor-mono
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          # tee stdout to shared emptyDir so agent sidecar can tail it
           command: ["/bin/sh", "-c"]
-          args: ["sleep 1 && python main.py"]
+          args: ["sleep 1 && python main.py 2>&1 | tee /model-logs/model.log"]
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -49,8 +51,28 @@ spec:
             - name: norm
               mountPath: {{ .Values.volumeMounts.norm.mountPath }}
               subPath: {{ .Values.volumeMounts.norm.subPath }}
+            - name: model-logs
+              mountPath: /model-logs
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
+
+        # ── Sidecar: universal agent (log_collector mode) ─────────────────────
+        {{- if .Values.agent.enabled }}
+        - name: agent
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy | default "IfNotPresent" }}
+          env:
+          {{- range $key, $value := .Values.agent.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          volumeMounts:
+            - name: model-logs
+              mountPath: /model-logs
+            - name: results
+              mountPath: {{ .Values.resultsPVC.mountPath }}
+        {{- end }}
+
       volumes:
         - name: model
           persistentVolumeClaim:
@@ -58,3 +80,10 @@ spec:
         - name: norm
           persistentVolumeClaim:
             claimName: {{ .Values.persistentVolume.norm.claimName }}
+        # emptyDir shared between main container and agent sidecar
+        - name: model-logs
+          emptyDir: {}
+        # shared results PVC — written by sidecar, read by xchain-gui-server
+        - name: results
+          persistentVolumeClaim:
+            claimName: {{ .Values.resultsPVC.claimName }}

@@ -238,6 +238,17 @@ oai-traffic-server:
     image: ddocker122/traffic-gen-sidecar #ubuntu:22.04
     version: latest
     pullPolicy: IfNotPresent
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: exec
+      AGENT_HOSTNAME: oai-traffic-server
   resources:
     define: false
     limits:

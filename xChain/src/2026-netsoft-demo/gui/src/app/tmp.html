@@ -1,0 +1,107 @@
+<main class="main container">
+    <div class="row">
+      <div class="col-md-3">side bar</div>
+      <div class="col-md-9">main</div>
+    </div>
+    
+    <div class="sidebar"></div>
+      <div class="header-area row">
+    
+        <div class="ctrl-buttons col-md-8">
+          <!-- START Traffic Types  -->
+          <div class="btn-container container">
+            <h3 class="h3">Traffic Type :{{selectedTrafficType}}</h3>
+            <div class="traffic-types row">
+              @for (trafficType of trafficTypes; track trafficType) {
+              <div class=" col-md-4">
+                <div [class.active]="selectedTrafficType==trafficType.value" class="button"
+                  (click)="selectTrafficType(trafficType.value)">
+                  <i class="{{trafficType.icon}}"></i>
+                  <!-- <img class="icon" src="/assets/images/{{trafficType.value}}-icon.svg" alt=""> -->
+                  <label>{{trafficType.label}}</label>
+                </div>
+              </div>
+              }
+            </div>
+    
+            <!-- END Traffic Types  -->
+    
+            <div class="scenarios-container row">
+              <h3 class="h3">Scenario: {{selectedScenario}}</h3>
+              @for (item of scenarios; track item) {
+              <div class="col-md-4">
+                <div [class.active]="selectedTrafficType==item.value" class="button" (click)="selectScenario(item.value)">
+                  <label>{{item.label}}</label>
+                  <p>{{item.description}}</p>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+    
+        <div class="start-btn col-md-4">
+          <p class="btn" (click)="start()">
+            <i class="bi bi-play-fill"></i>
+            <label>START</label>
+          <p class="btn" (click)="stop()">
+            <i class="bi bi-play-fill"></i>
+            <label>STOP</label>
+          </p>
+        </div>
+      </div>
+    
+    
+      <div class="charts row text-center">
+        <h2 class="h1 text-center section-title">Performance</h2>
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <ngx-gauge foregroundColor="#facb5e" backgroundColor="#67b7a5" [thick]="14" [value]="send_packets"
+              [label]="gaugeLabel" [max]="max_packets"></ngx-gauge>
+            <h4>Transmitted Packets</h4>
+          </div>
+        </div>
+    
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <ngx-gauge foregroundColor="#facb5e" backgroundColor="#67b7a5" [thick]="14" [value]="received_packets"
+              [label]="gaugeLabel" [max]="max_packets"></ngx-gauge>
+            <h4>Received Packets</h4>
+          </div>
+        </div>
+      </div>
+    
+    
+    
+    
+    
+      <div class="row divider"></div>
+      <div class="charts row text-center section-row">
+        <h2 class="h1 text-center section-title">Summary</h2>
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <canvas #delay_chart baseChart width="400" height="400" [type]="'line'" [data]="Delay_ChartData"
+              [options]="lineChartOptions" [legend]="lineChartLegend">
+            </canvas>
+            <h4>One Way Delay (OWD)</h4>
+          </div>
+        </div>
+    
+        <div class="col-md-6 box-green">
+          <div class="inner">
+            <canvas #summary_chart baseChart width="800" height="200" type="bar" [data]="BW_ChartData">
+            </canvas>
+            <h4>Packet Loss</h4>
+          </div>
+        </div>
+      </div>
+    
+    
+    
+      <footer>
+        <h1>Logos</h1>
+      </footer>
+    
+    </main>
+    
+    <router-outlet></router-outlet>

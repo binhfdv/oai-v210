@@ -61,6 +61,19 @@ debug:
   version: latest
   pullPolicy: IfNotPresent
 
+# Universal agent sidecar (exec mode) — connects to xchain-gui-server
+agent:
+  enabled: false
+  image:
+    repository: ddocker122/universal-agent
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    DEMO_SERVER_HOST: xchain-gui-server
+    DEMO_SERVER_PORT: "4000"
+    AGENT_MODE: exec
+    AGENT_HOSTNAME: oai-traffic-server
+
 ## NF is the network function and tcpdump is the tcpdump container. 
 ## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
 ## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers

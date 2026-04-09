@@ -33,7 +33,7 @@ USER xchainuser
 COPY --from=builder /install /usr/local
 
 # Copy application code
-COPY xapp-fasinfer/xchain_model.py .
+COPY xapp-fastinfer/xchain_model.py .
 COPY xapp/xapp_control.py ./xapp_control.py
 
 # Container-optimized Python settings

@@ -38,9 +38,9 @@ kubectl exec -it $(kubectl get pods -l app.kubernetes.io/instance=oai-nr-ue-5 -o
 
 ./replay_from_ue.sh ue_urllc/pcaps/ue1 oaitun_ue1 1000
 ./replay_from_ue.sh ue_urllc/pcaps/ue2 oaitun_ue1 1000
-./replay_from_ue.sh ue_urllc/pcaps/ue3 oaitun_ue1 1000
-./replay_from_ue.sh ue_urllc/pcaps/ue4 oaitun_ue1 1000
-./replay_from_ue.sh ue_urllc/pcaps/ue5 oaitun_ue1 1000
+./replay_from_ue.sh ue_embb/pcaps/ue3 oaitun_ue1 1000
+./replay_from_ue.sh ue_embb/pcaps/ue4 oaitun_ue1 1000
+./replay_from_ue.sh ue_embb/pcaps/ue5 oaitun_ue1 1000
 ```
 
 # Capture KPM

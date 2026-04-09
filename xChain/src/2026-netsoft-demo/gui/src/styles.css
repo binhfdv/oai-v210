@@ -1,0 +1,283 @@
+@import '../node_modules/bootstrap-icons/font/bootstrap-icons';
+/*This is from the bootstrap icons package*/
+
+:root {
+  --bg-1: #f8f5f8;
+  --bg-2: #f1edf3;
+  --text: #0f172a;
+  --muted: #64748b;
+  --panel: rgba(255, 255, 255, 0.74);
+  --panel-border: rgba(203, 213, 225, 0.72);
+  --cnn-dark: #2563eb;
+  --cnn-light: #60a5fa;
+  --fast-dark: #10b981;
+  --fast-light: #34d399;
+  --blue-soft: #eff6ff;
+  --green-soft: #ecfdf5;
+  --shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(233, 182, 255, 0.28), transparent 24%),
+    radial-gradient(circle at 70% 78%, rgba(115, 155, 255, 0.22), transparent 28%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+}
+
+
+
+
+
+/** Loading spinner**/
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+  animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+
+  25% {
+    stroke: #DE3E35;
+  }
+
+  50% {
+    stroke: #F7C223;
+  }
+
+  75% {
+    stroke: #1B9A59;
+  }
+
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #e7f0ff;
+  }
+
+  25% {
+    stroke: #deca35;
+  }
+
+  50% {
+    stroke: #F7C223;
+  }
+
+  75% {
+    stroke: #3bef92;
+  }
+
+  100% {
+    stroke: #ff7e14;
+  }
+}
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+
+/** Loading spinner **/
+
+
+
+
+
+
+
+/* ===== Side logos in outer page gutters ===== */
+.side-logos {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.side-logos-left {
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.side-logos-right {
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  justify-content: flex-end;
+}
+
+.side-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.logo-6glife {
+  max-width: 170px;
+  max-height: 58px;
+}
+
+.logo-ceti {
+  max-width: 168px;
+  max-height: 60px;
+}
+
+.logo-tud {
+  max-width: 180px;
+  max-height: 88px;
+}
+
+@media (max-width: 1600px) {
+  .logo-6glife {
+    max-width: 150px;
+    max-height: 52px;
+  }
+
+  .logo-ceti {
+    max-width: 148px;
+    max-height: 54px;
+  }
+
+  .logo-tud {
+    max-width: 180px;
+    max-height: 78px;
+  }
+}
+
+.logo-ceti {
+  max-width: 168px;
+  max-height: 60px;
+}
+
+.logo-tud {
+  max-width: 180px;
+  max-height: 88px;
+}
+
+
+@media (max-width: 1380px) {
+  .side-logos {
+    opacity: 0.9;
+  }
+
+  .logo-6glife {
+    max-width: 130px;
+    max-height: 46px;
+  }
+
+  .logo-ceti {
+    max-width: 128px;
+    max-height: 48px;
+  }
+
+  .logo-tud {
+    max-width: 170px;
+    max-height: 66px;
+  }
+}
+
+.logo-6glife {
+  max-width: 170px;
+  max-height: 58px;
+}
+
+.logo-ceti {
+  max-width: 168px;
+  max-height: 60px;
+}
+
+.logo-tud {
+  max-width: 180px;
+  max-height: 88px;
+}
+
+
+@media (max-width: 1180px) {
+  .side-logos {
+    display: none;
+  }
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

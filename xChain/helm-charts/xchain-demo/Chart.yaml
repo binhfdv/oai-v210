@@ -1,0 +1,38 @@
+apiVersion: v2
+name: xchain-demo
+description: xChain Netsoft 2026 demo — umbrella chart
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - condition: xchain-gui-server.enabled
+    name: xchain-gui-server
+    repository: "file://../xchain-gui-server"
+    version: 0.1.0
+
+  - condition: xchain-smartgw-demo.enabled
+    name: xchain-smartgw-demo
+    repository: "file://../xchain-smartgw-demo"
+    version: 0.1.0
+
+  - condition: tractor-kpm-oai.enabled
+    name: tractor-kpm-oai
+    repository: "file://../tractor-kpm-oai"
+    version: 0.1.0
+
+  - condition: xchain-fastinfer.enabled
+    name: xchain-fastinfer
+    repository: "file://../xchain-fastinfer"
+    version: 0.1.0
+
+  - condition: tractor-mono.enabled
+    name: tractor-mono
+    repository: "file://../tractor-mono"
+    version: 0.1.0
+
+  # future
+  # - condition: xchain-kcl.enabled
+  #   name: xchain-kcl
+  #   repository: "file://../xchain-kcl"
+  #   version: 0.1.0

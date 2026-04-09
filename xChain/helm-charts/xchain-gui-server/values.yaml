@@ -1,0 +1,53 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-gui-server
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-gui-server"
+
+serviceAccount:
+  create: true
+  name: "xchain-gui-server-sa"
+  automount: true
+  annotations: {}
+
+serviceType: NodePort
+
+service:
+  - name: http
+    containerPort: 5000
+    nodePort: 30500
+  - name: agent-tcp
+    containerPort: 4000
+    nodePort: 30400
+
+env:
+  BASE_DIR:                   /results/
+  REFRESH_INTERVAL:           "2"
+  SOCKET_PORT:                "4000"
+  TRAFFIC_SERVER_HOSTNAME:    oai-traffic-server
+  TRAFFIC_SERVER_CMD_VR:      "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/vr.pcap'"
+  TRAFFIC_SERVER_CMD_HAPTIC:  "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/haptic.pcap'"
+  TRAFFIC_SERVER_CMD_SOCIAL:  "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/social.pcap'"
+  TRAFFIC_SERVER_CMD_IOT:     "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/iot.pcap'"
+  SMARTGW_HOSTNAME:           xchain-smartgw-demo
+  SMARTGW_CMD_MODELS:         "start:{models}"
+
+# Shared results PVC (hostPath for now, migrate to NFS later)
+persistentVolume:
+  enabled: true
+  name: demo-results-pv
+  claimName: demo-results-pvc
+  size: 5Gi
+  accessMode: ReadWriteMany
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
+  reclaimPolicy: Delete
+  mountPath: /results
+
+resources: {}
+nodeSelector:
+  node-role: core
+affinity: {}
+tolerations: []

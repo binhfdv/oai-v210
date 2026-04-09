@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-smartgw-demo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-smartgw-demo"
+
+serviceAccount:
+  create: true
+  name: "xchain-smartgw-demo-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-tcp
+    containerPort: 4200
+
+env:
+  PORT:                  "4200"
+  SELECTED_MODELS_FILE:  /tmp/selected_models.txt
+  MODELS_POLL_INTERVAL:  "2"
+  FASTINFER_HOST:        xchain-fastinfer
+  FASTINFER_PORT:        "4400"
+  TRACTOR_HOST:          tractor-mono
+  TRACTOR_PORT:          "4300"
+
+persistentVolume:
+  enabled: true
+  name: smartgw-demo-model-pv
+  claimName: smartgw-demo-model-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model/smartgw.pkl
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/smartGW
+  reclaimPolicy: Delete
+  subPath: smartgw_0134.pkl
+
+# Universal agent sidecar (AGENT_MODE=file)
+agent:
+  enabled: false
+  image:
+    repository: ddocker122/universal-agent
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    DEMO_SERVER_HOST: xchain-gui-server
+    DEMO_SERVER_PORT: "4000"
+    AGENT_MODE: file
+    AGENT_HOSTNAME: xchain-smartgw-demo
+    AGENT_OUTPUT_FILE: /tmp/selected_models.txt
+
+resources: {}
+nodeSelector:
+  node-role: core
+affinity: {}
+tolerations: []

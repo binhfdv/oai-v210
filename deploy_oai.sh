@@ -3,7 +3,7 @@
 # ==============================
 # OAI Basic Deployment Script
 # Usage: ./deploy_oai.sh <repodir> [--c] [--ues N] [components...]
-# Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all
+# Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all
 # Options:
 #   --c       Continue deployment (skip helm uninstall)
 #   --ues N   Number of UEs to deploy (default: 1)
@@ -15,6 +15,7 @@
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 all
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --ues 5 ue-gnb
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c kpm
+#   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c xchain-demo
 
 # # Deploy step by step
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core
@@ -28,6 +29,9 @@
 # --ues N deploys N UEs via deploy_multi_ue.py (N>1) or single helm install (N=1)
 # ping runs a connectivity test from every UE pod via oaitun_ue1
 # ==============================
+# ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core ric cu ue-gnb kpm xchain-demo
+# kubectl rollout restart deployment/xchain-gui-server -n oai
+
 
 # --- Validate input ---
 if [ -z "$1" ]; then
@@ -66,7 +70,7 @@ done
 
 if [ ${#COMPONENTS[@]} -eq 0 ]; then
   echo "Error: No components specified."
-  echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all"
+  echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all"
   exit 1
 fi
 
@@ -306,13 +310,21 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       helm install xchain-basic . -n oai
       ;;
 
+    xchain-demo)
+      echo ""
+      echo "=== Deploying xchain-demo (Netsoft 2026 demo) ==="
+      cd "$REPODIR/xChain/helm-charts/xchain-demo" || exit 1
+      helm dependency update
+      helm upgrade --install xchain-demo . -n oai
+      ;;
+
     ping)
       ping_test
       ;;
 
     *)
       echo "Unknown component: $COMPONENT"
-      echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all"
+      echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all"
       exit 1
       ;;
   esac

@@ -1,0 +1,242 @@
+
+
+.box-green .inner{
+    padding: 10px;
+    background-color: #626262;
+    border-radius: 10px;
+}
+.sidebar .inner{
+    padding: 30px 10px;
+    margin-top: 83px;
+    text-align: center;
+    background-color: #327a81;
+}
+
+
+.sidebar .start-container{
+    padding: 30px 10px;
+  
+    text-align: center;
+    background-color: #327a81;
+}
+
+
+.traffic-types{    
+    justify-content: space-between;
+}
+.traffic-types .button{
+    display: inline-block;
+    width: 215px;
+    height: 70px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid white;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 1.3em;
+}
+
+
+
+.traffic-types .button label{
+    color:white;/* var(--color3);*/
+    font-weight: bold;
+    margin: 2px 10px;
+}
+.traffic-types .button .icon {   
+      width: 32px; 
+}
+.traffic-types .button i {
+    color:white;
+    font-size: 33px;
+}
+.traffic-types .button .checked-mark{
+    position:absolute;
+    display: none;
+}
+.traffic-types .button.active{
+    background-color: #f5ca54;
+    border: 3px solid #ffffff;
+}
+
+.traffic-types .button.active .checked-mark{
+    position:absolute;
+    display:block;
+}
+.traffic-types .button.active label{
+    color: #404040;
+}
+.traffic-types .button.active i {   
+    color: #404040;
+}
+
+
+/*Scenarios*/
+
+.scenarios-container{    
+    justify-content: space-between;
+}
+.scenarios-container .button{
+    display: inline-block;
+    width: 240px;
+    height: 70px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid white;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #33666c;
+}
+
+
+
+.scenarios-container .button.btn-scenario1 {
+    /* background-color: #e79a00; */    
+    border: 2px solid #46d69f;
+}
+.scenarios-container .button.btn-scenario1.active {
+    background-color: #46d69f;
+    border: 3px solid #ffffff;
+    color:white;
+    
+}
+.scenarios-container .button .checked-mark{
+    position:absolute;
+    display: none;
+    font-size: 30px;
+}
+.scenarios-container .button.active .checked-mark{
+    position:absolute;
+    display:block;
+   
+}
+.scenarios-container .button.btn-scenario2 {
+    /* background-color: #e79a00; */    
+    border: 2px solid #d74b67;
+}
+.scenarios-container .button.btn-scenario2.active {
+    background-color: #d74b67;
+    border: 3px solid #ffffff;
+    color:white;
+}
+
+.scenarios-container .button.btn-scenario3 {
+    /* background-color: #e79a00; */    
+    border: 2px solid #e79a00;
+}
+.scenarios-container .button.btn-scenario3.active {
+    background-color: #e79a00;
+    border: 3px solid #ffffff;
+    color:white;
+}
+
+.scenarios-container .button label{
+   
+    font-weight: bold;
+    margin: 2px 10px;
+    font-size: 1.3em;
+}
+.scenarios-container .button .icon {   
+      width: 32px; 
+}
+
+
+.scenarios-container .button.active{
+    background-color: #f55454;
+    border: 3px solid #ffffff;
+}
+.scenarios-container .button.active label{
+    color: white;
+}
+
+
+
+ .start-button{
+    display: inline-block;
+    width: 215px;
+    padding: 25px 5px;
+    border-radius: 10px;
+    background: #3eaf58;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    /* border: 1px solid white; */
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.start-button i{
+    font-size: 1.2em;
+    padding-right: 15px;
+}
+
+
+
+.stop-button{
+    display: inline-block;
+    width: 215px;
+    padding: 25px 5px;
+    border-radius: 10px;
+    background: #d2302a;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    /* border: 1px solid white; */
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.stop-button i{
+    font-size: 1.2em;
+    padding-right: 15px;
+}
+
+
+.divider{
+    width: 1px;
+    height: 50px;
+    
+}
+.section-title{
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.sidebar h4{
+    text-align: left;
+    margin-top: 20px;
+
+}
+
+footer .logos-container{
+    display: flex;
+    align-content: flex-start;
+    align-items: center;
+    background: #ffffffd1;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.white-bg{
+    background-color: #3c3c3c;
+}
+
+
+
+
+
+
+
+
+
