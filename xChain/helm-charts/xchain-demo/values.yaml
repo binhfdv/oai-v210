@@ -36,7 +36,6 @@ tractor-kpm-oai:
   env:
     ORCH_HOST: xchain-smartgw-demo
     ORCH_PORT: "4200"
-    NUM_UES: "1"
 
 
 
