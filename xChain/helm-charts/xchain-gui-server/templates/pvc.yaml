@@ -9,8 +9,14 @@ spec:
   accessModes:
     - {{ .Values.persistentVolume.accessMode }}
   persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy | default "Retain" }}
+  {{- if eq .Values.persistentVolume.type "nfs" }}
+  nfs:
+    server: {{ .Values.persistentVolume.nfs.server }}
+    path: {{ .Values.persistentVolume.nfs.path }}
+  {{- else }}
   hostPath:
     path: {{ .Values.persistentVolume.hostPath }}
+  {{- end }}
 
 ---
 apiVersion: v1

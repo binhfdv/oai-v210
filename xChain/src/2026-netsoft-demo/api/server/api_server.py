@@ -154,11 +154,13 @@ IsRunning = False
 def write_current_experiment(traffic_type):
     """Write current experiment info to PVC so log_collector sidecars can read it."""
     ground_truth = GROUND_TRUTH_MAP.get(traffic_type, "eMBB")
+    started_at = time.time()
     path = os.path.join(base_dir, "current_experiment.txt")
     os.makedirs(base_dir, exist_ok=True)
     with open(path, "w") as f:
         f.write(f"traffic_type={traffic_type}\n")
         f.write(f"ground_truth={ground_truth}\n")
+        f.write(f"started_at={started_at}\n")
     print(f"Written current_experiment.txt: traffic_type={traffic_type}, ground_truth={ground_truth}")
 
 

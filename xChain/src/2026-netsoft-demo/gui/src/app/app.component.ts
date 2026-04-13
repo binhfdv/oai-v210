@@ -250,16 +250,14 @@ export class AppComponent implements OnInit {
   selectModel(value: AIModel) {
     console.log("selectModel ", value);
     value.isSelected = !value.isSelected;
-    // this.selectedScenario = value;
-    // if(this.selectedModels.includes(value))
-
+    this.selectedModels = this.ai_models.filter(m => m.isSelected);
   }
 
   start() {
     this.IsRunning = true;
     this.IsLoading = true;
 
-    this.backend_service.start(this.selectedModels.map(item => item.value).toString(), this.selectedTrafficType.value).subscribe(data => {
+    this.backend_service.start(this.ai_models.filter(m => m.isSelected).map(item => item.value).toString(), this.selectedTrafficType.value).subscribe(data => {
       console.log("start response", data);
 
     });

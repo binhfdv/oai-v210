@@ -131,6 +131,7 @@ XGB_RE = re.compile(
 _experiment_lock    = threading.Lock()
 _current_traffic    = None
 _current_gt         = None
+_current_started_at = None
 _correct            = 0
 _total              = 0
 _acc_writer         = None
@@ -140,7 +141,7 @@ _lat_file           = None
 
 
 def read_current_experiment():
-    """Read traffic_type and ground_truth from RESULTS_DIR/current_experiment.txt."""
+    """Read traffic_type, ground_truth and started_at from RESULTS_DIR/current_experiment.txt."""
     path = os.path.join(RESULTS_DIR, 'current_experiment.txt')
     try:
         with open(path, 'r') as f:
@@ -150,12 +151,12 @@ def read_current_experiment():
             if '=' in line:
                 k, v = line.split('=', 1)
                 data[k.strip()] = v.strip()
-        return data.get('traffic_type'), data.get('ground_truth')
+        return data.get('traffic_type'), data.get('ground_truth'), data.get('started_at')
     except FileNotFoundError:
-        return None, None
+        return None, None, None
     except Exception as e:
         print(f"[agent:log_collector] Error reading experiment file: {e}")
-        return None, None
+        return None, None, None
 
 
 def reset_csv_writers(traffic_type):
@@ -213,16 +214,21 @@ def record_prediction(ts, pred_cls, end2end_ms):
 
 def poll_experiment_file():
     """Background thread: watch for experiment changes and reset CSV writers."""
-    global _current_traffic, _current_gt
+    global _current_traffic, _current_gt, _current_started_at
 
     while True:
-        traffic_type, ground_truth = read_current_experiment()
+        traffic_type, ground_truth, started_at = read_current_experiment()
 
-        if traffic_type and (traffic_type != _current_traffic or ground_truth != _current_gt):
-            print(f"[agent:log_collector] Experiment changed → traffic={traffic_type} gt={ground_truth}")
+        if traffic_type and (
+            traffic_type != _current_traffic or
+            ground_truth != _current_gt or
+            started_at != _current_started_at
+        ):
+            print(f"[agent:log_collector] Experiment changed → traffic={traffic_type} gt={ground_truth} started_at={started_at}")
             with _experiment_lock:
-                _current_traffic = traffic_type
-                _current_gt      = ground_truth
+                _current_traffic   = traffic_type
+                _current_gt        = ground_truth
+                _current_started_at = started_at
                 reset_csv_writers(traffic_type)
 
         time.sleep(2)

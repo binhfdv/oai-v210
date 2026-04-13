@@ -1,2 +1,3 @@
-traffic_type=iot
-ground_truth=mMTC
+traffic_type=vr
+ground_truth=eMBB
+started_at=1776085513.9047506

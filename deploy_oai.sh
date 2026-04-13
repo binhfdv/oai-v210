@@ -2,11 +2,13 @@
 
 # ==============================
 # OAI Basic Deployment Script
-# Usage: ./deploy_oai.sh <repodir> [--c] [--ues N] [components...]
+# Usage: ./deploy_oai.sh <repodir> [--c] [--ues N] [--core-role LABEL] [--ran-role LABEL] [components...]
 # Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all
 # Options:
-#   --c       Continue deployment (skip helm uninstall)
-#   --ues N   Number of UEs to deploy (default: 1)
+#   --c              Continue deployment (skip helm uninstall)
+#   --ues N          Number of UEs to deploy (default: 1)
+#   --core-role LABEL  node-role label for core components (default: core)
+#   --ran-role LABEL   node-role label for RAN/RIC components (default: ran)
 # Config (env vars, defaults shown):
 #   PING_TARGET=10.1.2.14   target IP for UE ping test
 #   NODE_ROLE=core           node-role label for UE pods
@@ -16,6 +18,7 @@
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --ues 5 ue-gnb
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c kpm
 #   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --c xchain-demo
+#   ./deploy_oai.sh /home/lapdk/workspace/oai-v210 --core-role core --ran-role ran core cu ric kpm kpm-tools xchain-demo
 
 # # Deploy step by step
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core
@@ -30,13 +33,14 @@
 # ping runs a connectivity test from every UE pod via oaitun_ue1
 # ==============================
 # ./deploy_oai.sh /home/lapdk/workspace/oai-v210 core ric cu ue-gnb kpm xchain-demo
+# ./deploy_oai.sh /home/core/oai-v210 --core-role core --ran-role ran core ric cu ue-gnb kpm kpm-tools xchain-demo
 # kubectl rollout restart deployment/xchain-gui-server -n oai
 
 
 # --- Validate input ---
 if [ -z "$1" ]; then
   echo "Usage: $0 <repodir> [--c] [--ues N] [components...]"
-  echo "Components: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | ping | all"
+  echo "Components: core | cu | gnb | ric | ue | ue-gnb | kpm | kpm-tools | gmrp | rc | xchain-basic | xchain-demo | ping | all"
   echo "Options: --c  (skip helm uninstall)  --ues N  (number of UEs, default 1)"
   exit 1
 fi
@@ -47,6 +51,8 @@ shift
 # --- Parse flags and components ---
 SKIP_UNINSTALL=false
 NUM_UES=1
+CORE_ROLE="core"
+RAN_ROLE="ran"
 COMPONENTS=()
 
 while [ $# -gt 0 ]; do
@@ -57,6 +63,14 @@ while [ $# -gt 0 ]; do
     --ues)
       shift
       NUM_UES="$1"
+      ;;
+    --core-role)
+      shift
+      CORE_ROLE="$1"
+      ;;
+    --ran-role)
+      shift
+      RAN_ROLE="$1"
       ;;
     all)
       COMPONENTS=(core ric cu ue-gnb) # the order must be core → ric → cu → ue-gnb → others for proper dependency setup
@@ -70,7 +84,7 @@ done
 
 if [ ${#COMPONENTS[@]} -eq 0 ]; then
   echo "Error: No components specified."
-  echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all"
+  echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | kpm-tools | gmrp | rc | xchain-basic | xchain-demo | ping | all"
   exit 1
 fi
 
@@ -217,44 +231,50 @@ for COMPONENT in "${COMPONENTS[@]}"; do
 
     core)
       echo ""
-      echo "=== Deploying 5G Core ==="
+      echo "=== Deploying 5G Core (node-role=$CORE_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-core/oai-5g-basic" || exit 1
       helm dependency update
-      helm install oai-5g-basic . -n oai
+      helm install oai-5g-basic . -n oai \
+        --set oai-traffic-server.nodeSelector.node-role="$CORE_ROLE"
       wait_for_pod_ready oai-amf AMF
       ;;
 
     cu)
       echo ""
-      echo "=== Deploying CU-CP ==="
+      echo "=== Deploying CU-CP (node-role=$RAN_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-ran/oai-cu-cp" || exit 1
-      helm install oai-cu-cp . -n oai
+      helm install oai-cu-cp . -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       wait_for_pod_ready oai-cu-cp CU-CP
 
-      echo "=== Deploying CU-UP ==="
+      echo "=== Deploying CU-UP (node-role=$RAN_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-ran/oai-cu-up" || exit 1
-      helm install oai-cu-up . -n oai
+      helm install oai-cu-up . -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       wait_for_pod_ready oai-cu-up CU-UP
 
-      echo "=== Deploying DU ==="
+      echo "=== Deploying DU (node-role=$RAN_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-ran/oai-du" || exit 1
-      helm install oai-du . -n oai
+      helm install oai-du . -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       wait_for_pod_ready oai-du DU
       ;;
 
     gnb)
       echo ""
-      echo "=== Deploying gNB (e2-gnb) ==="
+      echo "=== Deploying gNB (e2-gnb) (node-role=$RAN_ROLE) ==="
       cd "$REPODIR/helm-flexric" || exit 1
-      helm install e2-gnb ./e2-gnb -n oai
+      helm install e2-gnb ./e2-gnb -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       sleep 7
       ;;
 
     ue)
       echo ""
-      echo "=== Deploying oai-nr-ue ==="
+      echo "=== Deploying oai-nr-ue (node-role=$CORE_ROLE) ==="
       cd "$REPODIR/charts/oai-5g-ran/oai-nr-ue" || exit 1
-      helm install oai-nr-ue . -n oai
+      helm install oai-nr-ue . -n oai \
+        --set nodeSelector.node-role="$CORE_ROLE"
       sleep 30
       ping_test
       ;;
@@ -270,20 +290,34 @@ for COMPONENT in "${COMPONENTS[@]}"; do
 
     ric)
       echo ""
-      echo "=== Deploying near-RT RIC ==="
+      echo "=== Deploying near-RT RIC (node-role=$RAN_ROLE) ==="
       cd "$REPODIR/helm-flexric/nearrt-ric" || exit 1
       helm dependency update
-      helm install near-rt-ric . -n oai
+      helm install near-rt-ric . -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       wait_for_pod_ready oai-nearrt-ric near-RT-RIC
       ;;
 
     kpm)
       echo ""
-      echo "=== Deploying xApp: KPM monitor ==="
+      echo "=== Deploying xApp: KPM monitor (node-role=$RAN_ROLE) ==="
       wait_for_ric_healthy
       cd "$REPODIR/helm-flexric/xapp-kpm-moni" || exit 1
-      helm install xapp-kpm-moni . -n oai
+      helm install xapp-kpm-moni . -n oai \
+        --set nodeSelector.node-role="$RAN_ROLE"
       sleep 7
+      ;;
+
+    kpm-tools)
+      echo ""
+      echo "=== Deploying KPM tools (watcher + cleaner) (node-role=$RAN_ROLE) ==="
+      wait_for_pod_ready xapp-kpm-moni KPM-xApp
+      cd "$REPODIR/helm-flexric/watcher-kpm-moni" || exit 1
+      helm upgrade --install watcher-kpm-moni . \
+        --set nodeSelector.node-role="$RAN_ROLE"
+      cd "$REPODIR/helm-flexric/cleaner-kpm-moni" || exit 1
+      helm upgrade --install cleaner-kpm-moni . \
+        --set nodeSelector.node-role="$RAN_ROLE"
       ;;
 
     gmrp)
@@ -324,7 +358,7 @@ for COMPONENT in "${COMPONENTS[@]}"; do
 
     *)
       echo "Unknown component: $COMPONENT"
-      echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | gmrp | rc | xchain-basic | xchain-demo | ping | all"
+      echo "Valid options: core | cu | gnb | ric | ue | ue-gnb | kpm | kpm-tools | gmrp | rc | xchain-basic | xchain-demo | ping | all"
       exit 1
       ;;
   esac

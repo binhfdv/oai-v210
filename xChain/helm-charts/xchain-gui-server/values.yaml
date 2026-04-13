@@ -35,16 +35,21 @@ env:
   SMARTGW_HOSTNAME:           xchain-smartgw-demo
   SMARTGW_CMD_MODELS:         "start:{models}"
 
-# Shared results PVC (hostPath for now, migrate to NFS later)
+# Shared results PVC
+# type: nfs (distributed) or hostPath (single-node)
 persistentVolume:
   enabled: true
   name: demo-results-pv
   claimName: demo-results-pvc
   size: 5Gi
   accessMode: ReadWriteMany
-  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
   reclaimPolicy: Delete
   mountPath: /results
+  type: nfs
+  nfs:
+    server: 192.168.21.153
+    path: /home/core/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
+  hostPath: /home/core/oai-v210/xChain/src/2026-netsoft-demo/api/server/demo/data
 
 resources: {}
 nodeSelector:
