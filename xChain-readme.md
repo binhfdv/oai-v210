@@ -1,4 +1,5 @@
 presiquites
+helm version v3.19.0
 K8s cluster
 namespace `oai`
 configurations

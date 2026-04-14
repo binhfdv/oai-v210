@@ -32,6 +32,10 @@ spec:
               mountPath: {{ .Values.persistentVolume.mountPath }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
       volumes:
         - name: kpm-data
           persistentVolumeClaim:

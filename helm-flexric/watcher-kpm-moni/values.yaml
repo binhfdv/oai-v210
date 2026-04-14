@@ -42,3 +42,7 @@ metricsConfig:
       "RRU.PrbTotDl": "RRU\\.PrbTotDl = ([\\d.]+) \\[PRBs\\]",
       "RRU.PrbTotUl": "RRU\\.PrbTotUl = ([\\d.]+) \\[PRBs\\]"
     }
+
+
+nodeSelector:
+  node-role: {}
