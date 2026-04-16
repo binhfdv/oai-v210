@@ -30,6 +30,7 @@ import re
 import csv
 import sys
 import time
+import shlex
 import signal
 import socket
 import threading
@@ -64,13 +65,14 @@ def exec_start(payload):
     global current_process
     if current_process is not None:
         exec_stop()
-    args = payload.split()
+    args = shlex.split(payload)
     print(f"[agent:exec] Running: {args}")
     current_process = subprocess.Popen(
         args,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
+        start_new_session=True,   # put process in its own process group
     )
     threading.Thread(target=_drain_output, args=(current_process,), daemon=True).start()
 
@@ -86,10 +88,13 @@ def exec_stop():
         return
     print("[agent:exec] Stopping process")
     try:
-        current_process.terminate()
+        os.killpg(os.getpgid(current_process.pid), signal.SIGTERM)
         current_process.wait(timeout=5)
     except Exception:
-        current_process.kill()
+        try:
+            os.killpg(os.getpgid(current_process.pid), signal.SIGKILL)
+        except Exception:
+            pass
     current_process = None
 
 

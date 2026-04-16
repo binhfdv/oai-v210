@@ -1,7 +1,9 @@
 FROM python:3.11-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    tcpreplay \
+    iputils-ping iproute2 tcpdump netcat-openbsd curl tcpreplay \
+    automake build-essential libpcap-dev python3 python3-pip \
+    && pip3 install scapy \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1

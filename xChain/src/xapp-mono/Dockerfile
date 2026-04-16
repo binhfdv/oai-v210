@@ -56,7 +56,7 @@ RUN pip install --no-cache-dir --upgrade pip \
         matplotlib \
         pandas \
         torch==2.3.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-
+        # for Pi use: torch==2.3.0
 # =========================
 # Stage 2: Final runtime
 # =========================
