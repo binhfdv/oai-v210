@@ -31,6 +31,16 @@ dependencies:
     repository: "file://../tractor-mono"
     version: 0.1.0
 
+  - condition: xchain-lstm.enabled
+    name: xchain-lstm
+    repository: "file://../xchain-lstm"
+    version: 0.1.0
+
+  - condition: xchain-gnn.enabled
+    name: xchain-gnn
+    repository: "file://../xchain-gnn"
+    version: 0.1.0
+
   # future
   # - condition: xchain-kcl.enabled
   #   name: xchain-kcl

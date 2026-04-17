@@ -12,8 +12,8 @@ by the universal-agent sidecar (AGENT_MODE=file).
 Model → chain mapping:
   fastinfer   → xchain-fastinfer  (port FASTINFER_PORT)
   cnn         → tractor-mono      (port TRACTOR_PORT)
-  # gnn       → xchain-kcl        (future)
-  # lstm      → tractor-mono      (future, same chain as cnn)
+  lstm        → xchain-lstm       (port LSTM_PORT)
+  gnn         → xchain-gnn        (port GNN_PORT)
 """
 import time
 import logging
@@ -38,27 +38,27 @@ FASTINFER_PORT = int(os.getenv("FASTINFER_PORT", "4400"))
 TRACTOR_HOST = os.getenv("TRACTOR_HOST", "tractor-mono")
 TRACTOR_PORT = int(os.getenv("TRACTOR_PORT", "4300"))
 
-# # GNN (future)
-# GNN_HOST = os.getenv("GNN_HOST", "xchain-kcl")
-# GNN_PORT = int(os.getenv("GNN_PORT", "4500"))
+LSTM_HOST = os.getenv("LSTM_HOST", "xchain-lstm")
+LSTM_PORT = int(os.getenv("LSTM_PORT", "4500"))
 
-# # LSTM (future)
-# LSTM_HOST = os.getenv("LSTM_HOST", "tractor-mono")
-# LSTM_PORT = int(os.getenv("LSTM_PORT", "4300"))
+GNN_HOST = os.getenv("GNN_HOST", "xchain-gnn")
+GNN_PORT = int(os.getenv("GNN_PORT", "4600"))
 
 logging.info(f"[CONFIG] PORT                 = {PORT}")
 logging.info(f"[CONFIG] SELECTED_MODELS_FILE = {SELECTED_MODELS_FILE}")
 logging.info(f"[CONFIG] MODELS_POLL_INTERVAL = {MODELS_POLL_INTERVAL}s")
 logging.info(f"[CONFIG] FASTINFER            = {FASTINFER_HOST}:{FASTINFER_PORT}")
 logging.info(f"[CONFIG] TRACTOR              = {TRACTOR_HOST}:{TRACTOR_PORT}")
+logging.info(f"[CONFIG] LSTM                 = {LSTM_HOST}:{LSTM_PORT}")
+logging.info(f"[CONFIG] GNN                  = {GNN_HOST}:{GNN_PORT}")
 
 # ── Chain registry — all known chains ─────────────────────────────────────────
 # Maps model name (from GUI) → chain connection info
 MODEL_TO_CHAIN = {
     "fastinfer": {"chain": "fastinfer", "host": FASTINFER_HOST, "port": FASTINFER_PORT},
     "cnn":       {"chain": "tractor",   "host": TRACTOR_HOST,   "port": TRACTOR_PORT},
-    # "gnn":     {"chain": "kcl",       "host": GNN_HOST,       "port": GNN_PORT},
-    # "lstm":    {"chain": "tractor",   "host": TRACTOR_HOST,   "port": TRACTOR_PORT},
+    "lstm":      {"chain": "lstm",      "host": LSTM_HOST,      "port": LSTM_PORT},
+    "gnn":       {"chain": "gnn",       "host": GNN_HOST,       "port": GNN_PORT},
 }
 
 # ── State ──────────────────────────────────────────────────────────────────────

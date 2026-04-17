@@ -1,0 +1,64 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-gnn
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-gnn"
+
+serviceAccount:
+  create: true
+  name: "xchain-gnn-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-tcp
+    containerPort: 4500
+  - name: model-http
+    containerPort: 5003
+
+env:
+  MODEL_DIR: /mnt/model
+  XCHAIN_DATA_PORT: "4500"
+  XCHAIN_PORT: "5003"
+  T: "32"
+
+persistentVolume:
+  enabled: true
+  name: xchain-gnn-pv
+  claimName: xchain-gnn-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model
+  hostPath: /home/pi/oai-v210/xChain/src/xapp-gnn
+  reclaimPolicy: Delete
+
+# Universal agent sidecar (log_collector mode)
+agent:
+  enabled: false
+  image:
+    repository: ddocker122/universal-agent
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    DEMO_SERVER_HOST: xchain-gui-server
+    DEMO_SERVER_PORT: "4000"
+    AGENT_MODE: log_collector
+    MODEL_NAME: gnn
+    MODEL_TYPE: gnn
+    LOG_FILE: /model-logs/model.log
+    RESULTS_DIR: /results
+
+# Shared results PVC (NFS)
+resultsPVC:
+  claimName: demo-results-pvc
+  mountPath: /results
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "xchain-lstm.fullname" . }}
+  labels:
+    {{- include "xchain-lstm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "xchain-lstm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "xchain-lstm.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+
+      containers:
+        # ── Main container ────────────────────────────────────────────────────
+        - name: xchain-lstm
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args: ["python xchain_model.py 2>&1 | tee /model-logs/model.log"]
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          ports:
+          {{- range .Values.service }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+          {{- end }}
+          volumeMounts:
+            - name: model
+              mountPath: {{ .Values.persistentVolume.mountPath }}
+            - name: model-logs
+              mountPath: /model-logs
+          resources:
+{{- toYaml .Values.resources | nindent 12 }}
+
+        # ── Sidecar: universal agent (log_collector mode) ─────────────────────
+        {{- if .Values.agent.enabled }}
+        - name: agent
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy | default "IfNotPresent" }}
+          env:
+          {{- range $key, $value := .Values.agent.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          volumeMounts:
+            - name: model-logs
+              mountPath: /model-logs
+            - name: results
+              mountPath: {{ .Values.resultsPVC.mountPath }}
+        {{- end }}
+
+      volumes:
+        - name: model
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.claimName }}
+        - name: model-logs
+          emptyDir: {}
+        - name: results
+          persistentVolumeClaim:
+            claimName: {{ .Values.resultsPVC.claimName }}

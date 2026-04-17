@@ -1,0 +1,64 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-lstm
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-lstm"
+
+serviceAccount:
+  create: true
+  name: "xchain-lstm-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-tcp
+    containerPort: 4600
+  - name: model-http
+    containerPort: 5002
+
+env:
+  MODEL_DIR: /mnt/model
+  XCHAIN_DATA_PORT: "4600"
+  XCHAIN_PORT: "5002"
+  T: "32"
+
+persistentVolume:
+  enabled: true
+  name: xchain-lstm-pv
+  claimName: xchain-lstm-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model
+  hostPath: /home/pi/oai-v210/xChain/src/xapp-lstm
+  reclaimPolicy: Delete
+
+# Universal agent sidecar (log_collector mode)
+agent:
+  enabled: false
+  image:
+    repository: ddocker122/universal-agent
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    DEMO_SERVER_HOST: xchain-gui-server
+    DEMO_SERVER_PORT: "4000"
+    AGENT_MODE: log_collector
+    MODEL_NAME: lstm
+    MODEL_TYPE: lstm
+    LOG_FILE: /model-logs/model.log
+    RESULTS_DIR: /results
+
+# Shared results PVC (NFS)
+resultsPVC:
+  claimName: demo-results-pvc
+  mountPath: /results
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []
