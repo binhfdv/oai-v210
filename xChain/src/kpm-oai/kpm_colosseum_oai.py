@@ -8,22 +8,27 @@ from copy import deepcopy
 from datetime import datetime
 
 # --- Config from env ---
-ORCH_HOST = os.getenv("ORCH_HOST", "xapp-orchestrator")
-ORCH_PORT = int(os.getenv("ORCH_PORT", "4200"))
-CLEAN_DIR = os.getenv("CLEAN_DIR", "/data/clean")
+ORCH_HOST     = os.getenv("ORCH_HOST", "xapp-orchestrator")
+ORCH_PORT     = int(os.getenv("ORCH_PORT", "4200"))
+CLEAN_DIR     = os.getenv("CLEAN_DIR", "/data/clean")
 POLL_INTERVAL = float(os.getenv("POLL_INTERVAL", "1.0"))
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+LOG_LEVEL     = os.getenv("LOG_LEVEL", "INFO").upper()
+RESULTS_DIR   = os.getenv("RESULTS_DIR", "")
 
-last_sent_ts = None  # track the latest timestamp seen
+last_sent_ts        = None   # track the latest timestamp seen
+_current_gt         = None   # ground_truth last seen in current_experiment.txt
 
 logging.basicConfig(level=LOG_LEVEL, format="[%(asctime)s] [%(levelname)s] %(message)s")
 logger = logging.getLogger("kpm-stream")
 
 try:
-    from metrics_config import DEFAULT_METRICS, METRIC_ORDER
-    logger.info("Loaded DEFAULT_METRICS and METRIC_ORDER from metrics_config.py")
+    from metrics_config import DEFAULT_METRICS, METRIC_ORDER, METRICS_BY_TYPE
+    logger.info("Loaded metrics from metrics_config.py")
+    METRICS_BY_TYPE_AVAILABLE = True
 except ImportError:
     logger.info("metrics_config.py not found; using built-in defaults")
+    METRICS_BY_TYPE_AVAILABLE = False
+    METRICS_BY_TYPE = {}
 
     # --- Default TRACTOR EMBB metric set ---
     DEFAULT_METRICS = {
@@ -70,6 +75,34 @@ except ImportError:
         'sum_requested_prbs', 'sum_granted_prbs', 'dl_pmi', 'dl_ri',
         'ul_n', 'ul_turbo_iters'
     ]
+
+# --- Traffic type switcher ---
+def get_current_ground_truth():
+    """Read ground_truth from $RESULTS_DIR/current_experiment.txt. Returns None if unavailable."""
+    if not RESULTS_DIR:
+        return None
+    exp_file = Path(RESULTS_DIR) / "current_experiment.txt"
+    try:
+        with open(exp_file) as f:
+            for line in f:
+                k, _, v = line.strip().partition("=")
+                if k.strip() == "ground_truth":
+                    return v.strip().lower()
+    except Exception:
+        pass
+    return None
+
+def maybe_switch_default_metrics():
+    """Switch DEFAULT_METRICS in-place when ground_truth changes."""
+    global DEFAULT_METRICS, _current_gt
+    if not METRICS_BY_TYPE_AVAILABLE:
+        return
+    gt = get_current_ground_truth()
+    if gt and gt != _current_gt and gt in METRICS_BY_TYPE:
+        DEFAULT_METRICS = METRICS_BY_TYPE[gt]
+        _current_gt = gt
+        logger.info(f"Switched DEFAULT_METRICS to '{gt}'")
+
 
 # --- Helpers ---
 def to_float_safe(x):
@@ -192,6 +225,7 @@ def start_client():
 
 def stream_loop(sock):
     while True:
+        maybe_switch_default_metrics()
         latest = get_latest_csv_file()
         if not latest:
             time.sleep(POLL_INTERVAL)

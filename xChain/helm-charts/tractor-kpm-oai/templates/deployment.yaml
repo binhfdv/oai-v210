@@ -28,12 +28,20 @@ spec:
               value: {{ .Values.env.ORCH_PORT | quote }}
             - name: LOG_LEVEL
               value: {{ .Values.env.LOG_LEVEL }}
+            {{- if .Values.env.RESULTS_DIR }}
+            - name: RESULTS_DIR
+              value: {{ .Values.env.RESULTS_DIR }}
+            {{- end }}
           volumeMounts:
             - name: data-volume
               mountPath: {{ .Values.persistentVolume.mountPath }}
             - name: metrics-config
               mountPath: /app/metrics_config.py
               subPath: metrics_config.py
+            {{- if .Values.resultsPVC }}
+            - name: results-volume
+              mountPath: {{ .Values.resultsPVC.mountPath }}
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       {{- if .Values.nodeSelector }}
@@ -47,3 +55,8 @@ spec:
         - name: metrics-config
           configMap:
             name: {{ include "tractor-kpm-oai.fullname" . }}-config
+        {{- if .Values.resultsPVC }}
+        - name: results-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.resultsPVC.claimName }}
+        {{- end }}

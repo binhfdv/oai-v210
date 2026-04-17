@@ -40,6 +40,10 @@ tractor-kpm-oai:
   env:
     ORCH_HOST: xchain-smartgw-demo
     ORCH_PORT: "4200"
+    RESULTS_DIR: /results
+  resultsPVC:
+    claimName: demo-results-pvc
+    mountPath: /results
 
 xchain-smartgw-demo:
   enabled: true
