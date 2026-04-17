@@ -19,8 +19,8 @@ Environment variables:
   AGENT_OUTPUT_FILE   default: /tmp/selected_models.txt
 
   # log_collector mode
-  MODEL_NAME          fastinfer | cnn
-  MODEL_TYPE          xgboost | cnn
+  MODEL_NAME          fastinfer | cnn | lstm | gnn
+  MODEL_TYPE          xgboost | cnn | lstm | gnn
   LOG_FILE            path to shared log file  default: /model-logs/model.log
   RESULTS_DIR         PVC mount path           default: /results
 """
@@ -215,6 +215,8 @@ def record_prediction(ts, pred_cls, end2end_ms):
         _lat_writer.writerow([ts, end2end_ms])
         _acc_file.flush()
         _lat_file.flush()
+        os.fsync(_acc_file.fileno())
+        os.fsync(_lat_file.fileno())
 
 
 def poll_experiment_file():
@@ -263,7 +265,7 @@ def tail_log_file():
 
             line = line.rstrip()
 
-            if MODEL_TYPE == 'xgboost':
+            if MODEL_TYPE in ('xgboost', 'lstm', 'gnn'):
                 m = XGB_RE.match(line)
                 if m:
                     record_prediction(m.group(1), m.group(2), float(m.group(3)))

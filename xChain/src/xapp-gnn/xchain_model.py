@@ -147,12 +147,14 @@ def socket_listener(control_sck):
                 line = line.strip()
                 if not line:
                     continue
-                t0 = time.perf_counter()
+                t_e2e = time.perf_counter()
                 ue_id, scaled = parse_sample(line)
                 window = get_window(ue_id, scaled)
+                t0 = time.perf_counter()
                 cls = gnn_predict(window)
                 latency = (time.perf_counter() - t0) * 1000
-                logging.info(f"UE={ue_id} -> {CLASS_NAMES[cls]} | {latency:.3f}ms")
+                e2e = (time.perf_counter() - t_e2e) * 1000
+                logging.info(f"UE={ue_id} -> Predicted class: {CLASS_NAMES[cls]} | Latency={latency:.3f}ms | End2end={e2e:.3f}ms")
         except Exception as e:
             logging.error(f"Socket error: {e}")
 

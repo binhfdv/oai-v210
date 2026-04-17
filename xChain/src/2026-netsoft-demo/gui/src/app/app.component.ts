@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
 
     {
       label: "LSTM",
-      value: "transformer",
+      value: "lstm",
       description: "",
       icon: "/assets/images/icons/lstm.png",
       css_class: "lstm-card",

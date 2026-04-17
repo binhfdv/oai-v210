@@ -39,10 +39,10 @@ TRACTOR_HOST = os.getenv("TRACTOR_HOST", "tractor-mono")
 TRACTOR_PORT = int(os.getenv("TRACTOR_PORT", "4300"))
 
 LSTM_HOST = os.getenv("LSTM_HOST", "xchain-lstm")
-LSTM_PORT = int(os.getenv("LSTM_PORT", "4500"))
+LSTM_PORT = int(os.getenv("LSTM_PORT", "4600"))
 
 GNN_HOST = os.getenv("GNN_HOST", "xchain-gnn")
-GNN_PORT = int(os.getenv("GNN_PORT", "4600"))
+GNN_PORT = int(os.getenv("GNN_PORT", "4500"))
 
 logging.info(f"[CONFIG] PORT                 = {PORT}")
 logging.info(f"[CONFIG] SELECTED_MODELS_FILE = {SELECTED_MODELS_FILE}")

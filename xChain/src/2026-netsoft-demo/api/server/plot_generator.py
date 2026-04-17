@@ -7,7 +7,7 @@ MODEL_COLORS = {
     "fastinfer": "#76c893",
     "cnn": "#fb8500",
     "gnn": "#dd2d4a",
-    "transformer": "#33658a",
+    "lstm": "#33658a",
 }
 
 # Fallback palette for any model not explicitly mapped above

@@ -22,28 +22,11 @@ T = int(os.getenv("T", "1"))
 
 
 def build_prediction_window(ue_id, features, T):
-    """
-    ue_id     : float or int
-    features  : list of 17 floats
-    T         : window size
-
-    Returns:
-        - None, len(win)    if window not full yet
-        - flattened vec     if window has size T
-    """
     if ue_id not in WINDOWS:
-        WINDOWS[ue_id] = deque(maxlen=T)
-
-    win = WINDOWS[ue_id]
-    win.append(features)
-
-    # Not enough samples yet
-    if len(win) < T:
-        return None, len(win)
-
-    # Convert to numpy (faster than Python list-flatten)
-    arr = np.array(win, dtype=np.float32)  # shape = (T, 17)
-    return arr.reshape(-1), len(win)       # flatten to (T*17,) 
+        WINDOWS[ue_id] = deque([np.zeros(17, dtype=np.float32)] * T, maxlen=T)
+    WINDOWS[ue_id].append(np.array(features, dtype=np.float32))
+    arr = np.array(WINDOWS[ue_id], dtype=np.float32)  # shape = (T, 17)
+    return arr.reshape(-1), T                          # flatten to (T*17,)
 
 
 def load_fast_booster(model_path):
@@ -124,17 +107,7 @@ def predict_route():
 
     try:
         ue_id, features = parse_sample(data["row"])
-        flatT, lenT = build_prediction_window(ue_id, features, T)
-
-        if flatT is None:
-            return jsonify({
-                "ue_id": ue_id,
-                "class": None,
-                "traffic_type": None,
-                "latency_ms": 0.0,
-                "status": f"waiting for T window ({lenT}/{T})"
-            })
-        
+        flatT, _ = build_prediction_window(ue_id, features, T)
         t0 = time.perf_counter()
         cls = xgb_predict(flatT, model)
         latency = (time.perf_counter() - t0) * 1000
@@ -167,10 +140,7 @@ def socket_listener(control_sck):
             start = time.perf_counter()
             t0 = time.perf_counter()
             ue_id, features = parse_sample(msg)
-            flatT, lenT = build_prediction_window(ue_id, features, T)
-            if flatT is None:
-                logging.info(f"UE={ue_id} -> Waiting for T window ({lenT}/{T})")
-                continue
+            flatT, _ = build_prediction_window(ue_id, features, T)
             cls = xgb_predict(flatT, model)
             latency = (time.perf_counter() - t0) * 1000
             end = time.perf_counter()

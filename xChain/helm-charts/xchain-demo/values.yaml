@@ -55,6 +55,15 @@ xchain-smartgw-demo:
     tag: latest
   persistentVolume:
     hostPath: /home/ran/oai-v210/xChain/src/smartGW
+  env:
+    TRACTOR_HOST:          tractor-mono
+    TRACTOR_PORT:          "4300"
+    FASTINFER_HOST:        xchain-fastinfer
+    FASTINFER_PORT:        "4400"
+    GNN_HOST:              xchain-gnn
+    GNN_PORT:              "4500"
+    LSTM_HOST:             xchain-lstm
+    LSTM_PORT:             "4600"
   # Universal agent sidecar (AGENT_MODE=file)
   agent:
     enabled: true
