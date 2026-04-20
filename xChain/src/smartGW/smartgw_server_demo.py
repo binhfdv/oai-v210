@@ -9,11 +9,17 @@ forwarded to all active chains simultaneously.
 Active chains are determined by polling SELECTED_MODELS_FILE written
 by the universal-agent sidecar (AGENT_MODE=file).
 
-Model → chain mapping:
-  fastinfer   → xchain-fastinfer  (port FASTINFER_PORT)
-  cnn         → tractor-mono      (port TRACTOR_PORT)
-  lstm        → xchain-lstm       (port LSTM_PORT)
-  gnn         → xchain-gnn        (port GNN_PORT)
+Model registry is driven entirely by env vars — no code changes needed
+to add or remove models:
+
+  MODELS=fastinfer,cnn,lstm,gnn        # comma-separated list of active models
+  MODEL_<NAME>_HOST=<hostname>         # e.g. MODEL_FASTINFER_HOST=xchain-fastinfer
+  MODEL_<NAME>_PORT=<port>             # e.g. MODEL_FASTINFER_PORT=4400
+
+Example — add a new model "rnn":
+  MODELS=fastinfer,gnn,rnn
+  MODEL_RNN_HOST=xchain-rnn
+  MODEL_RNN_PORT=4700
 """
 import time
 import logging
@@ -28,44 +34,41 @@ from xapp_control import open_control_socket, receive_from_socket
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 # ── Environment variables ──────────────────────────────────────────────────────
-PORT                  = int(os.getenv("PORT", "4200"))
-SELECTED_MODELS_FILE  = os.getenv("SELECTED_MODELS_FILE",  "/tmp/selected_models.txt")
-MODELS_POLL_INTERVAL  = int(os.getenv("MODELS_POLL_INTERVAL", "2"))
-
-FASTINFER_HOST = os.getenv("FASTINFER_HOST", "xchain-fastinfer")
-FASTINFER_PORT = int(os.getenv("FASTINFER_PORT", "4400"))
-
-TRACTOR_HOST = os.getenv("TRACTOR_HOST", "tractor-mono")
-TRACTOR_PORT = int(os.getenv("TRACTOR_PORT", "4300"))
-
-LSTM_HOST = os.getenv("LSTM_HOST", "xchain-lstm")
-LSTM_PORT = int(os.getenv("LSTM_PORT", "4600"))
-
-GNN_HOST = os.getenv("GNN_HOST", "xchain-gnn")
-GNN_PORT = int(os.getenv("GNN_PORT", "4500"))
+PORT                 = int(os.getenv("PORT", "4200"))
+SELECTED_MODELS_FILE = os.getenv("SELECTED_MODELS_FILE", "/tmp/selected_models.txt")
+MODELS_POLL_INTERVAL = int(os.getenv("MODELS_POLL_INTERVAL", "2"))
 
 logging.info(f"[CONFIG] PORT                 = {PORT}")
 logging.info(f"[CONFIG] SELECTED_MODELS_FILE = {SELECTED_MODELS_FILE}")
 logging.info(f"[CONFIG] MODELS_POLL_INTERVAL = {MODELS_POLL_INTERVAL}s")
-logging.info(f"[CONFIG] FASTINFER            = {FASTINFER_HOST}:{FASTINFER_PORT}")
-logging.info(f"[CONFIG] TRACTOR              = {TRACTOR_HOST}:{TRACTOR_PORT}")
-logging.info(f"[CONFIG] LSTM                 = {LSTM_HOST}:{LSTM_PORT}")
-logging.info(f"[CONFIG] GNN                  = {GNN_HOST}:{GNN_PORT}")
 
-# ── Chain registry — all known chains ─────────────────────────────────────────
-# Maps model name (from GUI) → chain connection info
-MODEL_TO_CHAIN = {
-    "fastinfer": {"chain": "fastinfer", "host": FASTINFER_HOST, "port": FASTINFER_PORT},
-    "cnn":       {"chain": "tractor",   "host": TRACTOR_HOST,   "port": TRACTOR_PORT},
-    "lstm":      {"chain": "lstm",      "host": LSTM_HOST,      "port": LSTM_PORT},
-    "gnn":       {"chain": "gnn",       "host": GNN_HOST,       "port": GNN_PORT},
+# ── Dynamic model registry ─────────────────────────────────────────────────────
+# MODELS env var: comma-separated list of model names to register.
+# For each name, reads MODEL_<NAME>_HOST and MODEL_<NAME>_PORT.
+# Falls back to sensible defaults: host=xchain-<name>, port from CHAIN_DEFAULT_PORTS.
+CHAIN_DEFAULT_PORTS = {
+    "fastinfer": 4400,
+    "cnn":       4300,
+    "lstm":      4600,
+    "gnn":       4500,
 }
+
+_models_env = os.getenv("MODELS", "fastinfer,cnn,lstm,gnn")
+_model_names = [m.strip() for m in _models_env.split(",") if m.strip()]
+
+MODEL_TO_CHAIN = {}
+for _name in _model_names:
+    _key = _name.upper()
+    _host = os.getenv(f"MODEL_{_key}_HOST", f"xchain-{_name}")
+    _port = int(os.getenv(f"MODEL_{_key}_PORT", str(CHAIN_DEFAULT_PORTS.get(_name, 5000))))
+    MODEL_TO_CHAIN[_name] = {"host": _host, "port": _port}
+    logging.info(f"[CONFIG] model={_name:12s}  host={_host}  port={_port}")
 
 # ── State ──────────────────────────────────────────────────────────────────────
 data_queue    = Queue()
 chains_lock   = threading.Lock()
-all_sockets   = {}    # chain_name -> socket (all connected at startup)
-active_chains = set() # chain names currently selected for forwarding
+all_sockets   = {}    # model_name -> socket
+active_chains = set() # model names currently selected for forwarding
 _last_models  = None  # track last file content to detect changes
 
 
@@ -103,16 +106,12 @@ def send_to_socket(sock, message: str):
 
 
 def connect_all_chains():
-    """Connect to all known chains at startup and keep connections open."""
-    seen_chains = {}  # chain_name -> info (deduplicate cnn+lstm → tractor once)
-    for _, info in MODEL_TO_CHAIN.items():
-        seen_chains[info["chain"]] = {"host": info["host"], "port": info["port"]}
-
-    for chain_name, conn in seen_chains.items():
+    """Connect to all registered models at startup."""
+    for model_name, info in MODEL_TO_CHAIN.items():
         try:
-            all_sockets[chain_name] = connect_socket(conn["host"], conn["port"], chain_name)
+            all_sockets[model_name] = connect_socket(info["host"], info["port"], model_name)
         except Exception as e:
-            logging.warning(f"[SmartGW] Could not connect to chain '{chain_name}' at startup: {e}")
+            logging.warning(f"[SmartGW] Could not connect to '{model_name}' at startup: {e}")
 
 
 # ── File poll thread ───────────────────────────────────────────────────────────
@@ -141,14 +140,12 @@ def poll_selected_models_file():
             logging.info(f"[SmartGW] Model selection changed: {_last_models} → {models}")
             _last_models = models
 
-            # resolve to unique chain names
             new_active = set()
             for m in models:
-                info = MODEL_TO_CHAIN.get(m)
-                if info is None:
+                if m not in MODEL_TO_CHAIN:
                     logging.warning(f"[SmartGW] Unknown model '{m}', skipping")
                     continue
-                new_active.add(info["chain"])
+                new_active.add(m)
 
             with chains_lock:
                 active_chains = new_active
@@ -200,30 +197,24 @@ def forward_worker():
             data_queue.task_done()
             continue
 
-        for chain_name in targets:
-            sock = all_sockets.get(chain_name)
+        for model_name in targets:
+            sock = all_sockets.get(model_name)
             if sock is None:
-                logging.warning(f"[SmartGW] No socket for chain '{chain_name}', skipping")
+                logging.warning(f"[SmartGW] No socket for '{model_name}', skipping")
                 continue
 
             try:
                 send_to_socket(sock, line + "\n")
             except Exception as e:
-                logging.error(f"[SmartGW] Forward to '{chain_name}' failed: {e}")
-                # find reconnect info
-                conn = next(
-                    ({"host": v["host"], "port": v["port"]}
-                     for v in MODEL_TO_CHAIN.values()
-                     if v["chain"] == chain_name),
-                    None,
-                )
-                if conn:
+                logging.error(f"[SmartGW] Forward to '{model_name}' failed: {e}")
+                info = MODEL_TO_CHAIN.get(model_name)
+                if info:
                     try:
-                        new_sock = connect_socket(conn["host"], conn["port"], chain_name)
-                        all_sockets[chain_name] = new_sock
+                        new_sock = connect_socket(info["host"], info["port"], model_name)
+                        all_sockets[model_name] = new_sock
                         send_to_socket(new_sock, line + "\n")
                     except Exception as e2:
-                        logging.error(f"[SmartGW] Retry to '{chain_name}' failed: {e2}")
+                        logging.error(f"[SmartGW] Retry to '{model_name}' failed: {e2}")
 
         data_queue.task_done()
 
@@ -239,6 +230,5 @@ if __name__ == "__main__":
 
     logging.info("[SmartGW Demo] Running. Waiting for KPM rows and model selection...")
 
-    # keep main thread alive
     while True:
         time.sleep(60)

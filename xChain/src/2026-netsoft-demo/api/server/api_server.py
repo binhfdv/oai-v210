@@ -1,9 +1,10 @@
 import time
 import socket
 import os
+import json
 import threading
 import flask
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit, send
 from flask_cors import cross_origin
 from flask import send_file
@@ -19,6 +20,14 @@ import shutil
 base_dir          = os.environ.get('BASE_DIR', '/results/')
 refresh_interval  = int(os.environ.get('REFRESH_INTERVAL', 2))
 socket_port       = int(os.environ.get('SOCKET_PORT', 4000))
+
+_MODELS_CONFIG_DEFAULT = json.dumps([
+    {"value": "fastinfer", "label": "FastInfer", "color": "#76c893", "backgroundColor": "#ecfdf5", "icon": "/assets/images/icons/fastinf.png", "css_class": "fastinfer-card", "isSelected": True},
+    {"value": "cnn",       "label": "CNN",       "color": "#fb8500", "backgroundColor": "#ffb703", "icon": "/assets/images/icons/cnn.png",    "css_class": "cnn-card",       "isSelected": True},
+    {"value": "gnn",       "label": "GNN",       "color": "#dd2d4a", "backgroundColor": "",        "icon": "/assets/images/icons/gnn.png",    "css_class": "gnn-card",       "isSelected": False},
+    {"value": "lstm",      "label": "LSTM",      "color": "#33658a", "backgroundColor": "",        "icon": "/assets/images/icons/lstm.png",   "css_class": "lstm-card",      "isSelected": False},
+])
+MODELS_CONFIG_RAW = os.environ.get('MODELS_CONFIG', _MODELS_CONFIG_DEFAULT)
 
 # Ground truth mapping (traffic type → expected inference class)
 GROUND_TRUTH_MAP = {
@@ -162,6 +171,16 @@ def write_current_experiment(traffic_type):
         f.write(f"ground_truth={ground_truth}\n")
         f.write(f"started_at={started_at}\n")
     print(f"Written current_experiment.txt: traffic_type={traffic_type}, ground_truth={ground_truth}")
+
+
+@app.route('/api/models', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def api_get_models():
+    try:
+        models = json.loads(MODELS_CONFIG_RAW)
+    except Exception as e:
+        return jsonify({"error": f"Invalid MODELS_CONFIG: {e}"}), 500
+    return jsonify(models)
 
 
 @app.route('/')

@@ -63,59 +63,11 @@ export class AppComponent implements OnInit {
 
 
   ];
-  ai_models: AIModel[] = [
-    {
-      label: "FastInfer",
-      value: "fastinfer",
-      description: "",
-      icon: "/assets/images/icons/fastinf.png",
-      css_class: "fastinfer-card",
-      isSelected: true,
-      foregroundColor: "#76c893 ",
-      backgroundColor: "#ecfdf5",
-      accuracy: 0
-    },
-    {
-      label: "CNN",
-      value: "cnn",
-      description: "",
-      icon: "/assets/images/icons/cnn.png",
-      css_class: "cnn-card",
-      isSelected: true,
-      foregroundColor: "#fb8500",
-      backgroundColor: "#ffb703",
-
-      accuracy: 0
-    },
-    {
-      label: "GNN",
-      value: "gnn",
-      description: "",
-      icon: "/assets/images/icons/gnn.png",
-      css_class: "gnn-card",
-      isSelected: false,
-      foregroundColor: "#dd2d4a",
-      backgroundColor: "",
-      accuracy: 0
-    },
-
-    {
-      label: "LSTM",
-      value: "lstm",
-      description: "",
-      icon: "/assets/images/icons/lstm.png",
-      css_class: "lstm-card",
-      isSelected: false,
-      foregroundColor: "#33658a",
-      backgroundColor: "",
-      accuracy: 0
-    },
-
-  ];
+  ai_models: AIModel[] = [];
 
 
   selectedTrafficType: TrafficType = this.trafficTypes[1];
-  selectedModels: AIModel[] = this.ai_models.filter(m => m.isSelected)
+  selectedModels: AIModel[] = [];
   sent_packets = 0;
   received_packets = 0;
   max_packets = this.trafficTypes[0].pkts_count;;
@@ -145,8 +97,10 @@ export class AppComponent implements OnInit {
 
   constructor(private backend_service: BackendService, private websocketService: WebsocketService) { }
   ngOnInit(): void {
-    // Connect to the WebSocket server
-    // Subscribe to received messages
+    this.backend_service.getModels().subscribe((models: AIModel[]) => {
+      this.ai_models = models.map((m: AIModel) => ({ ...m, accuracy: 0 }));
+      this.selectedModels = this.ai_models.filter((m: AIModel) => m.isSelected);
+    });
 
     this.websocketService.listenOnMessages<Statistic>("statistics").subscribe(
       (message) => {
@@ -201,7 +155,7 @@ export class AppComponent implements OnInit {
 
   updateModelAccuracies(stats: any) {
     Object.keys(stats).forEach(key => {
-      const modelKey = key.split("_")[0];
+      const modelKey = key.replace('_accuracy', '');
       const model = this.ai_models.find(m => m.value === modelKey);
       if (model) {
         const acc = parseFloat(stats[key]);

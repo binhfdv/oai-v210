@@ -3,6 +3,7 @@ import { ChartDataItem, Statistic } from '../models/chart_data.mode';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { AIModel } from '../models/scenario.model';
 @Injectable({
     providedIn: 'root'
 })
@@ -28,6 +29,9 @@ export class BackendService {
         let res= this.http.get( environment.apiUrl+'stop');
         console.log(res);
         return res;
+    }
 
-    } 
+    getModels(): Observable<AIModel[]> {
+        return this.http.get<AIModel[]>(environment.apiUrl + 'api/models');
+    }
 }

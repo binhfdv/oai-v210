@@ -17,6 +17,7 @@ xchain-gui-server:
     TRAFFIC_SERVER_CMD_IOT:     "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/iot.pcap'"
     SMARTGW_HOSTNAME:           xchain-smartgw-demo
     SMARTGW_CMD_MODELS:         "start:{models}"
+    MODELS_CONFIG: '[{"value":"gnn","label":"FastInfer-1","color":"#dd2d4a","backgroundColor":"","icon":"/assets/images/icons/fastinf.png","css_class":"gnn-card","isSelected":false},{"value":"lstm","label":"CNN-1","color":"#33658a","backgroundColor":"","icon":"/assets/images/icons/cnn.png","css_class":"lstm-card","isSelected":false},{"value":"fastinfer","label":"FastInfer-2","color":"#76c893","backgroundColor":"#ecfdf5","icon":"/assets/images/icons/fastinf.png","css_class":"fastinfer-card","isSelected":true},{"value":"cnn","label":"CNN-2","color":"#fb8500","backgroundColor":"#ffb703","icon":"/assets/images/icons/cnn.png","css_class":"cnn-card","isSelected":true}]'
 
   # Shared results PVC — type: nfs (distributed) or hostPath (single-node)
   persistentVolume:
@@ -56,14 +57,15 @@ xchain-smartgw-demo:
   persistentVolume:
     hostPath: /home/ran/oai-v210/xChain/src/smartGW
   env:
-    TRACTOR_HOST:          tractor-mono
-    TRACTOR_PORT:          "4300"
-    FASTINFER_HOST:        xchain-fastinfer
-    FASTINFER_PORT:        "4400"
-    GNN_HOST:              xchain-gnn
-    GNN_PORT:              "4500"
-    LSTM_HOST:             xchain-lstm
-    LSTM_PORT:             "4600"
+    MODELS: "fastinfer,cnn,lstm,gnn"
+    MODEL_FASTINFER_HOST: xchain-fastinfer
+    MODEL_FASTINFER_PORT: "4400"
+    MODEL_CNN_HOST: tractor-mono
+    MODEL_CNN_PORT: "4300"
+    MODEL_LSTM_HOST: xchain-lstm
+    MODEL_LSTM_PORT: "4600"
+    MODEL_GNN_HOST: xchain-gnn
+    MODEL_GNN_PORT: "4500"
   # Universal agent sidecar (AGENT_MODE=file)
   agent:
     enabled: true

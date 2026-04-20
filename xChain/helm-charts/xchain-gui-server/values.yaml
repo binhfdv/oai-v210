@@ -34,6 +34,7 @@ env:
   TRAFFIC_SERVER_CMD_IOT:     "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/iot.pcap'"
   SMARTGW_HOSTNAME:           xchain-smartgw-demo
   SMARTGW_CMD_MODELS:         "start:{models}"
+  MODELS_CONFIG:              '[{"value":"fastinfer","label":"FastInfer","color":"#76c893","backgroundColor":"#ecfdf5","icon":"/assets/images/icons/fastinf.png","css_class":"fastinfer-card","isSelected":true},{"value":"cnn","label":"CNN","color":"#fb8500","backgroundColor":"#ffb703","icon":"/assets/images/icons/cnn.png","css_class":"cnn-card","isSelected":true},{"value":"gnn","label":"GNN","color":"#dd2d4a","backgroundColor":"","icon":"/assets/images/icons/gnn.png","css_class":"gnn-card","isSelected":false},{"value":"lstm","label":"LSTM","color":"#33658a","backgroundColor":"","icon":"/assets/images/icons/lstm.png","css_class":"lstm-card","isSelected":false}]'
 
 # Shared results PVC
 # type: nfs (distributed) or hostPath (single-node)
