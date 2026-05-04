@@ -90,7 +90,10 @@
           <div class="model-grid models">
             @for (item of ai_models; track item) {
             <button class="model-card {{item.css_class}}" (click)="selectModel(item)" [class.active]="item.isSelected"
-              [class.inactive]="!item.isSelected" [disabled]="IsRunning">
+              [class.inactive]="!item.isSelected" [disabled]="IsRunning"
+              [style.borderColor]="item.isSelected ? item.foregroundColor : ''"
+              [style.color]="item.isSelected ? item.foregroundColor : ''"
+              [style.backgroundColor]="item.isSelected ? item.backgroundColor : ''">
               <span class="icon"><img [src]="item.icon"> </span>
               <span>{{item.label}}</span>
             </button>

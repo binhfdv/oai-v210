@@ -21,13 +21,27 @@ dependencies:
     repository: "file://../tractor-kpm-oai"
     version: 0.1.0
 
-  - condition: xchain-fastinfer.enabled
+  - condition: xchain-fastinfer-v1.enabled
     name: xchain-fastinfer
+    alias: xchain-fastinfer-v1
     repository: "file://../xchain-fastinfer"
     version: 0.1.0
 
-  - condition: tractor-mono.enabled
+  - condition: xchain-fastinfer-v2.enabled
+    name: xchain-fastinfer
+    alias: xchain-fastinfer-v2
+    repository: "file://../xchain-fastinfer"
+    version: 0.1.0
+
+  - condition: tractor-mono-v1.enabled
     name: tractor-mono
+    alias: tractor-mono-v1
+    repository: "file://../tractor-mono"
+    version: 0.1.0
+
+  - condition: tractor-mono-v2.enabled
+    name: tractor-mono
+    alias: tractor-mono-v2
     repository: "file://../tractor-mono"
     version: 0.1.0
 

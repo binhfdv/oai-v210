@@ -17,7 +17,7 @@ xchain-gui-server:
     TRAFFIC_SERVER_CMD_IOT:     "start:bash -c 'cd /traffic-gen && ./replay_pcap.sh pcap/demo/iot.pcap'"
     SMARTGW_HOSTNAME:           xchain-smartgw-demo
     SMARTGW_CMD_MODELS:         "start:{models}"
-    MODELS_CONFIG: '[{"value":"gnn","label":"FastInfer-1","color":"#dd2d4a","backgroundColor":"","icon":"/assets/images/icons/fastinf.png","css_class":"gnn-card","isSelected":false},{"value":"lstm","label":"CNN-1","color":"#33658a","backgroundColor":"","icon":"/assets/images/icons/cnn.png","css_class":"lstm-card","isSelected":false},{"value":"fastinfer","label":"FastInfer-2","color":"#76c893","backgroundColor":"#ecfdf5","icon":"/assets/images/icons/fastinf.png","css_class":"fastinfer-card","isSelected":true},{"value":"cnn","label":"CNN-2","color":"#fb8500","backgroundColor":"#ffb703","icon":"/assets/images/icons/cnn.png","css_class":"cnn-card","isSelected":true}]'
+    MODELS_CONFIG: '[{"value":"fastinferv1","label":"FastInfer-v1","foregroundColor":"#dd2d4a","backgroundColor":"","icon":"/assets/images/icons/fastinf.png","css_class":"fastinfer-card","isSelected":false},{"value":"cnnv1","label":"CNN-v1","foregroundColor":"#33658a","backgroundColor":"","icon":"/assets/images/icons/cnn.png","css_class":"cnn-card","isSelected":false},{"value":"fastinferv2","label":"FastInfer-v2","foregroundColor":"#9b1f34","backgroundColor":"","icon":"/assets/images/icons/fastinf.png","css_class":"fastinfer-card","isSelected":true},{"value":"cnnv2","label":"CNN-v2","foregroundColor":"#244761","backgroundColor":"","icon":"/assets/images/icons/cnn.png","css_class":"cnn-card","isSelected":true}]'
 
   # Shared results PVC — type: nfs (distributed) or hostPath (single-node)
   persistentVolume:
@@ -57,15 +57,15 @@ xchain-smartgw-demo:
   persistentVolume:
     hostPath: /home/ran/oai-v210/xChain/src/smartGW
   env:
-    MODELS: "fastinfer,cnn,lstm,gnn"
-    MODEL_FASTINFER_HOST: xchain-fastinfer
-    MODEL_FASTINFER_PORT: "4400"
-    MODEL_CNN_HOST: tractor-mono
-    MODEL_CNN_PORT: "4300"
-    MODEL_LSTM_HOST: xchain-lstm
-    MODEL_LSTM_PORT: "4600"
-    MODEL_GNN_HOST: xchain-gnn
-    MODEL_GNN_PORT: "4500"
+    MODELS: "fastinferv1,fastinferv2,cnnv1,cnnv2"
+    MODEL_FASTINFERV1_HOST: xchain-fastinfer-v1
+    MODEL_FASTINFERV1_PORT: "4400"
+    MODEL_FASTINFERV2_HOST: xchain-fastinfer-v2
+    MODEL_FASTINFERV2_PORT: "4400"
+    MODEL_CNNV1_HOST: tractor-mono-v1
+    MODEL_CNNV1_PORT: "4300"
+    MODEL_CNNV2_HOST: tractor-mono-v2
+    MODEL_CNNV2_PORT: "4300"
   # Universal agent sidecar (AGENT_MODE=file)
   agent:
     enabled: true
@@ -80,14 +80,25 @@ xchain-smartgw-demo:
       AGENT_HOSTNAME: xchain-smartgw-demo
       AGENT_OUTPUT_FILE: /tmp/selected_models.txt
 
-xchain-fastinfer:
+xchain-fastinfer-v1:
   enabled: true
-  fullnameOverride: "xchain-fastinfer"
+  fullnameOverride: "xchain-fastinfer-v1"
   nodeSelector:
     node-role: pi
   image:
     tag: latest
+  serviceAccount:
+    create: true
+    name: "xchain-fastinfer-v1-sa"
+    automount: true
+    annotations: {}
   persistentVolume:
+    enabled: true
+    name: xchain-fastinfer-v1-pv
+    claimName: xchain-fastinfer-v1-pvc
+    size: 1Gi
+    accessMode: ReadWriteMany
+    reclaimPolicy: Delete
     hostPath: /home/pi/oai-v210/xChain/src/xapp-fastinfer
     subPath: xgb_model_T_4.json
   env:
@@ -103,7 +114,7 @@ xchain-fastinfer:
       DEMO_SERVER_HOST: xchain-gui-server
       DEMO_SERVER_PORT: "4000"
       AGENT_MODE: log_collector
-      MODEL_NAME: fastinfer
+      MODEL_NAME: fastinferv1
       MODEL_TYPE: xgboost
       LOG_FILE: /model-logs/model.log
       RESULTS_DIR: /results
@@ -112,17 +123,77 @@ xchain-fastinfer:
     claimName: demo-results-pvc
     mountPath: /results
 
-tractor-mono:
-  enabled: true
-  fullnameOverride: "tractor-mono"
+xchain-fastinfer-v2:
+  enabled: false
+  fullnameOverride: "xchain-fastinfer-v2"
   nodeSelector:
     node-role: pi
   image:
     tag: latest
+  serviceAccount:
+    create: true
+    name: "xchain-fastinfer-v2-sa"
+    automount: true
+    annotations: {}
+  persistentVolume:
+    enabled: true
+    name: xchain-fastinfer-v2-pv
+    claimName: xchain-fastinfer-v2-pvc
+    size: 1Gi
+    accessMode: ReadWriteMany
+    reclaimPolicy: Delete
+    hostPath: /home/pi/oai-v210/xChain/src/xapp-fastinfer
+    subPath: xgb_model_T_32.json
+  env:
+    T: "32"
+  # Universal agent sidecar (log_collector mode)
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: log_collector
+      MODEL_NAME: fastinferv2
+      MODEL_TYPE: xgboost
+      LOG_FILE: /model-logs/model.log
+      RESULTS_DIR: /results
+  # Shared results PVC (NFS)
+  resultsPVC:
+    claimName: demo-results-pvc
+    mountPath: /results
+
+tractor-mono-v1:
+  enabled: true
+  fullnameOverride: "tractor-mono-v1"
+  nodeSelector:
+    node-role: pi
+  image:
+    tag: latest
+  serviceAccount:
+    create: true
+    name: "tractor-mono-v1-sa"
+    automount: true
+    annotations: {}
   persistentVolume:
     model:
+      enabled: true
+      name: tractor-mono-v1-model-pv
+      claimName: tractor-mono-v1-model-pvc
+      size: 1Gi
+      accessMode: ReadWriteMany
+      reclaimPolicy: Delete
       hostPath: /home/pi/oai-v210/tractor/src/xapp/models
     norm:
+      enabled: true
+      name: tractor-mono-v1-norm-pv
+      claimName: tractor-mono-v1-norm-pvc
+      size: 1Gi
+      accessMode: ReadWriteMany
+      reclaimPolicy: Delete
       hostPath: /home/pi/oai-v210/tractor/src/xapp/models
   env:
     T: "4"
@@ -144,7 +215,61 @@ tractor-mono:
       DEMO_SERVER_HOST: xchain-gui-server
       DEMO_SERVER_PORT: "4000"
       AGENT_MODE: log_collector
-      MODEL_NAME: cnn
+      MODEL_NAME: cnnv1
+      MODEL_TYPE: cnn
+      LOG_FILE: /model-logs/model.log
+      RESULTS_DIR: /results
+
+tractor-mono-v2:
+  enabled: false
+  fullnameOverride: "tractor-mono-v2"
+  nodeSelector:
+    node-role: pi
+  image:
+    tag: latest
+  serviceAccount:
+    create: true
+    name: "tractor-mono-v2-sa"
+    automount: true
+    annotations: {}
+  persistentVolume:
+    model:
+      enabled: true
+      name: tractor-mono-v2-model-pv
+      claimName: tractor-mono-v2-model-pvc
+      size: 1Gi
+      accessMode: ReadWriteMany
+      reclaimPolicy: Delete
+      hostPath: /home/pi/oai-v210/tractor/src/xapp/models
+    norm:
+      enabled: true
+      name: tractor-mono-v2-norm-pv
+      claimName: tractor-mono-v2-norm-pvc
+      size: 1Gi
+      accessMode: ReadWriteMany
+      reclaimPolicy: Delete
+      hostPath: /home/pi/oai-v210/tractor/src/xapp/models
+  env:
+    T: "32"
+  volumeMounts:
+    model:
+      subPath: model.32.cnn.pt
+  # Shared results PVC (NFS)
+  resultsPVC:
+    claimName: demo-results-pvc
+    mountPath: /results
+  # Universal agent sidecar (log_collector mode)
+  agent:
+    enabled: true
+    image:
+      repository: ddocker122/universal-agent
+      tag: latest
+      pullPolicy: IfNotPresent
+    env:
+      DEMO_SERVER_HOST: xchain-gui-server
+      DEMO_SERVER_PORT: "4000"
+      AGENT_MODE: log_collector
+      MODEL_NAME: cnnv2
       MODEL_TYPE: cnn
       LOG_FILE: /model-logs/model.log
       RESULTS_DIR: /results

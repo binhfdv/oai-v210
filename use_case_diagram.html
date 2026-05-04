@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f8f9fb; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 30px; }
+  .slide { background: white; width: 1200px; border-radius: 20px; box-shadow: 0 4px 32px rgba(0,0,0,0.10); padding: 48px 52px 44px 52px; }
+  .title    { font-size: 32px; font-weight: 700; color: #1a1a2e; text-align: center; margin-bottom: 8px; }
+  .subtitle { font-size: 16px; color: #666; text-align: center; margin-bottom: 42px; }
+
+  .diagram { display: flex; align-items: stretch; justify-content: space-between; }
+
+  /* ── LEFT/RIGHT: Application image cards ── */
+  .col-apps { display: flex; flex-direction: column; gap: 12px; width: 210px; }
+  .app-img-card { border-radius: 14px; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,0.13); }
+  .app-img { height: 110px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #e8ecf0; }
+  .app-img img { width: 100%; height: 100%; object-fit: cover; }
+  .app-img img.blend { object-fit: contain; mix-blend-mode: multiply; background: white; }
+
+  /* Color on label row instead of image cell */
+  .app-label-row { padding: 8px 12px; font-size: 13px; font-weight: 700; text-align: center; }
+  .app-label-row.haptic  { background: linear-gradient(135deg, #c471ed, #f64f59); color: white; }
+  .app-label-row.robot   { background: linear-gradient(135deg, #f7971e, #ffd200); color: #333; }
+  .app-label-row.camera  { background: linear-gradient(135deg, #1a6fc4, #22c1c3); color: white; }
+  .app-label-row.surgery { background: linear-gradient(135deg, #11998e, #38ef7d); color: #003; }
+
+  /* ── ARROWS ── */
+  .arrow-col { display: flex; flex-direction: column; gap: 12px; width: 80px; position: relative; }
+  .arrow-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+
+  /* ── CENTER: Smart 6G Network ── */
+  .station-box {
+    background: linear-gradient(160deg, #e3f2fd 0%, #bbdefb 100%);
+    border: 2px solid #90caf9;
+    border-radius: 20px; padding: 28px 24px; width: 260px;
+    text-align: center;
+    box-shadow: 0 4px 22px rgba(30,100,200,0.13);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .station-icon  { margin-bottom: 14px; }
+  .station-title { font-size: 22px; font-weight: 700; color: #0d47a1; margin-bottom: 6px; }
+  .station-sub   { font-size: 15px; color: #1565c0; margin-bottom: 20px; }
+
+  .nf-row  { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .nf-chip { background: #0d47a1; color: white; border-radius: 8px; padding: 7px 14px; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+
+  .ai-box   { background: white; border: 1.5px solid #90caf9; border-radius: 12px; padding: 16px 18px; }
+  .ai-title { font-size: 16px; font-weight: 700; color: #0d47a1; margin-bottom: 8px; }
+  .station-badge { font-size: 13px; background: #06d6a0; color: #003; border-radius: 20px; padding: 7px 20px; margin-top: 18px; display: inline-block; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .footer-note { margin-top: 32px; background: #f0faf5; border-radius: 12px; padding: 16px 28px; font-size: 15px; color: #2d6a4f; text-align: center; border: 1px solid #b7e4c7; line-height: 1.7; }
+  .footer-note strong { color: #1b4332; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="title">Intelligence Where It Matters in 6G</div>
+  <div class="subtitle">Choose an AI model. Watch how it affects every application — accuracy, speed, and real-world impact — live.</div>
+
+  <div class="diagram">
+
+    <!-- LEFT: UE device image cards -->
+    <div class="col-apps">
+      <div class="app-img-card">
+        <div class="app-img" style="background:white;"><img src="images/robot_controller.png" alt="Haptic Controller" class="blend"></div>
+        <div class="app-label-row haptic">Haptic Controller</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/robot_console.jpeg" alt="Robot Console"></div>
+        <div class="app-label-row robot">Robot Console</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/vr.jpeg" alt="VR Headset"></div>
+        <div class="app-label-row camera">VR Headset</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/surgeon_console.jpg" alt="Surgeon Console"></div>
+        <div class="app-label-row surgery">Surgeon Console</div>
+      </div>
+    </div>
+
+    <!-- ARROWS ← pointing left (outcomes ← network) -->
+    <div class="arrow-col">
+      <div style="position:absolute; top:-22px; left:50%; transform:translateX(-50%); text-align:center; font-size:15px; font-weight:700; color:#0d47a1; letter-spacing:0.5px; white-space:nowrap;">Network Slices</div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="l1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c471ed"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#c471ed" stroke-width="2.5" marker-end="url(#l1)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#c471ed">Low latency traffic</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="l2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f7971e"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#f7971e" stroke-width="2.5" marker-end="url(#l2)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#f7971e">Massive connectivity traffic</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="l3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#11998e"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#11998e" stroke-width="2.5" marker-end="url(#l3)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#11998e">High bandwidth traffic</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="l4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#11998e"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#11998e" stroke-width="2.5" marker-end="url(#l4)"/>
+          <text text-anchor="middle" font-size="15" fill="#11998e">
+            <tspan x="40" y="-6">High bandwidth &amp;</tspan>
+            <tspan x="40" dy="15">Low latency traffic</tspan>
+          </text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- CENTER: Smart 6G Network -->
+    <div class="station-box">
+      <div class="station-icon">
+        <img src="images/6g_basestation.png" alt="6G Base Station" style="width:100px; height:90px; object-fit:contain; mix-blend-mode:multiply; filter:brightness(1.05) contrast(1.1);">
+      </div>
+      <div class="station-title">Smart 6G Network</div>
+      <div class="station-sub">You choose the AI model</div>
+      <div class="nf-row">
+        <span class="nf-chip">RU</span>
+        <span class="nf-chip">DU</span>
+        <span class="nf-chip">CU</span>
+        <span class="nf-chip">CORE</span>
+      </div>
+      <div class="ai-box">
+        <div class="ai-title">🧠 AI-enabled <br> Traffic Classifier</div>
+      </div>
+      <div class="station-badge">Live · Observable</div>
+    </div>
+
+    <!-- ARROWS ← pointing left (network ← applications) -->
+    <div class="arrow-col">
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="r1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c471ed"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#c471ed" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#r1)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#c471ed">Haptic Feedback</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="r2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f7971e"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#f7971e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#r2)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#f7971e">Sensor/Telemetry Data</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="r3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1a6fc4"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#1a6fc4" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#r3)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#1a6fc4">3D Video</text>
+        </svg>
+      </div>
+      <div class="arrow-item">
+        <svg width="80" height="44" overflow="visible"><defs><marker id="r4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#11998e"/></marker></defs>
+          <line x1="72" y1="22" x2="6" y2="22" stroke="#11998e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#r4)"/>
+          <text x="40" y="9" text-anchor="middle" font-size="15" fill="#11998e">Video</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT: Application images -->
+    <div class="col-apps">
+      <div class="app-img-card">
+        <div class="app-img" style="gap:0;">
+          <img src="images/haptic_glove.jpg" alt="Haptic Glove" style="width:50%; height:100%; object-fit:cover;">
+          <img src="images/haptic_pen.jpeg" alt="Haptic Pen" style="width:50%; height:100%; object-fit:cover;">
+        </div>
+        <div class="app-label-row haptic">Haptic Gloves &amp; Pen</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/factory_robot.jpeg" alt="Factory Robot"></div>
+        <div class="app-label-row robot">Factory Robot</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/3d_camera.jpeg" alt="AR Camera"></div>
+        <div class="app-label-row camera">AR Camera</div>
+      </div>
+      <div class="app-img-card">
+        <div class="app-img"><img src="images/surgeon_room.jpeg" alt="Remote Surgery"></div>
+        <div class="app-label-row surgery">Remote Surgery</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

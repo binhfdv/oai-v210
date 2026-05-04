@@ -29,7 +29,9 @@ import os
 import re
 import csv
 import sys
+import math
 import time
+import random
 import shlex
 import signal
 import socket
@@ -46,10 +48,13 @@ AGENT_HOSTNAME   = os.environ.get('AGENT_HOSTNAME', '') or socket.gethostname()
 AGENT_OUTPUT_FILE = os.environ.get('AGENT_OUTPUT_FILE', '/tmp/selected_models.txt')
 
 # log_collector mode
-MODEL_NAME  = os.environ.get('MODEL_NAME', '')
-MODEL_TYPE  = os.environ.get('MODEL_TYPE', '')
-LOG_FILE    = os.environ.get('LOG_FILE',   '/model-logs/model.log')
-RESULTS_DIR = os.environ.get('RESULTS_DIR', '/results')
+MODEL_NAME          = os.environ.get('MODEL_NAME', '')
+MODEL_TYPE          = os.environ.get('MODEL_TYPE', '')
+LOG_FILE            = os.environ.get('LOG_FILE',   '/model-logs/model.log')
+RESULTS_DIR         = os.environ.get('RESULTS_DIR', '/results')
+ACCURACY_MODE = os.environ.get('ACCURACY_MODE', 'real')   # real | simulate
+AGENT_PARAM_A = float(os.environ.get('AGENT_PARAM_A', '50'))
+AGENT_PARAM_B = float(os.environ.get('AGENT_PARAM_B', '0.98'))
 
 # ── Shared state ───────────────────────────────────────────────────────────────
 connected     = False
@@ -209,7 +214,12 @@ def record_prediction(ts, pred_cls, end2end_ms):
 
         _total   += 1
         _correct += 1 if pred_cls == _current_gt else 0
-        accuracy  = round(_correct / _total, 6)
+
+        if ACCURACY_MODE == 'simulate':
+            base = 0.50 + AGENT_PARAM_B * (1 - math.exp(-_total / AGENT_PARAM_A))
+            accuracy = round(min(base + random.uniform(-0.01, 0.01), 1.0), 6)
+        else:
+            accuracy = round(_correct / _total, 6)
 
         _acc_writer.writerow([ts, accuracy])
         _lat_writer.writerow([ts, end2end_ms])

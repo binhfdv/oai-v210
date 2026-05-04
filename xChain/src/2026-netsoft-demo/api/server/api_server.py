@@ -266,7 +266,12 @@ def get_stats():
         file_name = os.path.splitext(os.path.basename(file_path))[0]
         result[file_name] = accuracy_value
 
-    generate_charts(current_exp["models"], f"{base_dir}{current_exp['traffic_type']}")
+    try:
+        _mc = json.loads(MODELS_CONFIG_RAW)
+        _model_colors = {m["value"]: m.get("foregroundColor", m.get("color", "")) for m in _mc}
+    except Exception:
+        _model_colors = {}
+    generate_charts(current_exp["models"], f"{base_dir}{current_exp['traffic_type']}", model_colors=_model_colors)
     send_websocket_message('events', "update_latency_plot")
     print("stats", result)
     return result

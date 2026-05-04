@@ -1,6 +1,0 @@
-apiVersion: v2
-name: tractor-mono-v1
-version: 0.1.0
-appVersion: latest
-description: xApp mono
-type: application

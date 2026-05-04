@@ -437,64 +437,10 @@
 }
 
 
-/* CNN and FastInfer cards use plot colors */
-.cnn-card.active {
-    border-color: #fb8500 !important;
-    border-width: 1px;
-    background: #fff6ed !important;
-    color: #fb8500 !important;
-    box-shadow: inset 0 0 0 1px #fb8500;
-}
-
-.cnn-card.active .icon {
-    background: #ffe4c9 !important;
-    color: #fb8500 !important;
-}
-
-.cnn-icon {
-    width: 40px;
-    height: 40px;
-    position: relative;
-}
-
-.cnn-icon span {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #fb8500;
-    border-radius: 50%;
-    z-index: 2;
-}
-
-.fastinfer-card.active {
-    border-color: #10b981 !important;
-    background: #ecfdf5 !important;
-    color: #047857 !important;
-    box-shadow: inset 0 0 0 1px #10b981;
-}
-
-.fastinfer-card.active .icon {
-    background: #d1fae5 !important;
-    color: #047857 !important;
-}
-
-.gnn-card.active {
-    border-color: #dd2d4a !important;
-    background: #fff0f3 !important;
-    color: #dd2d4a !important;
-    box-shadow: inset 0 0 0 1px #dd2d4a;
-}
-
-.gnn-card.active .icon {
-    background: #ffd1da !important;
-    color: #dd2d4a !important;
-}
-
-.lstm-card.active {
-    border-color: #33658a !important;
-    background: #e7f5ff !important;
-    color: #33658a !important;
-    box-shadow: inset 0 0 0 1px #33658a;
+/* Model card active state — colors applied via inline [style] bindings from foregroundColor */
+.model-card.active {
+    border-width: 2px;
+    opacity: 1;
 }
 
 .lstm-card.active .icon {
