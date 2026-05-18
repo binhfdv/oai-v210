@@ -1,0 +1,89 @@
+================================================================================
+KPM METRICS TABLE — 3GPP TS 28.552 vs OAI Implementation
+================================================================================
+Source repo for all struct/file references: oai-anomaly-detection/openairinterface5g
+================================================================================
+
+
+--------------------------------------------------------------------------------
+CURRENTLY IMPLEMENTED (7 metrics)
+--------------------------------------------------------------------------------
+
+Metric Name            | Spec §       | Formula                                        | Exact Field                               | Source File                                                            | Source NF                   | Unit
+-----------------------|--------------|------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|-----------------------------|--------------------
+DRB.PdcpSduVolumeDL    | 5.1.3.6.2.1  | delta(rxsdu_bytes) x 8 / 1000                  | nr_pdcp_statistics_t.rxsdu_bytes          | openair2/LAYER2/nr_pdcp/nr_pdcp_entity.h                               | gNB-CU-UP (or mono-gNB)     | kb
+DRB.PdcpSduVolumeUL    | 5.1.3.6.2.2  | delta(txsdu_bytes) x 8 / 1000                  | nr_pdcp_statistics_t.txsdu_bytes          | openair2/LAYER2/nr_pdcp/nr_pdcp_entity.h                               | gNB-CU-UP (or mono-gNB)     | kb
+DRB.RlcSduDelayDl      | 5.1.3.3.3    | txsdu_avg_time_to_tx (100ms windowed avg)       | nr_rlc_statistics_t.txsdu_avg_time_to_tx  | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | us
+DRB.UEThpDl            | 5.1.1.3.1    | delta(txpdu_bytes) x 8 / gran_period_ms         | nr_rlc_statistics_t.txpdu_bytes           | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | kbps
+DRB.UEThpUl            | 5.1.1.3.3    | delta(rxpdu_bytes) x 8 / gran_period_ms         | nr_rlc_statistics_t.rxpdu_bytes           | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | kbps
+RRU.PrbTotDl [*]       | 5.1.1.2.1    | delta(total_rbs)  [spec: /avail_PRBs x 100]    | NR_mac_dir_stats_t.total_rbs (dl)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | PRBs [should be %]
+RRU.PrbTotUl [*]       | 5.1.1.2.2    | delta(total_rbs)  [spec: /avail_PRBs x 100]    | NR_mac_dir_stats_t.total_rbs (ul)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | PRBs [should be %]
+
+[*] OAI deviation: spec requires percentage (0-100), OAI returns raw PRB count delta.
+
+
+--------------------------------------------------------------------------------
+NEW — TB / HARQ METRICS  (MAC layer)
+--------------------------------------------------------------------------------
+
+rounds[i] semantics: rounds[0] = initial TX count, rounds[1] = TBs needing
+1st retransmission (proxy for initial errors), rounds[N] = Nth retransmission
+count, errors = TBs failed after all HARQ rounds (residual).
+
+Metric Name            | Spec §       | Formula                                        | Exact Field                               | Source File                                                            | Source NF                   | Unit
+-----------------------|--------------|------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|-----------------------------|--------------------
+TB.TotNbrDlInitial     | 5.1.1.7.1    | delta(rounds[0]) DL — initial TX only          | NR_mac_dir_stats_t.rounds[0] (dl)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.IntialErrNbrDl      | 5.1.1.7.2    | delta(rounds[1]) DL — TBs needing 1st retx    | NR_mac_dir_stats_t.rounds[1] (dl)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.TotNbrDl.X          | 5.1.1.7.3    | sum delta(rounds[0..X]) DL — all TBs incl retx| NR_mac_dir_stats_t.rounds[0..7] (dl)      | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.ResidualErrNbrDl    | 5.1.1.7.5    | delta(errors) DL — failed after max HARQ       | NR_mac_dir_stats_t.errors (dl)            | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.TotNbrUlInit        | 5.1.1.7.6    | delta(rounds[0]) UL                            | NR_mac_dir_stats_t.rounds[0] (ul)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.ErrNbrUlInitial     | 5.1.1.7.7    | delta(rounds[1]) UL                            | NR_mac_dir_stats_t.rounds[1] (ul)         | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.TotNbrUl.X          | 5.1.1.7.8    | sum delta(rounds[0..X]) UL                     | NR_mac_dir_stats_t.rounds[0..7] (ul)      | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+TB.ResidualErrNbrUl    | 5.1.1.7.10   | delta(errors) UL                               | NR_mac_dir_stats_t.errors (ul)            | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-DU (or mono-gNB)        | count
+
+NOTE — Derived BLER (not a named 3GPP KPM):
+  DL_BLER = delta(rounds[1]) / delta(rounds[0])
+  UL_BLER = delta(ul.rounds[1]) / delta(ul.rounds[0])
+  Or read pre-computed float: NR_bler_stats_t.bler from
+  UE_sched_ctrl.dl_bler_stats / .ul_bler_stats  (nr_mac_gNB.h)
+
+
+--------------------------------------------------------------------------------
+NEW — PACKET DROP / LOSS METRICS  (RLC layer)
+--------------------------------------------------------------------------------
+
+Metric Name            | Spec §       | Formula                                        | Exact Field                               | Source File                                                            | Source NF                   | Unit
+-----------------------|--------------|------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|-----------------------------|--------------------
+DRB.RlcPacketDropRateDl| 5.1.3.2.2    | 1000000 x delta(txpdu_dd_pkts)/delta(txpdu_pkts)| nr_rlc_statistics_t.txpdu_dd_pkts        | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | x1E-6
+                       |              |                                                | nr_rlc_statistics_t.txpdu_pkts           |                                                                        |                             |
+DRB.PacketLossRateUl   | —            | 1000000 x delta(rxpdu_dd_pkts)/delta(rxpdu_pkts)| nr_rlc_statistics_t.rxpdu_dd_pkts        | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | x1E-6
+                       |              |                                                | nr_rlc_statistics_t.rxpdu_pkts           |                                                                        |                             |
+DRB.RlcSduLatencyDl    | 5.1.3.4.2    | txsdu_wt_us — current head-of-line delay       | nr_rlc_statistics_t.txsdu_wt_us          | openair2/LAYER2/nr_rlc/nr_rlc_entity.h                                 | gNB-DU (or mono-gNB)        | us
+
+
+--------------------------------------------------------------------------------
+NEW — RRC CONNECTION METRICS  (MAC UE list)
+--------------------------------------------------------------------------------
+
+Metric Name            | Spec §       | Formula                                        | Exact Field                               | Source File                                                            | Source NF                   | Unit
+-----------------------|--------------|------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|-----------------------------|--------------------
+RRC.ConnMean           | 5.1.1.4.1    | arithmetic mean of UE count over gran_period   | NR_UE_info_t *list[MAX_MOBILES_PER_GNB+1] | openair2/LAYER2/NR_MAC_gNB/nr_mac_gNB.h                                | gNB-CU-CP (or mono-gNB)     | count
+                       |              | (count non-null entries, sampled each TTI)     | via RC.nrmac[0]->UE_info.list             |                                                                        |                             |
+RRC.ConnMax            | 5.1.1.4.2    | maximum of that sample over gran_period        | same                                      | same                                                                   | gNB-CU-CP (or mono-gNB)     | count
+
+
+--------------------------------------------------------------------------------
+NOT FEASIBLE
+--------------------------------------------------------------------------------
+
+Metric Name                  | Source NF        | Reason
+-----------------------------|------------------|---------------------------------------------------------------
+DRB.AirIfDelayDl             | gNB-DU           | HARQ round-trip timing not instrumented in OAI MAC
+DRB.PdcpPacketDropRateDl     | gNB-CU-UP        | nr_pdcp_statistics_t has no drop counter field
+DRB.F1UPacketLossRateDl      | gNB-CU-UP/DU     | F1-U GTP sequence tracking only exists in split CU/DU deployment
+DRB.F1UPacketLossRateUl      | gNB-CU-UP/DU     | same as above
+
+
+================================================================================
+END OF TABLE
+================================================================================
