@@ -4,7 +4,8 @@ kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution 
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   repository: ddocker122/oai-gnb-slicing
-  version: detect
+  version: new-kpm-metrics #detect
+  # new-kpm-metrics is the version with new KPM metrics extension (has anomaly detection as well)
   pullPolicy: IfNotPresent
 
 serviceAccount:

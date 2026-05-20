@@ -53,7 +53,7 @@ for arg in "$@"; do
   if [ "$arg" == "--c" ]; then
     SKIP_UNINSTALL=true
   elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core slices ric cu ue  rc) # installation order
+    COMPONENTS=(core slices ric cu ue kpm rc) # installation order
   else
     COMPONENTS+=("$arg")
   fi

@@ -44,7 +44,7 @@ values_template = """kubernetesDistribution: Vanilla
 
 nfimage:
   repository: ddocker122/oai-gnb-slicing
-  version: detect
+  version: new-kpm-metrics
   pullPolicy: IfNotPresent
 
 serviceAccount:

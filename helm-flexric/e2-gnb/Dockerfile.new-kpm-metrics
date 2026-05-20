@@ -1,0 +1,173 @@
+# ---- Dockerfile.new-kpm-metrics ----
+#
+# Extends: Dockerfile.slicing
+#
+# Description:
+#   Builds the OAI gNB with both PRB reallocation (slicing) support and
+#   the new KPM metrics extension. All patches from Dockerfile.slicing are
+#   applied first, then the new KPM metrics patch is applied on top before
+#   the final OAI build.
+#
+#   New KPM metrics added (source: openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm_subs.c):
+#     TB layer  : TB.TotNbrDlInitial, TB.IntialErrNbrDl, TB.TotNbrDl.sum,
+#                 TB.ResidualErrNbrDl, TB.TotNbrUlInit, TB.ErrNbrUlInitial,
+#                 TB.TotNbrUl.sum, TB.ResidualErrNbrUl
+#     RLC layer : DRB.RlcPacketDropRateDl, DRB.PacketLossRateUl, DRB.RlcSduLatencyDl
+#     RRC layer : RRC.ConnMean, RRC.ConnMax
+#
+# Build:
+#   docker build \
+#     -f /home/lapdk/workspace/oai-v210/helm-flexric/e2-gnb/Dockerfile.new-kpm-metrics \
+#     -t ddocker122/oai-gnb-slicing:new-kpm-metrics \
+#     /home/lapdk/workspace/oai-v210/helm-flexric
+#
+# ---- Stage 1: Build Stage ----
+FROM ubuntu:22.04 AS builder
+
+# Avoid interactive frontend
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+        build-essential \
+        git \
+        gcc-12 \
+        g++-12 \
+        cpp-12 \
+        libsctp-dev \
+        cmake-curses-gui \
+        libpcre2-dev \
+        automake \
+        bison \
+        python-dev-is-python3 \
+        make \
+        libatlas-base-dev \
+        liblapacke-dev && \
+    apt-get clean
+
+# Set GCC version to gcc-12
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
+    --slave /usr/bin/g++ g++ /usr/bin/g++-12 \
+    --slave /usr/bin/gcov gcov /usr/bin/gcov-12 && \
+    update-alternatives --set gcc /usr/bin/gcc-12
+
+# Build and install SWIG
+WORKDIR /opt
+RUN git clone --branch release-4.1 --single-branch https://github.com/swig/swig.git && \
+    cd swig && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr/ && \
+    make -j$(nproc) && \
+    make install
+
+# Clone and build OpenAirInterface
+WORKDIR /opt
+RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g oai
+WORKDIR /opt/oai/cmake_targets
+RUN ./build_oai -I -w SIMU
+WORKDIR /opt/oai
+RUN git checkout slicing-spring-of-code
+
+# ---- Patches from Dockerfile.slicing (PRB reallocation / slicing support) ----
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/nr_slice_config.h \
+     openair2/LAYER2/NR_MAC_gNB/nr_slice_config.h
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/nr_slice_config.c \
+     openair2/LAYER2/NR_MAC_gNB/nr_slice_config.c
+COPY e2-gnb/patches/openair2/LAYER2/NR_MAC_gNB/gNB_scheduler_dlsch.c \
+     openair2/LAYER2/NR_MAC_gNB/gNB_scheduler_dlsch.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/CUSTOMIZED/ran_func_slice.c \
+     openair2/E2AP/RAN_FUNCTION/CUSTOMIZED/ran_func_slice.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_rc.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_rc.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.h \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/rc_ctrl_service_style_2.h
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/CMakeLists.txt \
+     openair2/E2AP/RAN_FUNCTION/CMakeLists.txt
+COPY e2-gnb/patches/cmake_targets/CMakeLists.txt \
+     CMakeLists.txt
+COPY e2-gnb/patches/openair3/NGAP/ngap_gNB_handlers.c \
+     openair3/NGAP/ngap_gNB_handlers.c
+COPY e2-gnb/patches/openair2/F1AP/f1ap_cu_ue_context_management.c \
+     openair2/F1AP/f1ap_cu_ue_context_management.c
+
+# ---- New patches: KPM metrics extension ----
+# ran_func_kpm_subs.c: implements fill_* functions for the new metrics (data path).
+# ran_func_kpm.c:      advertises the new metric names in the E2 Setup RAN function
+#                      definition so the xApp subscribes to them.
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm_subs.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm_subs.c
+COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm.c \
+     openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm.c
+
+WORKDIR /opt/oai/cmake_targets
+RUN ./build_oai -c -w SIMU --gNB --nrUE --build-e2 --ninja
+
+# Build telnet
+WORKDIR /opt/oai
+RUN git checkout -f 243c985af86f857c28d14c2bb25e54e223b07a00
+WORKDIR /opt/oai/cmake_targets
+RUN ./build_oai --build-lib telnetsrv
+
+WORKDIR /opt
+COPY xapp-rc-prb-rrc-release/xapp_rc_slice_ctrl.c /tmp/xapp_rc_slice_ctrl.c
+
+RUN git clone https://gitlab.eurecom.fr/mosaic5g/flexric && \
+    cd flexric && \
+    git checkout slicing-spring-of-code && \
+    cp /tmp/xapp_rc_slice_ctrl.c examples/xApp/c/ctrl/ && \
+    mkdir build && cd build && \
+    cmake -DXAPP_MULTILANGUAGE=OFF -DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12 .. && make -j8 && make install
+
+# ---- Stage 2: Runtime Stage ----
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+        software-properties-common \
+        procps \
+        libsctp1 \
+        libboost-chrono1.74.0 \
+        libboost-date-time1.74.0 \
+        libboost-filesystem1.74.0 \
+        libboost-regex1.74.0 \
+        libboost-serialization1.74.0 \
+        libboost-thread1.74.0 \
+        libboost-system1.74.0 \
+        libboost-program-options1.74.0 \
+        libatlas-base-dev \
+        liblapacke-dev \
+        tzdata \
+        libblas3 \
+        libconfig9 \
+        openssl \
+        net-tools \
+        iperf \
+        iperf3 \
+        iproute2 \
+        iputils-ping \
+        gdb \
+        python3 \
+        python3-six \
+        python3-requests \
+        libusb-1.0-0 \
+        libyaml-cpp-dev && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy built binaries from builder
+COPY --from=builder /opt/oai /opt/oai
+COPY --from=builder /usr/bin/swig /usr/bin/swig
+COPY --from=builder /usr/lib*/libswig* /usr/lib/
+COPY --from=builder /usr/local/lib/flexric /usr/local/lib/flexric
+
+# Set default working directory
+WORKDIR /opt/oai/cmake_targets/ran_build/build
+
+# Default command (can be overridden)
+# CMD ["bash"]
