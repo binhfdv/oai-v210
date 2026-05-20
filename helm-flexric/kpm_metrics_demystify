@@ -1,0 +1,243 @@
+================================================================================
+KPM METRICS DEMYSTIFIED
+O-RAN FlexRIC / OAI gNB — All 20 Implemented Metrics
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+THROUGHPUT METRICS  (RLC layer, per UE per DRB)
+────────────────────────────────────────────────────────────────────────────────
+
+DRB.UEThpDl
+  What it is:   Downlink throughput for a single UE on one Data Radio Bearer,
+                measured at the RLC layer. Computed as the number of bytes
+                successfully transmitted to the UE over the air in one
+                granularity period, converted to kilobits per second.
+  Formula:      delta(txpdu_bytes) × 8 / gran_period_ms  [kbps]
+  Used for:     Detecting per-UE DL congestion, validating slicing/scheduling
+                fairness, triggering QoS enforcement actions from an xApp.
+                A drop here signals poor channel quality, PRB starvation, or
+                backhaul bottleneck.
+
+DRB.UEThpUl
+  What it is:   Uplink throughput for a single UE on one DRB, measured at
+                the RLC layer (bytes received from the UE over the air).
+  Formula:      delta(rxpdu_bytes) × 8 / gran_period_ms  [kbps]
+  Used for:     Monitoring UL traffic load per UE, detecting UL interference
+                or power-limited UEs, UL scheduling optimization.
+
+
+────────────────────────────────────────────────────────────────────────────────
+PRB USAGE METRICS  (MAC layer, cell-wide)
+────────────────────────────────────────────────────────────────────────────────
+
+RRU.PrbTotDl
+  What it is:   Total number of Physical Resource Blocks scheduled in the
+                downlink during one granularity period. Spec defines this as
+                a percentage of available PRBs, but OAI reports raw PRB count.
+  Formula:      delta(total_rbs_dl)  [PRBs]  (spec: / available_PRBs × 100)
+  Used for:     Cell-level DL load monitoring. High values indicate the cell
+                is heavily loaded. Used by xApps to trigger handovers, adjust
+                slicing allocations, or flag congestion.
+
+RRU.PrbTotUl
+  What it is:   Total number of Physical Resource Blocks scheduled in the
+                uplink during one granularity period.
+  Formula:      delta(total_rbs_ul)  [PRBs]  (spec: / available_PRBs × 100)
+  Used for:     Cell-level UL load monitoring. Complements DRB.UEThpUl to
+                distinguish between few high-rate UEs vs many low-rate UEs
+                consuming the same total PRBs.
+
+
+────────────────────────────────────────────────────────────────────────────────
+PDCP DATA VOLUME METRICS  (PDCP layer, per UE per DRB)
+────────────────────────────────────────────────────────────────────────────────
+
+DRB.PdcpSduVolumeDL
+  What it is:   Volume of PDCP SDU data delivered to the UE on the downlink.
+                Measured at the PDCP layer (above RLC), so it counts user-plane
+                IP bytes before segmentation.
+  Formula:      delta(rxsdu_bytes) × 8 / 1000  [kb]
+  Used for:     Accounting and QoS assurance. Compared against DRB.UEThpDl
+                to detect PDCP-to-RLC queuing or retransmission overhead.
+                Also used for usage-based billing or SLA monitoring.
+
+DRB.PdcpSduVolumeUL
+  What it is:   Volume of PDCP SDU data received from the UE on the uplink.
+  Formula:      delta(txsdu_bytes) × 8 / 1000  [kb]
+  Used for:     Same as DL volume but for uplink. Useful for detecting
+                asymmetric traffic patterns or UL-heavy applications.
+
+
+────────────────────────────────────────────────────────────────────────────────
+TB / HARQ METRICS  (MAC layer, per UE)
+────────────────────────────────────────────────────────────────────────────────
+Background: Each downlink or uplink packet is broken into Transport Blocks (TBs).
+The MAC HARQ process attempts to transmit each TB up to 8 rounds. rounds[0] is
+the first (initial) attempt; rounds[1] is a first retransmission, and so on.
+If the TB still fails after all rounds, it is counted as an error.
+
+TB.TotNbrDlInitial
+  What it is:   Total number of DL TBs transmitted for the first time
+                (initial transmissions only, no retransmissions) in one
+                granularity period.
+  Formula:      delta(dl.rounds[0])  [count]
+  Used for:     Baseline DL traffic volume. Denominator for computing DL BLER
+                (Block Error Rate = TB.IntialErrNbrDl / TB.TotNbrDlInitial).
+                Rising value confirms the scheduler is actively serving the UE.
+
+TB.IntialErrNbrDl
+  What it is:   Number of DL TBs that were not decoded correctly on the first
+                attempt and required a first retransmission (HARQ round 1).
+  Formula:      delta(dl.rounds[1])  [count]
+  Used for:     Direct measure of DL initial BLER. High values indicate poor
+                channel quality, interference, or misconfigured MCS. Drives
+                link adaptation and beam management decisions.
+
+TB.TotNbrDl.sum
+  What it is:   Total number of DL TBs across all HARQ rounds (initial +
+                all retransmissions combined). Reflects total MAC-layer
+                transmission effort including retransmissions.
+  Formula:      sum of delta(dl.rounds[0..7])  [count]
+  Used for:     Overhead quantification. The difference
+                (TB.TotNbrDl.sum - TB.TotNbrDlInitial) is the total number
+                of DL retransmissions, which directly translates to wasted
+                air-time and latency.
+
+TB.ResidualErrNbrDl
+  What it is:   Number of DL TBs that failed decoding after all HARQ rounds —
+                i.e., TBs permanently lost at the MAC layer.
+  Formula:      delta(dl.errors)  [count]
+  Used for:     Worst-case DL reliability indicator. Non-zero values mean data
+                was dropped at MAC and must be recovered by RLC ARQ or TCP
+                retransmission, causing latency spikes. Signals severe channel
+                degradation or interference.
+
+TB.TotNbrUlInit
+  What it is:   Total number of UL TBs received for the first time (initial
+                transmissions) from the UE in one granularity period.
+  Formula:      delta(ul.rounds[0])  [count]
+  Used for:     UL traffic volume baseline. Used as denominator for UL BLER.
+                A UE that is power-limited or far from the gNB will have low
+                TB.TotNbrUlInit relative to PRB allocation.
+
+TB.ErrNbrUlInitial
+  What it is:   Number of UL TBs not decoded correctly on the first attempt,
+                requiring a retransmission request (NACK) back to the UE.
+  Formula:      delta(ul.rounds[1])  [count]
+  Used for:     UL initial BLER. High values indicate UL interference, weak
+                UE signal, or poor UL power control. Drives UL link adaptation
+                and UL scheduling decisions.
+
+TB.TotNbrUl.sum
+  What it is:   Total number of UL TBs across all HARQ rounds. Captures both
+                successful first transmissions and all retransmissions from UEs.
+  Formula:      sum of delta(ul.rounds[0..7])  [count]
+  Used for:     UL retransmission overhead. The difference
+                (TB.TotNbrUl.sum - TB.TotNbrUlInit) equals total UL HARQ
+                retransmissions, reflecting wasted UL PRBs and UE battery drain.
+
+TB.ResidualErrNbrUl
+  What it is:   Number of UL TBs permanently lost after all HARQ rounds —
+                packets the gNB could not decode despite all retransmission
+                attempts.
+  Formula:      delta(ul.errors)  [count]
+  Used for:     Worst-case UL reliability. Non-zero values indicate critical
+                UL channel problems. Results in RLC/TCP-level recovery and
+                significant latency increase for the UE.
+
+
+────────────────────────────────────────────────────────────────────────────────
+PACKET DROP / LOSS METRICS  (RLC layer, per UE per DRB)
+────────────────────────────────────────────────────────────────────────────────
+
+DRB.RlcPacketDropRateDl
+  What it is:   Fraction of DL RLC packets (SDUs) that were discarded in the
+                gNB-DU due to buffer overflow, congestion, or timer expiry —
+                before they could be transmitted over the air.
+                Note: our implementation uses x1000 (per mille); spec §5.1.3.2.2
+                defines x1,000,000 (per micro). Values are still directionally
+                correct.
+  Formula:      1000 × delta(txpdu_dd_pkts) / delta(txpdu_pkts)  [per mille]
+  Used for:     DL buffer congestion detection. A rising value means the gNB
+                RLC buffer is overwhelmed — typically because the scheduler
+                cannot keep up with incoming data from the core network.
+                Triggers xApp actions like DL rate limiting or PRB reallocation.
+
+DRB.PacketLossRateUl
+  What it is:   Fraction of UL RLC packets received from the UE that were
+                discarded at the gNB-DU (e.g., duplicate, out-of-window, or
+                reassembly failure).
+  Formula:      1000 × delta(rxpdu_dd_pkts) / delta(rxpdu_pkts)  [per mille]
+  Used for:     UL loss detection beyond the HARQ layer. Complements
+                TB.ResidualErrNbrUl — MAC-level losses become RLC-level losses
+                and appear here. Useful for diagnosing UL radio quality issues
+                that persist after HARQ exhaustion.
+
+DRB.RlcSduLatencyDl
+  What it is:   Current head-of-line (HOL) waiting time for the oldest DL
+                SDU sitting in the RLC transmission buffer, i.e., how long
+                the front packet has been waiting to be scheduled.
+  Formula:      txsdu_wt_us  [us]  (instantaneous snapshot, not an average)
+  Used for:     DL latency monitoring for delay-sensitive services (URLLC,
+                video). A high value means packets are stuck in the buffer —
+                caused by insufficient PRB allocation, deep HARQ retransmissions,
+                or scheduler deprioritization. Directly relevant for E2E
+                latency SLA enforcement.
+
+
+────────────────────────────────────────────────────────────────────────────────
+RRC CONNECTION METRICS  (MAC UE list, cell-wide)
+────────────────────────────────────────────────────────────────────────────────
+
+RRC.ConnMean
+  What it is:   Mean number of UEs in RRC_CONNECTED state during the
+                granularity period. In our implementation, this is a snapshot
+                count of the active UE list at the time of reporting (not a
+                true arithmetic mean over the interval).
+  Formula:      count of non-null entries in RC.nrmac[0]->UE_info.list  [UEs]
+  Used for:     Cell load monitoring at the connection level. An xApp uses
+                this to track how many UEs are actively attached, detect
+                sudden drops (UE disconnection event), or trigger admission
+                control when the cell is full. Baseline for capacity planning.
+
+RRC.ConnMax
+  What it is:   Maximum number of UEs simultaneously in RRC_CONNECTED state
+                observed within the granularity period. In our implementation,
+                since reporting is instantaneous, ConnMax equals ConnMean
+                within the same interval; the difference appears across
+                consecutive intervals.
+  Formula:      max snapshot count over gran_period  [UEs]
+  Used for:     Peak load detection. Where ConnMean shows the average load,
+                ConnMax catches transient spikes — e.g., a burst of UEs
+                connecting simultaneously. Used for dimensioning and for
+                setting thresholds in anomaly detection models.
+
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+Metric                    | Layer | Direction | Scope   | Unit
+--------------------------|-------|-----------|---------|--------------------
+DRB.UEThpDl               | RLC   | DL        | per UE  | kbps
+DRB.UEThpUl               | RLC   | UL        | per UE  | kbps
+RRU.PrbTotDl              | MAC   | DL        | cell    | PRBs
+RRU.PrbTotUl              | MAC   | UL        | cell    | PRBs
+DRB.PdcpSduVolumeDL       | PDCP  | DL        | per UE  | kb
+DRB.PdcpSduVolumeUL       | PDCP  | UL        | per UE  | kb
+TB.TotNbrDlInitial        | MAC   | DL        | per UE  | count
+TB.IntialErrNbrDl         | MAC   | DL        | per UE  | count
+TB.TotNbrDl.sum           | MAC   | DL        | per UE  | count
+TB.ResidualErrNbrDl       | MAC   | DL        | per UE  | count
+TB.TotNbrUlInit           | MAC   | UL        | per UE  | count
+TB.ErrNbrUlInitial        | MAC   | UL        | per UE  | count
+TB.TotNbrUl.sum           | MAC   | UL        | per UE  | count
+TB.ResidualErrNbrUl       | MAC   | UL        | per UE  | count
+DRB.RlcPacketDropRateDl   | RLC   | DL        | per UE  | per mille
+DRB.PacketLossRateUl      | RLC   | UL        | per UE  | per mille
+DRB.RlcSduLatencyDl       | RLC   | DL        | per UE  | microseconds
+RRC.ConnMean              | RRC   | —         | cell    | UE count
+RRC.ConnMax               | RRC   | —         | cell    | UE count
+
+================================================================================
