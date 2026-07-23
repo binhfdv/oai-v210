@@ -60,3 +60,8 @@ dependencies:
     name: xchain-kcl
     repository: "file://../xchain-kcl"
     version: 0.1.0
+
+  - condition: xchain-unicorn.enabled
+    name: xchain-unicorn
+    repository: "file://../xchain-unicorn"
+    version: 0.1.0

@@ -1,3 +1,7 @@
+"""KPM Streamer:
+    - Maps cleaned OAI CSV metrics to default mean values of TRACTOR eMBB/mMTC/URLLC metrics
+"""
+
 import socket
 import os
 import time

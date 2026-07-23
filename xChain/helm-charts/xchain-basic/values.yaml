@@ -1,24 +1,34 @@
 tractor-kpm-oai:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-kpm-oai"
   nodeSelector:
     node-role: core
   image:
-    tag: kcl
+    tag: latest
   env:
-    ORCH_HOST: xchain-kcl
-    ORCH_PORT: "4500"
-    NUM_UES: "5"
+    ORCH_HOST: xchain-smartgw
+    ORCH_PORT: "4200"
+    # NUM_UES: "5"
 
 tractor-kpm-simu:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-kpm-simu"
   nodeSelector:
     node-role: core
   image:
     tag: latest
   env:
-    ORCH_HOST: tractor-mono
+    ORCH_HOST: xchain-smartgw
+    ORCH_PORT: "4200"
+  persistentVolume:
+    enabled: true
+    name: tractor-kpm-simu-pv
+    claimName: tractor-kpm-simu-pvc
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kpm-sim
+  volumeMounts:
+    kpisCsv:
+      mountPath: /app/kpis.csv
+      subPath: urllc_Teams.csv
 
 tractor-orchestrator:
   enabled: false
@@ -64,7 +74,7 @@ tractor-model:
       subPath: model.32.cnn.pt
 
 tractor-mono:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-mono"
   nodeSelector:
     node-role: core
@@ -76,26 +86,48 @@ tractor-mono:
     norm:
       hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp/models
   env:
-    T: "4"
+    T: "16"
+    MODEL_PATH: /mnt/model/model.16.cnn.pt
+    NORM_PATH:  /mnt/model/cols_maxmin.pkl
   volumeMounts:
     model:
-      subPath: model.4.cnn.pt
+      mountPath: /mnt/model
+      subPath: ""    # empty = mount entire directory; all model.{T}.cnn.pt files accessible
+    norm:
+      mountPath: /mnt/norm
+      subPath: ""    # norm files also in same hostPath dir, accessed via /mnt/model
+  resultsPVC:
+    claimName: ""
+  agent:
+    enabled: true
+    env:
+      TRACTOR_T: "16"
+      TRACTOR_CLASS_NAMES: "eMBB,mMTC,URLLC,ctrl"
+      TRACTOR_T_OPTIONS:    "4,8,16,32"
+      TRACTOR_MODEL_PATH:   "/mnt/model/model.{T}.cnn.pt"
 
 xchain-orchestrator:
-  enabled: false
+  enabled: true
   fullnameOverride: "xchain-orchestrator"
   nodeSelector:
     node-role: core
   image:
     tag: latest
   env:
-    TRACTOR_HOST:   tractor-orchestrator
-    TRACTOR_PORT:   "4300"
-    FASTINFER_HOST: xchain-fastinfer
-    FASTINFER_PORT: "4400"
+    TRACTOR_HOST:      tractor-orchestrator
+    TRACTOR_PORT:      "4300"
+    FASTINFER_HOST:    xchain-fastinfer
+    FASTINFER_PORT:    "4400"
+    # Journal pipeline — set PREPROC_AGENT_HOST to enable URLLC routing to agent
+    PREPROC_AGENT_HOST:  "tractor-mono"              # e.g. tractor-mono
+    PREPROC_AGENT_PORT:  "4301"          # preprocessing agent TCP data port
+    PREPROC_AGENT_HTTP:  "5100"          # preprocessing agent HTTP port
+    FILTER_AGENT_HOST:   "xchain-unicorn"              # e.g. xchain-unicorn
+    FILTER_AGENT_PORT:   "5101"          # filtering agent HTTP port
+    CONTEXT_LABEL:       "urllc-embb"    # operator context pushed to filtering agent
 
 xchain-smartgw:
-  enabled: false
+  enabled: true
   fullnameOverride: "xchain-smartgw"
   nodeSelector:
     node-role: core
@@ -111,7 +143,7 @@ xchain-smartgw:
     
 
 xchain-kcl:
-  enabled: true
+  enabled: false
   fullnameOverride: "xchain-kcl"
   nodeSelector:
     node-role: core
@@ -130,7 +162,7 @@ xchain-kcl:
     hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kcl
 
 xchain-fastinfer:
-  enabled: false
+  enabled: true
   fullnameOverride: "xchain-fastinfer"
   nodeSelector:
     node-role: core
@@ -141,3 +173,39 @@ xchain-fastinfer:
     subPath: xgb_model_T_4.json
   env:
     T: "4"
+  resultsPVC:
+    claimName: ""
+
+# ── Journal pipeline (xChain + UNICORN via agents) ────────────────────────────
+
+# Enable tractor-mono with preprocessing agent sidecar
+# Overrides tractor-mono section above when journal pipeline is active
+# tractor-mono:
+#   enabled: true
+#   agent:
+#     enabled: true
+#   resultsPVC:
+#     claimName: ""   # no demo PVC needed
+
+xchain-unicorn:
+  enabled: true
+  fullnameOverride: "xchain-unicorn"
+  nodeSelector:
+    node-role: core
+  image:
+    tag: latest
+  persistentVolume:
+    hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp-unicorn/models
+  env:
+    MODEL_ARCH: ForwConvNet
+    OOD_INDEX:  "5"
+    SLICE_LEN:  "64"
+  agent:
+    enabled: true   # set to true to enable filtering agent sidecar
+    env:
+      CONTEXT_LABEL:         urllc-mmtc   # urllc-mmtc | urllc-embb
+      DRIFT_DETECTOR:        none          # none | ddm | adwin | eddm | ph
+      COMPLAINT_COOLDOWN:    "15"         # seconds between complaints
+      COMPLAINT_ERROR_STREAK: "20"        # consecutive errors to re-complain after DDM reset
+  resultsPVC:
+    claimName: ""

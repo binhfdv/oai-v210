@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
-  repository: ddocker122/tractor-kpm-sim
+  repository: ddocker122/tractor-kpm-simu
   tag: latest
 
 fullnameOverride: "tractor-kpm-simu"
@@ -24,6 +24,7 @@ serviceAccount:
 volumeMounts:
   kpisCsv:
     mountPath: /app/kpis.csv
+    subPath: embb_1010123456010_metrics.csv
 
 persistentVolume:
   enabled: true
@@ -31,7 +32,7 @@ persistentVolume:
   claimName: tractor-kpm-simu-pvc
   size: 1Gi
   accessMode: ReadWriteMany
-  hostPath: /home/lapdk/workspace/oai-v210/tractor/src/kpm-sim
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kpm-sim
   reclaimPolicy: Delete
 
 resources: {}

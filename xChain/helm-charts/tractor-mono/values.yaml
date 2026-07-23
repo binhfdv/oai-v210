@@ -55,21 +55,30 @@ env:
   NORM_PATH: /mnt/model/norm.pkl
   T: "16"
 
-# Universal agent sidecar (log_collector mode)
+# Universal agent sidecar
+# journal pipeline (preprocessing mode): image = ddocker122/xchain-agent
+# demo (log_collector mode):             image = ddocker122/universal-agent
 agent:
   enabled: false
   image:
-    repository: ddocker122/universal-agent
+    repository: ddocker122/xchain-agent
     tag: latest
     pullPolicy: IfNotPresent
   env:
-    DEMO_SERVER_HOST: xchain-gui-server
-    DEMO_SERVER_PORT: "4000"
-    AGENT_MODE: log_collector
-    MODEL_NAME: cnn
-    MODEL_TYPE: cnn
-    LOG_FILE: /model-logs/model.log
-    RESULTS_DIR: /results
+    AGENT_MODE:           preprocessing
+    AGENT_PORT:           "5100"
+    AGENT_DATA_PORT:      "4301"
+    MODEL_HOST:           localhost
+    MODEL_PORT:           "5000"
+    PEER_AGENT_HOST:      xchain-unicorn
+    PEER_AGENT_PORT:      "5101"
+    TRACTOR_T:            "16"
+    TRACTOR_CLASS_NAMES:  "eMBB,mMTC,URLLC,ctrl"
+    TRACTOR_T_OPTIONS:    "4,8,16,32"
+    TRACTOR_MODEL_PATH:   "/mnt/model/model.{T}.cnn.pt"
+    TRACTOR_MODEL_TYPE:   "CNN"
+    TRACTOR_NUM_FEATS:    "17"
+    TRACTOR_NCLASS:       "4"
 
 # Shared results PVC (same PV/PVC as xchain-gui-server)
 resultsPVC:

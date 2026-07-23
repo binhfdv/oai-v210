@@ -239,7 +239,7 @@ oai-traffic-server:
     version: latest
     pullPolicy: IfNotPresent
   agent:
-    enabled: true
+    enabled: false
     image:
       repository: ddocker122/universal-agent
       tag: latest

@@ -47,10 +47,14 @@ spec:
           volumeMounts:
             - name: model
               mountPath: {{ .Values.volumeMounts.model.mountPath }}
+              {{- if .Values.volumeMounts.model.subPath }}
               subPath: {{ .Values.volumeMounts.model.subPath }}
+              {{- end }}
             - name: norm
               mountPath: {{ .Values.volumeMounts.norm.mountPath }}
+              {{- if .Values.volumeMounts.norm.subPath }}
               subPath: {{ .Values.volumeMounts.norm.subPath }}
+              {{- end }}
             - name: model-logs
               mountPath: /model-logs
           resources:
@@ -69,8 +73,10 @@ spec:
           volumeMounts:
             - name: model-logs
               mountPath: /model-logs
+            {{- if .Values.resultsPVC.claimName }}
             - name: results
               mountPath: {{ .Values.resultsPVC.mountPath }}
+            {{- end }}
         {{- end }}
 
       volumes:
@@ -80,10 +86,10 @@ spec:
         - name: norm
           persistentVolumeClaim:
             claimName: {{ .Values.persistentVolume.norm.claimName }}
-        # emptyDir shared between main container and agent sidecar
         - name: model-logs
           emptyDir: {}
-        # shared results PVC — written by sidecar, read by xchain-gui-server
+        {{- if and .Values.agent.enabled .Values.resultsPVC.claimName }}
         - name: results
           persistentVolumeClaim:
             claimName: {{ .Values.resultsPVC.claimName }}
+        {{- end }}

@@ -22,6 +22,8 @@ charts/oai-5g-core/oai-5g-slicing/charts
 tractor/helm-tractor/tractor-basic/charts/
 xChain/helm-charts/xchain-basic/charts/
 xChain/helm-charts/xchain-demo/charts/
+xChain/src/xapp-unicorn/models/
+xChain/src/kpm-sim/unicorn_urllc
 oai/
 pcl_handson/
 pcl/

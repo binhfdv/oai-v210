@@ -8,7 +8,7 @@ from python.ORAN_models import TransformerNN, TransformerNN_v2, ConvNN
 from python.visual_xapp_inference import process_norm_params
 
 T = int(os.getenv("T", "1"))
-
+CLASS_NAMES = os.getenv("CLASS_NAMES", "eMBB,mMTC,URLLC,eMBB-mMTC").split(",")
 
 app = Flask(__name__)
 

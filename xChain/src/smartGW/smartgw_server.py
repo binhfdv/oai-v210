@@ -86,20 +86,32 @@ def poll_orchestrator():
     while True:
         new_routing = fetch_routing_table()
         if new_routing:
+            # Build the set of chains needed by the new routing
+            needed = {info["chain"]: info for info in new_routing.values()
+                      if "host" in info}
+
+            # Connect to any chain that has no live socket — outside the lock
+            new_sockets = {}
+            for name, info in needed.items():
+                with routing_lock:
+                    existing = chain_sockets.get(name)
+                if existing is None:
+                    new_sockets[name] = connect_socket(info["host"], info["port"], name)
+
+            # Swap routing_table and patch chain_sockets atomically (brief lock)
             with routing_lock:
-                for cls, info in new_routing.items():
-                    name = info["chain"]
-                    if name not in chain_sockets:
-                        try:
-                            chain_sockets[name] = connect_socket(
-                                info["host"], info["port"], name
-                            )
-                        except Exception as e:
-                            logging.warning(
-                                f"[SmartGW] Could not connect to chain '{name}': {e}"
-                            )
+                chain_sockets.update(new_sockets)
+                old_routing = routing_table.copy()
                 routing_table = new_routing
-            logging.info(f"[SmartGW] Routing table refreshed: {list(routing_table.keys())}")
+
+            # Log only when routing_table actually changed
+            changed = {cls: info["chain"] for cls, info in new_routing.items()
+                       if old_routing.get(cls, {}).get("chain") != info.get("chain")}
+            connected = [n for n in needed if chain_sockets.get(n) is not None]
+            pending   = [n for n in needed if chain_sockets.get(n) is None]
+            if changed:
+                logging.info(f"[SmartGW] Routing changed: {changed}")
+            logging.info(f"[SmartGW] Routing active — chains: connected={connected}  pending={pending}")
 
         time.sleep(ORCH_POLL_INTERVAL)
 
@@ -206,11 +218,12 @@ def send_to_socket(sock, message: str):
         raise
 
 
-def connect_socket(host, port, label):
+def connect_socket(host, port, label, max_retries=3, retry_interval=2):
     """
-    Persistent connect with backoff. Returns a connected socket.
+    Try up to max_retries times. Returns a connected socket or None.
+    Callers should treat None as "not yet reachable — retry on next poll".
     """
-    while True:
+    for attempt in range(1, max_retries + 1):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(5)
@@ -219,12 +232,18 @@ def connect_socket(host, port, label):
             logging.info(f"[SmartGW] Connected to {label} at {host}:{port}")
             return s
         except Exception as e:
-            logging.warning(f"[SmartGW] Connection to {label} at {host}:{port} failed: {e}. Retrying in 2s.")
+            logging.warning(
+                f"[SmartGW] Connection to {label} at {host}:{port} failed "
+                f"(attempt {attempt}/{max_retries}): {e}"
+            )
             try:
                 s.close()
             except Exception:
                 pass
-            time.sleep(2)
+            if attempt < max_retries:
+                time.sleep(retry_interval)
+    logging.warning(f"[SmartGW] Giving up on {label} — will retry on next routing poll")
+    return None
 
 
 def classification_worker():
@@ -268,13 +287,16 @@ def classification_worker():
             send_to_socket(sock, full_row + "\n")
         except Exception as e:
             logging.error(f"[SmartGW] Forwarding to '{chain_name}' failed: {e}")
-            try:
-                new_sock = connect_socket(route["host"], route["port"], chain_name)
-                with routing_lock:
-                    chain_sockets[chain_name] = new_sock
-                send_to_socket(new_sock, full_row + "\n")
-            except Exception as e2:
-                logging.error(f"[SmartGW] Retry forward to '{chain_name}' failed: {e2}")
+            new_sock = connect_socket(route["host"], route["port"], chain_name)
+            with routing_lock:
+                chain_sockets[chain_name] = new_sock  # None if unreachable
+            if new_sock is not None:
+                try:
+                    send_to_socket(new_sock, full_row + "\n")
+                except Exception as e2:
+                    logging.error(f"[SmartGW] Retry forward to '{chain_name}' failed: {e2}")
+            else:
+                logging.warning(f"[SmartGW] Chain '{chain_name}' unreachable — dropping row, will reconnect on next poll")
         finally:
             data_queue.task_done()
 
@@ -297,15 +319,17 @@ def test_predict():
 if __name__ == "__main__":
     control_sck = open_control_socket(PORT)
 
-    # initial routing fetch
+    # initial routing fetch — connect outside any lock; failed chains retried by poll_orchestrator
     initial = fetch_routing_table()
     if initial:
-        for cls, info in initial.items():
-            name = info["chain"]
-            if name not in chain_sockets:
-                chain_sockets[name] = connect_socket(info["host"], info["port"], name)
+        needed = {info["chain"]: info for info in initial.values() if "host" in info}
+        for name, info in needed.items():
+            chain_sockets[name] = connect_socket(info["host"], info["port"], name)
         routing_table.update(initial)
-        logging.info(f"[SmartGW] Initial routing loaded: {list(routing_table.keys())}")
+        connected = [n for n, s in chain_sockets.items() if s is not None]
+        pending   = [n for n in needed if chain_sockets.get(n) is None]
+        logging.info(f"[SmartGW] Initial routing — connected={connected}  pending={pending}")
+        logging.info(f"[SmartGW] Routes: { {cls: info.get('chain') for cls, info in initial.items()} }")
     else:
         logging.warning("[SmartGW] Orchestrator unavailable at startup, routing table empty")
 

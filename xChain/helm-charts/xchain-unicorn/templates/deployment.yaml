@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "xchain-fastinfer.fullname" . }}
+  name: {{ include "xchain-unicorn.fullname" . }}
   labels:
-    {{- include "xchain-fastinfer.labels" . | nindent 4 }}
+    {{- include "xchain-unicorn.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "xchain-fastinfer.selectorLabels" . | nindent 6 }}
+      {{- include "xchain-unicorn.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "xchain-fastinfer.labels" . | nindent 8 }}
+        {{- include "xchain-unicorn.labels" . | nindent 8 }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
@@ -29,10 +29,9 @@ spec:
 
       containers:
         # ── Main container ────────────────────────────────────────────────────
-        - name: xchain-fastinfer
+        - name: xchain-unicorn
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # tee stdout to shared emptyDir so agent sidecar can tail it
           command: ["/bin/sh", "-c"]
           args: ["python xchain_model.py 2>&1 | tee /model-logs/model.log"]
           env:
@@ -47,14 +46,13 @@ spec:
           {{- end }}
           volumeMounts:
             - name: model
-              mountPath: "{{ .Values.persistentVolume.mountPath }}"
-              subPath: "{{ .Values.persistentVolume.subPath }}"
+              mountPath: {{ .Values.persistentVolume.mountPath }}
             - name: model-logs
               mountPath: /model-logs
           resources:
 {{- toYaml .Values.resources | nindent 12 }}
 
-        # ── Sidecar: universal agent (log_collector mode) ─────────────────────
+        # ── Sidecar: universal agent (filtering mode) ─────────────────────────
         {{- if .Values.agent.enabled }}
         - name: agent
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
@@ -67,10 +65,10 @@ spec:
           volumeMounts:
             - name: model-logs
               mountPath: /model-logs
-            {{- if .Values.resultsPVC.claimName }}
+          {{- if .Values.resultsPVC.claimName }}
             - name: results
               mountPath: {{ .Values.resultsPVC.mountPath }}
-            {{- end }}
+          {{- end }}
         {{- end }}
 
       volumes:

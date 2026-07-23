@@ -20,11 +20,18 @@ service:
     containerPort: 5010
 
 env:
-  TRACTOR_HOST:   tractor-orchestrator
-  TRACTOR_PORT:   "4300"
-  FASTINFER_HOST: xchain-fastinfer
-  FASTINFER_PORT: "4400"
-  PORT:           "5010"
+  TRACTOR_HOST:      tractor-orchestrator
+  TRACTOR_PORT:      "4300"
+  FASTINFER_HOST:    xchain-fastinfer
+  FASTINFER_PORT:    "4400"
+  PORT:              "5010"
+  # Journal pipeline — leave empty to disable; set to enable URLLC routing to agents
+  PREPROC_AGENT_HOST:  "tractor-mono"
+  PREPROC_AGENT_PORT:  "4301"
+  PREPROC_AGENT_HTTP:  "5100"
+  FILTER_AGENT_HOST:   "xchain-unicorn"
+  FILTER_AGENT_PORT:   "5101"
+  CONTEXT_LABEL:       "urllc-mmtc"
 
 resources: {}
 nodeSelector: {}

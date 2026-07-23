@@ -1,0 +1,71 @@
+replicaCount: 1
+
+image:
+  repository: ddocker122/xchain-unicorn
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: "xchain-unicorn"
+
+serviceAccount:
+  create: true
+  name: "xchain-unicorn-sa"
+  automount: true
+  annotations: {}
+
+serviceType: ClusterIP
+
+service:
+  - name: kpm-tcp
+    containerPort: 4700
+  - name: model-http
+    containerPort: 5004
+
+env:
+  MODEL_DIR:        /mnt/model
+  XCHAIN_DATA_PORT: "4700"
+  XCHAIN_PORT:      "5004"
+  MODEL_ARCH:       ForwConvNet   # ForwConvNet | ResConvNet
+  OOD_INDEX:        "5"           # 4 | 5
+  SLICE_LEN:        "64"
+
+persistentVolume:
+  enabled: true
+  name: xchain-unicorn-pv
+  claimName: xchain-unicorn-pvc
+  size: 1Gi
+  accessMode: ReadWriteMany
+  mountPath: /mnt/model
+  hostPath: /home/lapdk/workspace/oai-v210/xChain/src/xapp-unicorn/models
+  reclaimPolicy: Delete
+
+# Universal agent sidecar (filtering mode for journal pipeline)
+agent:
+  enabled: false
+  image:
+    repository: ddocker122/xchain-agent
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    AGENT_MODE:      filtering
+    AGENT_PORT:      "5101"
+    MODEL_HOST:      localhost
+    MODEL_PORT:      "5004"
+    PEER_AGENT_HOST: tractor-mono
+    PEER_AGENT_PORT: "5100"
+    CONTEXT_LABEL:   urllc-mmtc
+    DRIFT_DETECTOR:  ddm           # none | ddm | adwin | eddm | ph
+    DDM_WARNING_THRESHOLD: "1.5"   # default 2.0 — lower = fires sooner
+    DDM_DRIFT_THRESHOLD:   "2.0"   # default 3.0 — lower = fires sooner
+    COMPLAINT_COOLDOWN:    "15"         # seconds between complaints
+    COMPLAINT_ERROR_STREAK: "20"        # consecutive errors to re-complain after DDM reset
+
+# Shared results PVC — only needed when agent.enabled=true in demo context
+resultsPVC:
+  claimName: demo-results-pvc
+  mountPath: /results
+
+resources: {}
+nodeSelector: {}
+affinity: {}
+tolerations: []

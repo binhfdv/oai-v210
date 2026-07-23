@@ -38,7 +38,7 @@ spec:
             - name: metrics-config
               mountPath: /app/metrics_config.py
               subPath: metrics_config.py
-            {{- if .Values.resultsPVC }}
+            {{- if .Values.resultsPVC.claimName }}
             - name: results-volume
               mountPath: {{ .Values.resultsPVC.mountPath }}
             {{- end }}
@@ -55,7 +55,7 @@ spec:
         - name: metrics-config
           configMap:
             name: {{ include "tractor-kpm-oai.fullname" . }}-config
-        {{- if .Values.resultsPVC }}
+        {{- if .Values.resultsPVC.claimName }}
         - name: results-volume
           persistentVolumeClaim:
             claimName: {{ .Values.resultsPVC.claimName }}

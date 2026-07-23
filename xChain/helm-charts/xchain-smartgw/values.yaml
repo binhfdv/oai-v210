@@ -28,7 +28,7 @@ env:
   ORCH_POLL_INTERVAL:  "30"
   KPM_COL_THPDL:       "13"
   KPM_COL_THPUL:       "20"
-  KPM_COL_VOLUL:       "20"
+  KPM_COL_VOLUL:       "32"
 
 persistentVolume:
   enabled: true

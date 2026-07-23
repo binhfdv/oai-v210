@@ -1,3 +1,7 @@
+"""KPM Streamer:
+    - Streams only OAI CSV metrics
+"""
+
 import socket
 import os
 import time
