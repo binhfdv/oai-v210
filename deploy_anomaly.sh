@@ -53,7 +53,7 @@ for arg in "$@"; do
   if [ "$arg" == "--c" ]; then
     SKIP_UNINSTALL=true
   elif [ "$arg" == "all" ]; then
-    COMPONENTS=(core slices ric cu ue kpm rc) # installation order
+    COMPONENTS=(core slices ric cu ue kpm rc kpm-tools) # installation order
   else
     COMPONENTS+=("$arg")
   fi
@@ -314,6 +314,18 @@ for COMPONENT in "${COMPONENTS[@]}"; do
       python3 deploy_multi_ue.py "$NUM_UES_SLICE1" "$NUM_UES_SLICE2" "$NODE_ROLE"
       sleep 30
       ping_test
+      ;;
+
+    kpm-tools)
+      echo ""
+      echo "=== Deploying KPM tools (watcher + cleaner) (node-role=$NODE_ROLE) ==="
+      wait_for_pod_ready xapp-kpm-moni KPM-xApp
+      cd "$REPODIR/helm-flexric/watcher-kpm-moni" || exit 1
+      helm upgrade --install watcher-kpm-moni . \
+        --set nodeSelector.node-role="$NODE_ROLE"
+      cd "$REPODIR/helm-flexric/cleaner-kpm-moni" || exit 1
+      helm upgrade --install cleaner-kpm-moni . \
+        --set nodeSelector.node-role="$NODE_ROLE"
       ;;
 
     ping)
