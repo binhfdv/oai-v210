@@ -17,6 +17,9 @@ Set the `detect` image tag in the `values.yaml` of the following charts:
 
 All other charts use their default values.
 
+## hostInterface: "enp1s0f0"
+Change "enp1s0f0" with interface in your host machine.
+
 ---
 
 ## Prerequisites
