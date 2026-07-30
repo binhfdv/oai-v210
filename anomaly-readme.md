@@ -36,7 +36,11 @@ Follow the [K8s installation guide](https://github.com/binhfdv/k8s-prometheus-gr
 ### Helm
 
 Version **v3.19.0** is required.
-
+```
+url -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh -v v3.19.0
+```
 ---
 
 ## Deploy
