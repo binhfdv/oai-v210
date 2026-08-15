@@ -39,9 +39,14 @@ spec:
             - name: kpis-csv
               mountPath: {{ .Values.volumeMounts.kpisCsv.mountPath }}
               subPath: {{ .Values.volumeMounts.kpisCsv.subPath }}
+            - name: clean-dir
+              mountPath: {{ .Values.cleanDir.mountPath }}
           resources:
 {{ toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: kpis-csv
           persistentVolumeClaim:
             claimName: {{ .Values.persistentVolume.claimName }}
+        - name: clean-dir
+          hostPath:
+            path: {{ .Values.cleanDir.hostPath }}

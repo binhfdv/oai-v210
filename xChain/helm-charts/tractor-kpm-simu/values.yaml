@@ -9,7 +9,13 @@ fullnameOverride: "tractor-kpm-simu"
 
 env:
   ORCH_HOST: tractor-orchestrator
-  ORCH_PORT: '4200'
+  ORCH_PORT: "4200"
+  MODE: "realtime" #"csv" | "realtime"
+  CLEAN_DIR: /data/clean
+
+cleanDir:
+  hostPath: /home/lapdk/workspace/oai-v210/helm-flexric/watcher-kpm-moni/data/clean
+  mountPath: /data/clean
 
 service:
   port: 4200

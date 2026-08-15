@@ -1,5 +1,5 @@
 tractor-kpm-oai:
-  enabled: false
+  enabled: true
   fullnameOverride: "tractor-kpm-oai"
   nodeSelector:
     node-role: core
@@ -11,7 +11,7 @@ tractor-kpm-oai:
     # NUM_UES: "5"
 
 tractor-kpm-simu:
-  enabled: true
+  enabled: false
   fullnameOverride: "tractor-kpm-simu"
   nodeSelector:
     node-role: core
@@ -20,7 +20,6 @@ tractor-kpm-simu:
   env:
     ORCH_HOST: xchain-smartgw
     ORCH_PORT: "4200"
-    MODE: "realtime"
   persistentVolume:
     enabled: true
     name: tractor-kpm-simu-pv
@@ -29,7 +28,7 @@ tractor-kpm-simu:
   volumeMounts:
     kpisCsv:
       mountPath: /app/kpis.csv
-      subPath: unicorn_urllc_combined.csv
+      subPath: urllc_Teams.csv
 
 tractor-orchestrator:
   enabled: false
@@ -102,10 +101,10 @@ tractor-mono:
   agent:
     enabled: false
     env:
-      AGENT_MODE:           "enhancer"
-      ENHANCER_OUT_HOST:    "localhost" # set to "localhost" b/c sidecar and mono share same pod; otherwise set to mono service name
-      ENHANCER_OUT_PORT:    "4300"
-
+      TRACTOR_T: "4"
+      TRACTOR_CLASS_NAMES: "eMBB,mMTC,URLLC,ctrl"
+      TRACTOR_T_OPTIONS:    "4,8,16,32"
+      TRACTOR_MODEL_PATH:   "/mnt/model/model.{T}.cnn.pt"
 
 xchain-orchestrator:
   enabled: true
@@ -115,7 +114,7 @@ xchain-orchestrator:
   image:
     tag: latest
   env:
-    TRACTOR_HOST:      tractor-orchestrator
+    TRACTOR_HOST:      tractor-mono
     TRACTOR_PORT:      "4300"
     FASTINFER_HOST:    xchain-fastinfer
     FASTINFER_PORT:    "4400"
@@ -126,7 +125,6 @@ xchain-orchestrator:
     FILTER_AGENT_HOST:   "xchain-unicorn"              # e.g. xchain-unicorn
     FILTER_AGENT_PORT:   "5101"          # filtering agent HTTP port
     CONTEXT_LABEL:       "urllc-embb"    # operator context pushed to filtering agent
-
 
 xchain-smartgw:
   enabled: true
@@ -163,7 +161,6 @@ xchain-kcl:
   persistentVolume:
     hostPath: /home/lapdk/workspace/oai-v210/xChain/src/kcl
 
-
 xchain-fastinfer:
   enabled: true
   fullnameOverride: "xchain-fastinfer"
@@ -178,15 +175,17 @@ xchain-fastinfer:
     T: "4"
   resultsPVC:
     claimName: ""
-  agent:
-    enabled: false   # set to true to enable filtering agent sidecar
-    image:
-      repository: ddocker122/xchain-agent
-    env:
-      AGENT_MODE:                 "enhancer"
-      ENHANCER_OUT_HOST:          "localhost"
-      ENHANCER_OUT_PORT:          "4400"
-  
+
+# ── Journal pipeline (xChain + UNICORN via agents) ────────────────────────────
+
+# Enable tractor-mono with preprocessing agent sidecar
+# Overrides tractor-mono section above when journal pipeline is active
+# tractor-mono:
+#   enabled: true
+#   agent:
+#     enabled: true
+#   resultsPVC:
+#     claimName: ""   # no demo PVC needed
 
 xchain-unicorn:
   enabled: false

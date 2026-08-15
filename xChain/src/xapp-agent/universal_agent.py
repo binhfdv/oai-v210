@@ -9,11 +9,12 @@ AGENT_MODE selects the operating mode:
   log_collector : tail model log, parse predictions, write CSVs   (demo)
   preprocessing : pass-through inbound gateway for TRACTOR        (journal)
   filtering     : DDM-based skip/complaint gate for UNICORN        (journal)
+  enhancer      : online KPM denoising sidecar before CNN/XGBoost (journal)
 
 Journal modes expose an HTTP server; demo modes connect to xchain-gui-server via TCP.
 
 Environment variables — common:
-  AGENT_MODE          exec | file | log_collector | preprocessing | filtering
+  AGENT_MODE          exec | file | log_collector | preprocessing | filtering | enhancer
 
 Environment variables — preprocessing mode:
   AGENT_PORT          HTTP port this agent listens on              default: 5100
@@ -31,6 +32,16 @@ Environment variables — filtering mode:
   CONTEXT_LABEL       Operator-set overlap context                 default: urllc-mmtc
   DRIFT_DETECTOR      none | ddm | adwin | eddm | ph               default: ddm
   URLLC_CLASS         Expected TRACTOR label for URLLC traffic      default: URLLC
+
+Environment variables — enhancer mode:
+  AGENT_DATA_PORT     TCP port to receive rows from SmartGW        default: 4301
+  ENHANCER_OUT_HOST   Downstream model host (required)
+  ENHANCER_OUT_PORT   Downstream model TCP port                    default: 4300
+  ENHANCER_SKIP_COLS  Comma-separated column indices to skip       default: 0,1,2,3,4
+  IMPUTE_ENABLED      Forward-fill zeros per feature per UE        default: true
+  SMOOTH_ALPHA        EMA alpha (0=disabled)                       default: 0.3
+  CLIP_SIGMA          Clip at mean±k*std (0=disabled)              default: 3.0
+  CLIP_WARMUP         Rows before clipping activates per UE        default: 20
 
 Environment variables — demo modes:
   DEMO_SERVER_HOST    xchain-gui-server hostname (required)
@@ -62,6 +73,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 
 # ── Common config ──────────────────────────────────────────────────────────────
 AGENT_MODE = os.environ.get('AGENT_MODE', '')
+AGENT_PORT       = int(os.environ.get('AGENT_PORT',       '5100'))
+AGENT_DATA_PORT  = int(os.environ.get('AGENT_DATA_PORT',  '4301'))  # TCP, receives rows from SmartGW
+
 
 # ── Demo-mode config ───────────────────────────────────────────────────────────
 DEMO_SERVER_HOST  = os.environ.get('DEMO_SERVER_HOST', '')
@@ -76,16 +90,23 @@ ACCURACY_MODE     = os.environ.get('ACCURACY_MODE', 'real')
 AGENT_PARAM_A     = float(os.environ.get('AGENT_PARAM_A', '50'))
 AGENT_PARAM_B     = float(os.environ.get('AGENT_PARAM_B', '0.98'))
 
+# ── Enhancer-mode config ──────────────────────────────────────────────────────
+ENHANCER_OUT_HOST  = os.environ.get('ENHANCER_OUT_HOST', '')
+ENHANCER_OUT_PORT  = int(os.environ.get('ENHANCER_OUT_PORT', '4300'))
+ENHANCER_SKIP_COLS = {int(c) for c in os.environ.get('ENHANCER_SKIP_COLS', '0,1,2,3,4').split(',')}
+IMPUTE_ENABLED     = os.environ.get('IMPUTE_ENABLED', 'true').lower() == 'true'
+SMOOTH_ALPHA       = float(os.environ.get('SMOOTH_ALPHA', '0.3'))
+CLIP_SIGMA         = float(os.environ.get('CLIP_SIGMA',  '3.0'))
+CLIP_WARMUP        = int(os.environ.get('CLIP_WARMUP',   '20'))
+
 # ── Journal-mode config ────────────────────────────────────────────────────────
-AGENT_PORT       = int(os.environ.get('AGENT_PORT',       '5100'))
-AGENT_DATA_PORT  = int(os.environ.get('AGENT_DATA_PORT',  '4301'))  # TCP, receives rows from SmartGW
 MODEL_HOST       = os.environ.get('MODEL_HOST',       'localhost')
 MODEL_PORT       = os.environ.get('MODEL_PORT',       '5000')
 PEER_AGENT_HOST  = os.environ.get('PEER_AGENT_HOST',  '')
 PEER_AGENT_PORT  = os.environ.get('PEER_AGENT_PORT',  '5101')
 CONTEXT_LABEL    = os.environ.get('CONTEXT_LABEL',    'urllc-mmtc')
-DRIFT_DETECTOR        = os.environ.get('DRIFT_DETECTOR',        'ddm').lower()
-URLLC_CLASS           = os.environ.get('URLLC_CLASS',           'URLLC')
+DRIFT_DETECTOR   = os.environ.get('DRIFT_DETECTOR', 'ddm').lower()
+URLLC_CLASS      = os.environ.get('URLLC_CLASS', 'URLLC')
 # DDM/EDDM: lower thresholds → triggers faster (default: warning=2.0, drift=3.0)
 DDM_WARNING_THRESHOLD = float(os.environ.get('DDM_WARNING_THRESHOLD', '2.0'))
 DDM_DRIFT_THRESHOLD   = float(os.environ.get('DDM_DRIFT_THRESHOLD',   '3.0'))
@@ -853,11 +874,222 @@ def start_filtering():
 
 
 # ==============================================================================
+# MODE: enhancer  (journal)
+# ==============================================================================
+#
+# Pipeline: SmartGW → [TCP AGENT_DATA_PORT] → enhance → [TCP ENHANCER_OUT_HOST:PORT] → model
+#
+# Per-UE state (all learned online, no offline calibration):
+#   last_known : list[float]  last non-zero value per feature  (imputation)
+#   n          : int          row count                        (Welford)
+#   mean       : list[float]  running mean per feature         (Welford / clipping)
+#   M2         : list[float]  running sum of sq. deviations    (Welford / clipping)
+#   ema        : list[float]  last EMA value per feature       (smoothing)
+
+# Config — 8 new env vars under the enhancer block (IN/OUT port, skip cols, impute, alpha, sigma, warmup)
+
+# _enh_process(fields) — the core transform: iterates feature columns only, applies imputation → Welford update + clip → EMA, returns the cleaned field list
+
+# _enh_connect_downstream() — opens TCP to ENHANCER_OUT_HOST:PORT, retries every 2s
+
+# _enh_forward(line) — sends a cleaned row, reconnects automatically on broken pipe
+
+# _enh_handle_client(conn) — reads newline-delimited rows from SmartGW, calls _enh_process, forwards
+
+# start_enhancer() — wires everything together, binds TCP listener on AGENT_DATA_PORT
+
+# To deploy for CNN: set AGENT_MODE=enhancer, ENHANCER_OUT_HOST=<cnn-host>, ENHANCER_OUT_PORT=<cnn-tcp-port>. Same pattern for XGBoost with different out host/port.
+
+_enh_state: dict = {}        # ue_id -> per-UE dict
+_enh_state_lock = threading.Lock()
+
+# shared outbound socket to downstream model
+_enh_out_sock     = None
+_enh_out_sock_lock = threading.Lock()
+
+
+def _enh_get_ue(ue_id: str, n_feats: int) -> dict:
+    if ue_id not in _enh_state:
+        _enh_state[ue_id] = {
+            "n":          0,
+            "last_known": [0.0] * n_feats,
+            "mean":       [0.0] * n_feats,
+            "M2":         [0.0] * n_feats,
+            "ema":        [None] * n_feats,
+        }
+    return _enh_state[ue_id]
+
+
+def _enh_process(fields: list[str]) -> list[str]:
+    """
+    Apply imputation → clipping → EMA smoothing to one CSV row.
+    Non-feature columns (ENHANCER_SKIP_COLS) are passed through unchanged.
+    Logs a per-row summary of every feature that was modified.
+    """
+    n_cols   = len(fields)
+    feat_idx = [i for i in range(n_cols) if i not in ENHANCER_SKIP_COLS]
+    if not feat_idx:
+        return fields
+
+    try:
+        ue_id = fields[4].strip()
+    except IndexError:
+        ue_id = "default"
+
+    changes = []   # (col, original, final, tags) — collected inside lock, logged outside
+
+    with _enh_state_lock:
+        ue = _enh_get_ue(ue_id, len(feat_idx))
+        ue["n"] += 1
+        n = ue["n"]
+
+        out = list(fields)
+        for fi, col in enumerate(feat_idx):
+            try:
+                original = float(fields[col])
+            except ValueError:
+                continue
+
+            x    = original
+            tags = []
+
+            # ── 1. Imputation: forward-fill zeros ──────────────────────────
+            if IMPUTE_ENABLED and x == 0.0:
+                x = ue["last_known"][fi]
+                if x != 0.0:
+                    tags.append("imputed")
+            else:
+                ue["last_known"][fi] = x
+
+            # ── 2. Clipping: Welford update then symmetric clip ────────────
+            if CLIP_SIGMA > 0:
+                delta          = x - ue["mean"][fi]
+                ue["mean"][fi] += delta / n
+                ue["M2"][fi]   += delta * (x - ue["mean"][fi])
+                if n >= CLIP_WARMUP and n > 1:
+                    std    = math.sqrt(ue["M2"][fi] / n)
+                    lo     = ue["mean"][fi] - CLIP_SIGMA * std
+                    hi     = ue["mean"][fi] + CLIP_SIGMA * std
+                    x_clip = max(lo, min(hi, x))
+                    if x_clip != x:
+                        tags.append(f"clipped[{lo:.4g},{hi:.4g}]")
+                    x = x_clip
+
+            # ── 3. EMA smoothing ───────────────────────────────────────────
+            if SMOOTH_ALPHA > 0:
+                if ue["ema"][fi] is None:
+                    ue["ema"][fi] = x
+                else:
+                    ue["ema"][fi] = SMOOTH_ALPHA * x + (1 - SMOOTH_ALPHA) * ue["ema"][fi]
+                x = ue["ema"][fi]
+                tags.append("ema")
+
+            out[col] = f"{x:.6g}"
+
+            if tags:
+                changes.append((col, original, x, tags))
+
+    # ── Per-row summary log ────────────────────────────────────────────────────
+    if changes:
+        parts = [f"col{col}:{orig:.4g}→{final:.4g}({','.join(t)})"
+                 for col, orig, final, t in changes]
+        logging.info(f"[enhancer] ue={ue_id} row={n}  " + "  ".join(parts))
+    else:
+        logging.debug(f"[enhancer] ue={ue_id} row={n}  no changes")
+
+    return out
+
+
+def _enh_connect_downstream():
+    global _enh_out_sock
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((ENHANCER_OUT_HOST, ENHANCER_OUT_PORT))
+            with _enh_out_sock_lock:
+                _enh_out_sock = s
+            logging.info(f"[enhancer] Connected to downstream {ENHANCER_OUT_HOST}:{ENHANCER_OUT_PORT}")
+            return
+        except Exception as e:
+            logging.warning(f"[enhancer] Downstream not ready: {e} — retrying in 2s")
+            time.sleep(2)
+
+
+def _enh_forward(line: str):
+    global _enh_out_sock
+    msg = (line + "\n").encode("utf-8")
+    while True:
+        with _enh_out_sock_lock:
+            sock = _enh_out_sock
+        if sock is None:
+            time.sleep(0.1)
+            continue
+        try:
+            sock.sendall(msg)
+            return
+        except (BrokenPipeError, OSError) as e:
+            logging.warning(f"[enhancer] Downstream send failed: {e} — reconnecting")
+            with _enh_out_sock_lock:
+                _enh_out_sock = None
+            _enh_connect_downstream()
+
+
+def _enh_handle_client(conn):
+    buf = ""
+    with conn:
+        while True:
+            try:
+                chunk = conn.recv(4096)
+                if not chunk:
+                    break
+                buf += chunk.decode("utf-8", errors="replace")
+                while "\n" in buf:
+                    line, buf = buf.split("\n", 1)
+                    line = line.strip()
+                    if not line:
+                        continue
+                    fields  = line.split(",")
+                    cleaned = _enh_process(fields)
+                    out_row = ",".join(cleaned)
+                    logging.debug(f"[enhancer] {line[:80]} → {out_row[:80]}")
+                    _enh_forward(out_row)
+            except Exception as e:
+                logging.warning(f"[enhancer] Client error: {e}")
+                break
+
+
+def start_enhancer():
+    if not ENHANCER_OUT_HOST:
+        logging.error("[enhancer] ENHANCER_OUT_HOST is not set — cannot start")
+        return
+
+    threading.Thread(target=_enh_connect_downstream, daemon=True).start()
+
+    srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(("0.0.0.0", AGENT_DATA_PORT))
+    srv.listen(5)
+    logging.info(
+        f"[enhancer] Listening on :{AGENT_DATA_PORT}  →  {ENHANCER_OUT_HOST}:{ENHANCER_OUT_PORT}"
+        f"  impute={IMPUTE_ENABLED}  alpha={SMOOTH_ALPHA}  clip_sigma={CLIP_SIGMA}"
+        f"  clip_warmup={CLIP_WARMUP}  skip_cols={sorted(ENHANCER_SKIP_COLS)}"
+    )
+    while True:
+        try:
+            conn, addr = srv.accept()
+            logging.info(f"[enhancer] Connection from {addr}")
+            threading.Thread(target=_enh_handle_client, args=(conn,), daemon=True).start()
+        except Exception as e:
+            logging.error(f"[enhancer] Accept error: {e}")
+            time.sleep(0.5)
+
+
+# ==============================================================================
 # MAIN
 # ==============================================================================
 
 DEMO_MODES    = ('exec', 'file', 'log_collector')
-JOURNAL_MODES = ('preprocessing', 'filtering')
+JOURNAL_MODES = ('preprocessing', 'filtering', 'enhancer')
 ALL_MODES     = DEMO_MODES + JOURNAL_MODES
 
 if __name__ == '__main__':
@@ -872,6 +1104,9 @@ if __name__ == '__main__':
 
     elif AGENT_MODE == 'filtering':
         start_filtering()
+
+    elif AGENT_MODE == 'enhancer':
+        start_enhancer()
 
     else:
         # Demo modes — require DEMO_SERVER_HOST

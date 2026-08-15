@@ -68,6 +68,7 @@ agent:
     AGENT_MODE:           preprocessing
     AGENT_PORT:           "5100"
     AGENT_DATA_PORT:      "4301"
+    
     MODEL_HOST:           localhost
     MODEL_PORT:           "5000"
     PEER_AGENT_HOST:      xchain-unicorn
@@ -79,6 +80,8 @@ agent:
     TRACTOR_MODEL_TYPE:   "CNN"
     TRACTOR_NUM_FEATS:    "17"
     TRACTOR_NCLASS:       "4"
+    ENHANCER_OUT_HOST:    "localhost"
+    ENHANCER_OUT_PORT:    "4300"
 
 # Shared results PVC (same PV/PVC as xchain-gui-server)
 resultsPVC:

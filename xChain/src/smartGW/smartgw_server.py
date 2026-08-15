@@ -254,7 +254,10 @@ def classification_worker():
 
         start = time.perf_counter()
         try:
-            prediction = smartgw_predict_ultrafast(x_raw, model)
+            if x_raw.get("DRB.UEThpUl", 0) == 0 and x_raw.get("DRB.UEThpDl", 0) == 0 and x_raw.get("DRB.PdcpSduVolumeUL", 0) == 0:
+                prediction = "UNKNOWN"
+            else:
+                prediction = smartgw_predict_ultrafast(x_raw, model)
         except Exception as e:
             logging.exception(f"Prediction failed: {e}")
             data_queue.task_done()

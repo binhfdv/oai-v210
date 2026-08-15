@@ -1,0 +1,73 @@
+Commands to test xChain
+
+./deploy_oai.sh /home/lapdk/workspace/oai-v210 --core-role core --ran-role core core ric cu ue-gnb kpm kpm-tools xchain-basic
+
+## routing rules to agents
+kubectl exec -n oai deployment/xchain-orchestrator -- python3 -c "
+import urllib.request, json
+
+# Override tractor chain to hit the enhancer port
+for name, host, port in [
+    ('tractor',   'tractor-mono',     4300),
+    ('fastinfer', 'xchain-fastinfer', 4400),
+    ('null',      'null-sink',        1),
+]:
+    data = json.dumps({'name': name, 'host': host, 'port': port}).encode()
+    req = urllib.request.Request(
+        'http://localhost:5010/chains',
+        data=data,
+        headers={'Content-Type': 'application/json'},
+        method='POST'
+    )
+    print(urllib.request.urlopen(req).read().decode())
+"
+
+## routing rules to (directly) models
+kubectl exec -n oai deployment/xchain-orchestrator -- python3 -c "
+import urllib.request, json
+
+# Override tractor chain to hit the enhancer port
+for name, host, port in [
+    ('tractor',   'tractor-mono',     4300),
+    ('fastinfer', 'xchain-fastinfer', 4400),
+    ('null',      'null-sink',        1),
+]:
+    data = json.dumps({'name': name, 'host': host, 'port': port}).encode()
+    req = urllib.request.Request(
+        'http://localhost:5010/chains',
+        data=data,
+        headers={'Content-Type': 'application/json'},
+        method='POST'
+    )
+    print(urllib.request.urlopen(req).read().decode())
+"
+
+## create chains
+kubectl exec -n oai deployment/xchain-orchestrator -- python3 -c "
+import urllib.request, json
+data = json.dumps({'eMBB':'tractor','mMTC':'tractor','URLLC-mMTC':'tractor','URLLC-eMBB':'tractor','UNKNOWN':'tractor'}).encode()
+req = urllib.request.Request('http://localhost:5010/routing', data=data, headers={'Content-Type':'application/json'}, method='PUT')
+print(urllib.request.urlopen(req).read().decode())
+"
+
+kubectl exec -n oai deployment/xchain-orchestrator -- python3 -c "
+import urllib.request, json
+data = json.dumps({'eMBB':'fastinfer','mMTC':'fastinfer','URLLC-mMTC':'fastinfer','URLLC-eMBB':'fastinfer','UNKNOWN':'fastinfer'}).encode()
+req = urllib.request.Request('http://localhost:5010/routing', data=data, headers={'Content-Type':'application/json'}, method='PUT')
+print(urllib.request.urlopen(req).read().decode())
+"
+
+kubectl exec -n oai deployment/xchain-orchestrator -- python3 -c "
+import urllib.request, json
+data = json.dumps({
+    'eMBB':      'null',
+    'mMTC':      'null',
+    'UNKNOWN':   'null',
+    'URLLC-mMTC':'tractor',
+    'URLLC-eMBB':'fastinfer',
+}).encode()
+req = urllib.request.Request('http://localhost:5010/routing', data=data,
+      headers={'Content-Type': 'application/json'}, method='PUT')
+print(urllib.request.urlopen(req).read().decode())
+"
+

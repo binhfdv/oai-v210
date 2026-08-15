@@ -37,7 +37,7 @@ persistentVolume:
   reclaimPolicy: Delete
   subPath: xgb_model_T_4.json
 
-# Universal agent sidecar (log_collector mode)
+# Universal agent sidecar
 agent:
   enabled: false
   image:
@@ -45,13 +45,18 @@ agent:
     tag: latest
     pullPolicy: IfNotPresent
   env:
-    DEMO_SERVER_HOST: xchain-gui-server
-    DEMO_SERVER_PORT: "4000"
-    AGENT_MODE: log_collector
-    MODEL_NAME: fastinfer
-    MODEL_TYPE: xgboost
-    LOG_FILE: /model-logs/model.log
-    RESULTS_DIR: /results
+    AGENT_MODE:         log_collector
+    AGENT_PORT:           "5100"
+    AGENT_DATA_PORT:      "4301"
+
+    DEMO_SERVER_HOST:   xchain-gui-server
+    DEMO_SERVER_PORT:   "4000"
+    MODEL_NAME:         fastinfer
+    MODEL_TYPE:         xgboost
+    LOG_FILE:           /model-logs/model.log
+    RESULTS_DIR:        /results
+    ENHANCER_OUT_HOST:  "xchain-fastinfer"
+    ENHANCER_OUT_PORT:  "4400"
 
 # Shared results PVC (same PV/PVC as xchain-gui-server)
 resultsPVC:

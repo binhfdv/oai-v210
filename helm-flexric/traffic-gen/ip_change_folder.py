@@ -22,8 +22,28 @@ from scapy.all import rdpcap, wrpcap, IP, IPv6, TCP, UDP
 # old_src_list = ["172.30.1.1", "172.30.1.250"]
 # old_dst_list = ["172.30.1.250", "172.30.1.1"]
 
-old_src_list = ["192.168.72.135"]
-old_dst_list = ["12.1.1.2"]
+# old_src_list = ["192.168.72.135"]
+# old_dst_list = ["12.1.1.2"]
+
+# Load IPs from scan output files
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def _load_ips(txt_path: str) -> set:
+    """Read IPs from a scan_ips txt file (one IP per line, may have packet count after)."""
+    ips = set()
+    try:
+        with open(txt_path) as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    ips.add(line.split()[0])
+        print(f"[INFO] Loaded {len(ips)} IPs from {txt_path}")
+    except FileNotFoundError:
+        print(f"[WARN] IP list not found: {txt_path} — accepting all IPs")
+    return ips
+
+old_src_list = _load_ips(os.path.join(SCRIPT_DIR, "scan_src_ips.txt"))
+old_dst_list = _load_ips(os.path.join(SCRIPT_DIR, "scan_dst_ips.txt"))
 
 # Rewrite to these
 new_src = "10.1.2.14"
