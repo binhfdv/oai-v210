@@ -103,6 +103,7 @@ COPY e2-gnb/patches/openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm.c \
      openair2/E2AP/RAN_FUNCTION/O-RAN/ran_func_kpm.c
 
 WORKDIR /opt/oai/cmake_targets
+# add option --noavx512 if needed, to avoid a image-related error on some machines (e.g., AWS Graviton2)
 RUN ./build_oai -c -w SIMU --gNB --nrUE --build-e2 --ninja
 
 # Build telnet

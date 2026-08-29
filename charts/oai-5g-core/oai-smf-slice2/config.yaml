@@ -97,7 +97,7 @@ smf:
     use_local_pcc_rules: yes # Use infos from local_pcc_rules or from PCF
   # we resolve from NRF, this is just to configure usage_reporting
   upfs:
-    - host: oai-upf-slice2
+    - host: 10.3.3.17 #oai-upf-slice2
       config:
         enable_usage_reporting: no
   ue_dns:
